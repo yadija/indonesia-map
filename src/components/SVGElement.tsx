@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 
+import { IProvince } from '../interfaces/IProvince';
+
 interface SVGElementProps {
-  shapes: { id: string; name: string; d: string }[];
+  shapes: IProvince[];
   onPathClick: (id: string) => void;
 }
 

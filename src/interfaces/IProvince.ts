@@ -6,6 +6,8 @@ export interface IProvince {
   island?: string;
   population?: number;
   areaKm2?: number;
+  timezone?: string;
   description?: string;
+  wikipediaUrl?: string;
   logoUrl?: string;
 }

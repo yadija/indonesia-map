@@ -19,8 +19,8 @@ export default function App() {
     const timer = setTimeout(() => {
       toast({
         title: 'Info',
-        description: 'Peta ini berasal dari simplemaps.com',
-        duration: 10000,
+        description: 'Peta interaktif 38 provinsi Indonesia',
+        duration: 8000,
       });
     }, 0);
 

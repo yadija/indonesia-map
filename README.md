@@ -2,7 +2,7 @@
 
 # ⌛Introduction
 
-This is a application that shows the map of Indonesia.
+This is an interactive web application that displays the map of Indonesia with 38 provinces.
 
 # 🚀Installation
 
@@ -32,4 +32,5 @@ npm run preview
 
 # 📖Resource
 
-resource svg: https://simplemaps.com/svg/country/id
+- Resource SVG (38 Provinces): https://github.com/yunanmr/map-indonesia-svg (amCharts Standard)
+- Previous resource (34 Provinces): https://simplemaps.com/svg/country/id

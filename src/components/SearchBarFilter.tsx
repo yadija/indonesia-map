@@ -3,10 +3,13 @@ import { Filter, MapPin, Search, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { IProvince } from '../interfaces/IProvince';
+import ThemeToggle from './ThemeToggle';
 
 interface SearchBarFilterProps {
   provinces: IProvince[];
   selectedIsland: string | null;
+  isDark: boolean;
+  onToggleTheme: () => void;
   onSelectIsland: (island: string | null) => void;
   onSelectProvince: (id: string) => void;
 }
@@ -25,6 +28,8 @@ const ISLANDS = [
 export default function SearchBarFilter({
   provinces,
   selectedIsland,
+  isDark,
+  onToggleTheme,
   onSelectIsland,
   onSelectProvince,
 }: SearchBarFilterProps) {
@@ -78,7 +83,7 @@ export default function SearchBarFilter({
       className='fixed inset-x-0 top-4 z-40 mx-auto w-full max-w-4xl px-4'
     >
       <div className='rounded-2xl border border-border/70 bg-background/90 p-3 shadow-lg backdrop-blur-md transition-all'>
-        <div className='flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between'>
+        <div className='flex items-center justify-between gap-2.5'>
           {/* Search Input Box */}
           <div className='relative flex-1'>
             <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground'>
@@ -161,10 +166,15 @@ export default function SearchBarFilter({
             </AnimatePresence>
           </div>
 
-          {/* Title Badge */}
-          <div className='hidden items-center gap-1.5 rounded-lg border bg-muted/40 px-3 py-1.5 text-xs font-semibold text-foreground sm:flex'>
-            <Filter className='size-3.5 text-red-500' />
-            <span>38 Provinsi</span>
+          {/* Right Controls: Title Badge & Dark Mode Toggle */}
+          <div className='flex shrink-0 items-center gap-2'>
+            <div className='hidden items-center gap-1.5 rounded-lg border bg-muted/40 px-3 py-2 text-xs font-semibold text-foreground sm:flex'>
+              <Filter className='size-3.5 text-red-500' />
+              <span>38 Provinsi</span>
+            </div>
+
+            {/* Theme Toggle Button */}
+            <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
           </div>
         </div>
 

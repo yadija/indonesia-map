@@ -9,6 +9,7 @@ interface SVGElementProps {
   shapes: IProvince[];
   selectedIsland?: string | null;
   highlightedId?: string | null;
+  isDark?: boolean;
   onPathClick: (id: string) => void;
 }
 
@@ -25,6 +26,7 @@ export default function SVGElement({
   shapes,
   selectedIsland,
   highlightedId,
+  isDark,
   onPathClick,
 }: SVGElementProps) {
   const [hovered, setHovered] = useState<HoveredState | null>(null);
@@ -346,8 +348,10 @@ export default function SVGElement({
               ? '#f59e0b'
               : isMatchIsland
                 ? '#ef4444'
-                : '#94a3b8';
-            const stroke = isMatchIsland ? '#ffffff' : '#cbd5e1';
+                : isDark
+                  ? '#334155'
+                  : '#94a3b8';
+            const stroke = isMatchIsland ? '#ffffff' : isDark ? '#475569' : '#cbd5e1';
             const opacity = isMatchIsland ? 1 : 0.22;
 
             return (

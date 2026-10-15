@@ -6,6 +6,7 @@ import SearchBarFilter from './components/SearchBarFilter';
 import SVGElement from './components/SVGElement';
 // data
 import indonesiaMap from './data/indonesia-map.json';
+import { useTheme } from './hooks/use-theme';
 // hooks
 import { useToast } from './hooks/use-toast';
 // interfaces
@@ -17,6 +18,7 @@ export default function App() {
   const [selectedIsland, setSelectedIsland] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
   const { toast } = useToast();
+  const { isDark, toggleTheme } = useTheme();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -49,11 +51,13 @@ export default function App() {
   };
 
   return (
-    <section className='relative grid h-screen place-items-center overflow-hidden'>
-      {/* Floating Search Bar & Island Filter */}
+    <section className='relative grid h-screen place-items-center overflow-hidden bg-background text-foreground transition-colors duration-200'>
+      {/* Floating Search Bar, Island Filter & Theme Switcher */}
       <SearchBarFilter
         provinces={indonesiaMap}
         selectedIsland={selectedIsland}
+        isDark={isDark}
+        onToggleTheme={toggleTheme}
         onSelectIsland={setSelectedIsland}
         onSelectProvince={handleSelectProvince}
       />
@@ -64,6 +68,7 @@ export default function App() {
           shapes={indonesiaMap}
           selectedIsland={selectedIsland}
           highlightedId={highlightedId}
+          isDark={isDark}
           onPathClick={handlePathClick}
         />
       </div>

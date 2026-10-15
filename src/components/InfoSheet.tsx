@@ -1,4 +1,4 @@
-import { Clock, ExternalLink, MapPin, Maximize2, Users } from 'lucide-react';
+import { Clock, ExternalLink, MapPin, Maximize2, ShieldCheck, Users } from 'lucide-react';
 
 import { IProvince } from '../interfaces/IProvince';
 import {
@@ -96,6 +96,25 @@ export default function InfoSheet({ open, onOpenChange, province }: InfoSheetPro
                 </p>
               </div>
             )}
+
+            {/* Catatan Validitas & Sumber Data Resmi */}
+            <div className='rounded-xl border border-border/80 bg-muted/30 p-3.5 text-xs text-muted-foreground'>
+              <div className='flex items-center gap-1.5 font-semibold text-foreground'>
+                <ShieldCheck className='size-4 text-emerald-500' />
+                <span>Validitas & Rujukan Data Resmi</span>
+              </div>
+              <ul className='mt-2 space-y-1.5 text-[11px] leading-relaxed'>
+                <li>
+                  • <strong>Estimasi Populasi:</strong> Badan Pusat Statistik (BPS RI) —
+                  Proyeksi Penduduk Interim 2023.
+                </li>
+                <li>
+                  • <strong>Luas Wilayah & Pemekaran 38 Provinsi:</strong> Kementerian
+                  Dalam Negeri (Kepmen No. 100.1.1-6117 Tahun 2022) & Badan Informasi
+                  Geospasial (BIG).
+                </li>
+              </ul>
+            </div>
 
             {/* Tautan Wikipedia */}
             {province.wikipediaUrl && (

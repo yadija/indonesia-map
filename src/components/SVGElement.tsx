@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { MapPin, Users } from 'lucide-react';
+import { Award, MapPin, Users } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { IChoroplethConfig } from '../interfaces/IChoropleth';
 import { IProvince } from '../interfaces/IProvince';
 import ZoomControls from './ZoomControls';
 
@@ -10,6 +11,8 @@ interface SVGElementProps {
   selectedIsland?: string | null;
   highlightedId?: string | null;
   isDark?: boolean;
+  choroplethConfig?: IChoroplethConfig | null;
+  hoveredTier?: number | null;
   onPathClick: (id: string) => void;
 }
 
@@ -27,6 +30,8 @@ export default function SVGElement({
   selectedIsland,
   highlightedId,
   isDark,
+  choroplethConfig,
+  hoveredTier,
   onPathClick,
 }: SVGElementProps) {
   const [hovered, setHovered] = useState<HoveredState | null>(null);
@@ -311,15 +316,20 @@ export default function SVGElement({
   const tooltipX = hovered
     ? Math.min(
         hovered.x + 16,
-        typeof window !== 'undefined' ? window.innerWidth - 220 : 0,
+        typeof window !== 'undefined' ? window.innerWidth - 240 : 0,
       )
     : 0;
   const tooltipY = hovered
     ? Math.min(
         hovered.y + 16,
-        typeof window !== 'undefined' ? window.innerHeight - 130 : 0,
+        typeof window !== 'undefined' ? window.innerHeight - 170 : 0,
       )
     : 0;
+
+  const hoveredChoroData =
+    hovered && choroplethConfig
+      ? choroplethConfig.provincesData[hovered.province.id]
+      : null;
 
   return (
     <div
@@ -344,22 +354,95 @@ export default function SVGElement({
             const isMatchIsland = !selectedIsland || island === selectedIsland;
             const isHighlighted = highlightedId === id;
 
-            const fill = isHighlighted
-              ? '#f59e0b'
-              : isMatchIsland
-                ? '#ef4444'
-                : isDark
-                  ? '#334155'
-                  : '#94a3b8';
-            const stroke = isMatchIsland ? '#ffffff' : isDark ? '#475569' : '#cbd5e1';
-            const opacity = isMatchIsland ? 1 : 0.22;
+            let fill = '#ef4444';
+            let stroke = '#ffffff';
+            let strokeWidth = '0.5';
+            let opacity = 1;
+
+            const isHovered = hovered?.province.id === id;
+
+            if (choroplethConfig) {
+              const choroData = choroplethConfig.provincesData[id];
+              const tierColor = isDark ? choroData?.fillDark : choroData?.fillLight;
+              const themeBorderColor =
+                choroplethConfig.id === 'population'
+                  ? isDark
+                    ? '#60a5fa'
+                    : '#2563eb'
+                  : choroplethConfig.id === 'density'
+                    ? isDark
+                      ? '#fb923c'
+                      : '#ea580c'
+                    : isDark
+                      ? '#34d399'
+                      : '#059669';
+
+              if (isHighlighted) {
+                // When clicked/selected: preserve authentic tier data color, highlight with bold border
+                fill = tierColor || '#94a3b8';
+                stroke = isDark ? '#ffffff' : '#0f172a';
+                strokeWidth = '2';
+                opacity = 1;
+              } else if (!isMatchIsland) {
+                fill = isDark ? '#334155' : '#94a3b8';
+                stroke = isDark ? '#475569' : '#cbd5e1';
+                strokeWidth = '0.5';
+                opacity = 0.2;
+              } else if (isHovered) {
+                // When hovered: border adopts the mode's signature theme color instead of red
+                fill = isDark ? '#ffffff' : '#f8fafc';
+                stroke = themeBorderColor;
+                strokeWidth = '1.5';
+                opacity = 1;
+              } else if (hoveredTier !== null && choroData) {
+                fill = tierColor || '#94a3b8';
+                if (hoveredTier === choroData.tier) {
+                  stroke = isDark ? '#ffffff' : '#0f172a';
+                  strokeWidth = '1';
+                  opacity = 1;
+                } else {
+                  stroke = isDark ? '#0f172a' : '#ffffff';
+                  strokeWidth = '0.5';
+                  opacity = 0.25;
+                }
+              } else {
+                fill = tierColor || '#94a3b8';
+                stroke = isDark ? '#0f172a' : '#ffffff';
+                strokeWidth = '0.5';
+                opacity = 1;
+              }
+            } else {
+              // Default standard map colors
+              if (isHighlighted) {
+                // When clicked: preserve red map fill with bold high-contrast outline
+                fill = '#ef4444';
+                stroke = isDark ? '#ffffff' : '#0f172a';
+                strokeWidth = '2';
+                opacity = 1;
+              } else if (!isMatchIsland) {
+                fill = isDark ? '#334155' : '#94a3b8';
+                stroke = isDark ? '#475569' : '#cbd5e1';
+                strokeWidth = '0.5';
+                opacity = 0.22;
+              } else if (isHovered) {
+                fill = '#ffffff';
+                stroke = '#ef4444';
+                strokeWidth = '1.5';
+                opacity = 1;
+              } else {
+                fill = '#ef4444';
+                stroke = '#ffffff';
+                strokeWidth = '0.5';
+                opacity = 1;
+              }
+            }
 
             return (
               <motion.path
                 key={id}
                 id={id}
                 d={d}
-                strokeWidth='.5'
+                strokeWidth={strokeWidth}
                 aria-label={name}
                 role='button'
                 onClick={() => {
@@ -386,7 +469,7 @@ export default function SVGElement({
                 onMouseLeave={() => {
                   setHovered(null);
                 }}
-                className='cursor-pointer outline-none transition hover:fill-white hover:stroke-[#f00] focus:outline-none focus-visible:outline-none'
+                className='cursor-pointer outline-none transition-colors duration-150 focus:outline-none focus-visible:outline-none'
                 initial={{ opacity: 0, pathLength: 0, fill, stroke }}
                 animate={{ opacity, pathLength: 1, fill, stroke }}
                 transition={{
@@ -417,8 +500,9 @@ export default function SVGElement({
             exit={{ opacity: 0, scale: 0.92, y: 4 }}
             transition={{ duration: 0.12 }}
             style={{ left: tooltipX, top: tooltipY }}
-            className='pointer-events-none fixed z-50 min-w-44 rounded-lg border border-border/80 bg-background/95 p-2.5 shadow-xl backdrop-blur-md'
+            className='pointer-events-none fixed z-50 min-w-48 rounded-xl border border-border/80 bg-background/95 p-3 shadow-xl backdrop-blur-md'
           >
+            {/* Header: Name and Island badge */}
             <div className='flex items-center justify-between gap-2 border-b border-border/60 pb-1.5'>
               <span className='text-sm font-bold text-foreground'>
                 {hovered.province.name}
@@ -430,6 +514,51 @@ export default function SVGElement({
               )}
             </div>
 
+            {/* Thematic Choropleth Metrics Highlight */}
+            {choroplethConfig && hoveredChoroData ? (
+              <div className='mt-2 space-y-1.5 rounded-lg border border-border/70 bg-accent/30 p-2 text-xs'>
+                <div className='flex items-center justify-between'>
+                  <span className='font-semibold text-foreground'>
+                    {choroplethConfig.shortName}:
+                  </span>
+                  <span className='font-bold text-foreground'>
+                    {hoveredChoroData.formattedValue}
+                  </span>
+                </div>
+
+                <div className='flex items-center justify-between text-[11px] text-muted-foreground'>
+                  <span className='flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400'>
+                    <Award className='size-3' />
+                    Peringkat #{hoveredChoroData.rank} dari 38
+                  </span>
+                  {hoveredChoroData.percentOfTotal > 0 && (
+                    <span className='font-medium text-foreground'>
+                      {hoveredChoroData.percentOfTotal}% nasional
+                    </span>
+                  )}
+                </div>
+
+                <div className='flex items-center justify-between text-[10px] text-muted-foreground'>
+                  <div className='flex items-center gap-1.5'>
+                    <span
+                      style={{
+                        backgroundColor: isDark
+                          ? hoveredChoroData.fillDark
+                          : hoveredChoroData.fillLight,
+                      }}
+                      className='size-2.5 rounded-full border border-black/20'
+                    />
+                    <span>
+                      Tingkat {hoveredChoroData.tier}/5 (
+                      {choroplethConfig.tiers[hoveredChoroData.tier - 1]?.label})
+                    </span>
+                  </div>
+                  <span className='text-[9px] opacity-80'>BPS & Kemendagri</span>
+                </div>
+              </div>
+            ) : null}
+
+            {/* Standard Details */}
             <div className='mt-2 space-y-1 text-xs text-muted-foreground'>
               {hovered.province.capital && (
                 <div className='flex items-center gap-1.5'>
@@ -442,19 +571,20 @@ export default function SVGElement({
                   </span>
                 </div>
               )}
-              {hovered.province.population && (
-                <div className='flex items-center gap-1.5'>
-                  <Users className='size-3 text-blue-500' />
-                  <span>
-                    Populasi:{' '}
-                    {new Intl.NumberFormat('id-ID').format(hovered.province.population)}
-                  </span>
-                </div>
-              )}
+              {(!choroplethConfig || choroplethConfig.id !== 'population') &&
+                hovered.province.population && (
+                  <div className='flex items-center gap-1.5'>
+                    <Users className='size-3 text-blue-500' />
+                    <span>
+                      Populasi:{' '}
+                      {new Intl.NumberFormat('id-ID').format(hovered.province.population)}
+                    </span>
+                  </div>
+                )}
             </div>
 
             <div className='mt-2 text-[10px] italic text-muted-foreground/75'>
-              Klik untuk melihat detail →
+              Klik untuk melihat profil lengkap →
             </div>
           </motion.div>
         )}

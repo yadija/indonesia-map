@@ -6,6 +6,8 @@ import { IProvince } from '../interfaces/IProvince';
 
 interface SVGElementProps {
   shapes: IProvince[];
+  selectedIsland?: string | null;
+  highlightedId?: string | null;
   onPathClick: (id: string) => void;
 }
 
@@ -15,7 +17,12 @@ interface HoveredState {
   y: number;
 }
 
-export default function SVGElement({ shapes, onPathClick }: SVGElementProps) {
+export default function SVGElement({
+  shapes,
+  selectedIsland,
+  highlightedId,
+  onPathClick,
+}: SVGElementProps) {
   const [hovered, setHovered] = useState<HoveredState | null>(null);
 
   const tooltipX = hovered
@@ -35,7 +42,15 @@ export default function SVGElement({ shapes, onPathClick }: SVGElementProps) {
     <div className='relative size-full' onMouseLeave={() => setHovered(null)}>
       <svg viewBox='0 0 800 350' className='size-full'>
         {shapes.map((shape, index) => {
-          const { id, name, d } = shape;
+          const { id, name, d, island } = shape;
+          const isMatchIsland = !selectedIsland || island === selectedIsland;
+          const isHighlighted = highlightedId === id;
+
+          // Compute path fill & opacity based on island filter & highlight
+          const fill = isHighlighted ? '#f59e0b' : isMatchIsland ? '#ef4444' : '#94a3b8';
+          const stroke = isMatchIsland ? '#ffffff' : '#cbd5e1';
+          const opacity = isMatchIsland ? 1 : 0.22;
+
           return (
             <motion.path
               key={id}
@@ -66,13 +81,11 @@ export default function SVGElement({ shapes, onPathClick }: SVGElementProps) {
                 setHovered(null);
               }}
               className='cursor-pointer outline-none transition hover:fill-white hover:stroke-[#f00] focus:outline-none focus-visible:outline-none'
-              initial={{ opacity: 0, pathLength: 0, fill: '#f00', stroke: '#fff' }}
-              animate={{ opacity: 1, pathLength: 1 }}
+              initial={{ opacity: 0, pathLength: 0, fill, stroke }}
+              animate={{ opacity, pathLength: 1, fill, stroke }}
               transition={{
-                delay: index * 0.03,
-                duration: 0.4,
-                type: 'spring',
-                stiffness: 300,
+                delay: index * 0.015,
+                duration: 0.35,
               }}
             />
           );

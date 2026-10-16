@@ -12,8 +12,8 @@ interface CompareFloatingBarProps {
 
 const BADGE_COLORS = [
   'bg-blue-600 text-white',
-  'bg-amber-500 text-white',
-  'bg-emerald-600 text-white',
+  'bg-amber-400 text-black',
+  'bg-emerald-500 text-black',
 ];
 
 export default function CompareFloatingBar({
@@ -29,19 +29,19 @@ export default function CompareFloatingBar({
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: 24, scale: 0.96 }}
+        initial={{ opacity: 0, y: 32, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 24, scale: 0.96 }}
-        transition={{ duration: 0.2 }}
+        exit={{ opacity: 0, y: 32, scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
         className='pointer-events-none fixed inset-x-0 bottom-5 z-40 mx-auto flex w-full max-w-2xl justify-center px-4'
       >
-        <div className='pointer-events-auto flex w-full flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/80 bg-background/95 p-3 shadow-2xl backdrop-blur-md'>
+        <div className='pointer-events-auto flex w-full flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-black bg-background p-3 shadow-brutal-lg dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg'>
           {/* Left: Mode Title & Selection Chips */}
           <div className='flex flex-1 flex-wrap items-center gap-2'>
-            <div className='flex items-center gap-1.5 pr-1 text-xs font-bold text-foreground'>
-              <Scale className='size-4 text-red-500' />
-              <span className='hidden sm:inline'>Komparasi</span>
-              <span className='rounded bg-muted px-1.5 py-0.5 text-[11px] font-semibold text-muted-foreground'>
+            <div className='flex items-center gap-1.5 rounded-lg border-2 border-black bg-amber-300 px-2 py-1 font-mono text-xs font-black text-black shadow-brutal-sm dark:border-white'>
+              <Scale className='size-3.5 stroke-[2.5]' />
+              <span>KOMPARASI</span>
+              <span className='ml-1 rounded border border-black bg-black px-1.5 text-[10px] text-white dark:border-white'>
                 {comparedProvinces.length}/3
               </span>
             </div>
@@ -49,31 +49,38 @@ export default function CompareFloatingBar({
             {/* Selected Province Pills */}
             <div className='flex flex-wrap items-center gap-1.5'>
               {comparedProvinces.map((prov, index) => (
-                <span
+                <motion.span
                   key={prov.id}
-                  className='flex items-center gap-1.5 rounded-full border border-border bg-muted/60 py-1 pl-1.5 pr-2 text-xs font-medium text-foreground transition-all hover:bg-muted'
+                  layout
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  whileHover={{ scale: 1.04 }}
+                  className='flex items-center gap-1.5 rounded-lg border-2 border-black bg-card py-1 pl-1.5 pr-2 font-mono text-xs font-bold text-foreground shadow-[2px_2px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_#fff]'
                 >
                   <span
-                    className={`flex size-4 items-center justify-center rounded-full text-[10px] font-bold ${
+                    className={`flex size-4 items-center justify-center rounded border border-black text-[10px] font-black ${
                       BADGE_COLORS[index % BADGE_COLORS.length]
                     }`}
                   >
                     {index + 1}
                   </span>
                   <span className='max-w-24 truncate sm:max-w-32'>{prov.name}</span>
-                  <button
+                  <motion.button
                     type='button'
+                    whileHover={{ scale: 1.2, rotate: 90 }}
+                    whileTap={{ scale: 0.85 }}
                     onClick={() => onRemove(prov.id)}
-                    className='rounded-full p-0.5 text-muted-foreground transition hover:bg-background hover:text-foreground'
+                    className='rounded border border-black bg-background p-0.5 text-muted-foreground transition-colors hover:bg-red-600 hover:text-white dark:border-white dark:hover:bg-red-600'
                     aria-label={`Hapus ${prov.name} dari perbandingan`}
                   >
-                    <X className='size-3' />
-                  </button>
-                </span>
+                    <X className='size-3 stroke-[2.5]' />
+                  </motion.button>
+                </motion.span>
               ))}
 
               {comparedProvinces.length < 3 && (
-                <span className='hidden text-[11px] italic text-muted-foreground md:inline'>
+                <span className='hidden font-mono text-[11px] font-semibold text-muted-foreground md:inline'>
                   + Pilih {3 - comparedProvinces.length} lagi di peta
                 </span>
               )}
@@ -82,27 +89,31 @@ export default function CompareFloatingBar({
 
           {/* Right Action Buttons */}
           <div className='flex shrink-0 items-center gap-2'>
-            <button
+            <motion.button
               type='button'
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onClear}
-              className='rounded-lg px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground'
+              className='rounded-lg border-2 border-black bg-background px-3 py-1.5 font-mono text-xs font-bold text-foreground shadow-brutal-sm transition-colors hover:bg-muted dark:border-white dark:bg-zinc-900'
             >
-              Batal
-            </button>
+              BATAL
+            </motion.button>
 
-            <button
+            <motion.button
               type='button'
               disabled={!canCompare}
+              whileHover={canCompare ? { scale: 1.05, y: -1 } : {}}
+              whileTap={canCompare ? { scale: 0.95, y: 1 } : {}}
               onClick={onOpenModal}
-              className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold shadow-md transition ${
+              className={`flex items-center gap-1.5 rounded-lg border-2 border-black px-4 py-1.5 font-mono text-xs font-black uppercase tracking-wider shadow-brutal-sm transition dark:border-white ${
                 canCompare
-                  ? 'bg-red-600 text-white hover:bg-red-700 hover:shadow-lg'
-                  : 'cursor-not-allowed bg-muted text-muted-foreground opacity-60'
+                  ? 'bg-red-600 text-white hover:bg-red-500 hover:shadow-brutal'
+                  : 'cursor-not-allowed bg-muted text-muted-foreground opacity-50 shadow-none'
               }`}
             >
-              <span>Bandingkan</span>
-              <ArrowRight className='size-3.5' />
-            </button>
+              <span>BANDINGKAN</span>
+              <ArrowRight className='size-3.5 stroke-[2.5]' />
+            </motion.button>
           </div>
         </div>
       </motion.div>

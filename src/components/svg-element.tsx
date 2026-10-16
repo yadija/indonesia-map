@@ -372,83 +372,84 @@ export default function SVGElement({
               const themeBorderColor =
                 choroplethConfig.id === 'population'
                   ? isDark
-                    ? '#60a5fa'
-                    : '#2563eb'
+                    ? '#93c5fd'
+                    : '#1d4ed8'
                   : choroplethConfig.id === 'density'
                     ? isDark
-                      ? '#fb923c'
-                      : '#ea580c'
+                      ? '#fdba74'
+                      : '#c2410c'
                     : isDark
-                      ? '#34d399'
-                      : '#059669';
+                      ? '#6ee7b7'
+                      : '#047857';
 
               if (isCompared) {
                 // When in comparison list: highlight with distinctive numbered color outline
                 fill = tierColor || '#94a3b8';
                 stroke = compareColors[compareIndex % compareColors.length];
-                strokeWidth = '2.5';
+                strokeWidth = '3';
                 opacity = 1;
               } else if (isHighlighted) {
-                // When clicked/selected: preserve authentic tier data color, highlight with bold border
+                // When clicked/selected: preserve authentic tier data color, highlight with bold brutalist border
                 fill = tierColor || '#94a3b8';
-                stroke = isDark ? '#ffffff' : '#0f172a';
-                strokeWidth = '2';
+                stroke = isDark ? '#ffffff' : '#000000';
+                strokeWidth = '2.5';
                 opacity = 1;
               } else if (!isMatchIsland) {
-                fill = isDark ? '#334155' : '#94a3b8';
-                stroke = isDark ? '#475569' : '#cbd5e1';
+                fill = isDark ? '#27272a' : '#d4d4d8';
+                stroke = isDark ? '#3f3f46' : '#a1a1aa';
                 strokeWidth = '0.5';
-                opacity = 0.2;
+                opacity = 0.25;
               } else if (isHovered) {
-                // When hovered: border adopts the mode's signature theme color instead of red
-                fill = isDark ? '#ffffff' : '#f8fafc';
+                // When hovered: pop with stark contrast fill and theme border
+                fill = isDark ? '#ffffff' : '#fef08a';
                 stroke = themeBorderColor;
-                strokeWidth = '1.5';
+                strokeWidth = '2';
                 opacity = 1;
               } else if (hoveredTier !== null && choroData) {
                 fill = tierColor || '#94a3b8';
                 if (hoveredTier === choroData.tier) {
-                  stroke = isDark ? '#ffffff' : '#0f172a';
-                  strokeWidth = '1';
+                  stroke = isDark ? '#ffffff' : '#000000';
+                  strokeWidth = '1.5';
                   opacity = 1;
                 } else {
-                  stroke = isDark ? '#0f172a' : '#ffffff';
+                  stroke = isDark ? '#18181b' : '#000000';
                   strokeWidth = '0.5';
                   opacity = 0.25;
                 }
               } else {
                 fill = tierColor || '#94a3b8';
-                stroke = isDark ? '#0f172a' : '#ffffff';
-                strokeWidth = '0.5';
+                stroke = isDark ? '#000000' : '#000000';
+                strokeWidth = '0.75';
                 opacity = 1;
               }
             } else {
-              // Default standard map colors
+              // Standard map mode: iconic Indonesian red preserved!
               if (isCompared) {
                 fill = '#ef4444';
                 stroke = compareColors[compareIndex % compareColors.length];
-                strokeWidth = '2.5';
+                strokeWidth = '3';
                 opacity = 1;
               } else if (isHighlighted) {
-                // When clicked: preserve red map fill with bold high-contrast outline
-                fill = '#ef4444';
-                stroke = isDark ? '#ffffff' : '#0f172a';
-                strokeWidth = '2';
+                // When clicked: bold red with crisp high-contrast border
+                fill = '#dc2626';
+                stroke = isDark ? '#ffffff' : '#000000';
+                strokeWidth = '2.5';
                 opacity = 1;
               } else if (!isMatchIsland) {
-                fill = isDark ? '#334155' : '#94a3b8';
-                stroke = isDark ? '#475569' : '#cbd5e1';
+                fill = isDark ? '#27272a' : '#d4d4d8';
+                stroke = isDark ? '#3f3f46' : '#a1a1aa';
                 strokeWidth = '0.5';
-                opacity = 0.22;
+                opacity = 0.25;
               } else if (isHovered) {
-                fill = '#ffffff';
-                stroke = '#ef4444';
-                strokeWidth = '1.5';
+                // Hovered: pop with electric yellow/white and bold black stroke
+                fill = isDark ? '#fef08a' : '#fef08a';
+                stroke = '#000000';
+                strokeWidth = '2';
                 opacity = 1;
               } else {
                 fill = '#ef4444';
-                stroke = '#ffffff';
-                strokeWidth = '0.5';
+                stroke = isDark ? '#ffffff' : '#000000';
+                strokeWidth = '0.75';
                 opacity = 1;
               }
             }
@@ -489,8 +490,8 @@ export default function SVGElement({
                 initial={{ opacity: 0, pathLength: 0, fill, stroke }}
                 animate={{ opacity, pathLength: 1, fill, stroke }}
                 transition={{
-                  delay: index * 0.015,
-                  duration: 0.35,
+                  delay: index * 0.012,
+                  duration: 0.3,
                 }}
               />
             );
@@ -506,25 +507,25 @@ export default function SVGElement({
         onReset={handleReset}
       />
 
-      {/* Floating Hover Tooltip */}
+      {/* Floating Hover Tooltip (Neobrutalist Data Card) */}
       <AnimatePresence>
         {hovered && !isDragging && (
           <motion.div
             key={hovered.province.id}
-            initial={{ opacity: 0, scale: 0.92, y: 4 }}
+            initial={{ opacity: 0, scale: 0.9, y: 8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 4 }}
-            transition={{ duration: 0.12 }}
+            exit={{ opacity: 0, scale: 0.9, y: 8 }}
+            transition={{ type: 'spring', stiffness: 450, damping: 28 }}
             style={{ left: tooltipX, top: tooltipY }}
-            className='pointer-events-none fixed z-50 min-w-48 rounded-xl border border-border/80 bg-background/95 p-3 shadow-xl backdrop-blur-md'
+            className='pointer-events-none fixed z-50 min-w-52 rounded-xl border-2 border-black bg-background p-3 shadow-brutal-lg dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg'
           >
             {/* Header: Name and Island badge */}
-            <div className='flex items-center justify-between gap-2 border-b border-border/60 pb-1.5'>
-              <span className='text-sm font-bold text-foreground'>
+            <div className='flex items-center justify-between gap-2 border-b-2 border-black pb-2 dark:border-white'>
+              <span className='font-mono text-sm font-black uppercase text-foreground'>
                 {hovered.province.name}
               </span>
               {hovered.province.island && (
-                <span className='rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-semibold text-red-700 dark:bg-red-950/80 dark:text-red-300'>
+                <span className='rounded border border-black bg-amber-300 px-1.5 py-0.5 font-mono text-[10px] font-black text-black shadow-[1px_1px_0px_#000]'>
                   {hovered.province.island}
                 </span>
               )}
@@ -532,29 +533,29 @@ export default function SVGElement({
 
             {/* Thematic Choropleth Metrics Highlight */}
             {choroplethConfig && hoveredChoroData ? (
-              <div className='mt-2 space-y-1.5 rounded-lg border border-border/70 bg-accent/30 p-2 text-xs'>
-                <div className='flex items-center justify-between'>
-                  <span className='font-semibold text-foreground'>
-                    {choroplethConfig.shortName}:
+              <div className='mt-2 space-y-1.5 rounded-lg border-2 border-black bg-card p-2 text-xs shadow-brutal-sm dark:border-white dark:bg-zinc-900'>
+                <div className='flex items-center justify-between font-mono'>
+                  <span className='font-bold uppercase text-foreground'>
+                    [{choroplethConfig.shortName}]:
                   </span>
-                  <span className='font-bold text-foreground'>
+                  <span className='font-black text-foreground'>
                     {hoveredChoroData.formattedValue}
                   </span>
                 </div>
 
-                <div className='flex items-center justify-between text-[11px] text-muted-foreground'>
-                  <span className='flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400'>
-                    <Award className='size-3' />
-                    Peringkat #{hoveredChoroData.rank} dari 38
+                <div className='flex items-center justify-between font-mono text-[11px] text-muted-foreground'>
+                  <span className='flex items-center gap-1 font-bold text-amber-600 dark:text-amber-400'>
+                    <Award className='size-3 stroke-[2.5]' />
+                    RANK #{hoveredChoroData.rank}/38
                   </span>
                   {hoveredChoroData.percentOfTotal > 0 && (
-                    <span className='font-medium text-foreground'>
-                      {hoveredChoroData.percentOfTotal}% nasional
+                    <span className='font-bold text-foreground'>
+                      {hoveredChoroData.percentOfTotal}% NAT
                     </span>
                   )}
                 </div>
 
-                <div className='flex items-center justify-between text-[10px] text-muted-foreground'>
+                <div className='flex items-center justify-between border-t border-dashed border-black/30 pt-1 font-mono text-[10px] text-muted-foreground dark:border-white/30'>
                   <div className='flex items-center gap-1.5'>
                     <span
                       style={{
@@ -562,26 +563,26 @@ export default function SVGElement({
                           ? hoveredChoroData.fillDark
                           : hoveredChoroData.fillLight,
                       }}
-                      className='size-2.5 rounded-full border border-black/20'
+                      className='size-2.5 border border-black shadow-[1px_1px_0px_#000]'
                     />
                     <span>
-                      Tingkat {hoveredChoroData.tier}/5 (
+                      TK {hoveredChoroData.tier}/5 (
                       {choroplethConfig.tiers[hoveredChoroData.tier - 1]?.label})
                     </span>
                   </div>
-                  <span className='text-[9px] opacity-80'>BPS & Kemendagri</span>
+                  <span className='text-[9px] font-bold'>BPS RI</span>
                 </div>
               </div>
             ) : null}
 
             {/* Standard Details */}
-            <div className='mt-2 space-y-1 text-xs text-muted-foreground'>
+            <div className='mt-2 space-y-1 font-mono text-xs text-muted-foreground'>
               {hovered.province.capital && (
                 <div className='flex items-center gap-1.5'>
-                  <MapPin className='size-3 text-red-500' />
+                  <MapPin className='size-3 stroke-[2.5] text-red-600' />
                   <span>
-                    Ibu Kota:{' '}
-                    <strong className='text-foreground'>
+                    IBU KOTA:{' '}
+                    <strong className='font-bold text-foreground'>
                       {hovered.province.capital}
                     </strong>
                   </span>
@@ -590,10 +591,14 @@ export default function SVGElement({
               {(!choroplethConfig || choroplethConfig.id !== 'population') &&
                 hovered.province.population && (
                   <div className='flex items-center gap-1.5'>
-                    <Users className='size-3 text-blue-500' />
+                    <Users className='size-3 stroke-[2.5] text-blue-600' />
                     <span>
-                      Populasi:{' '}
-                      {new Intl.NumberFormat('id-ID').format(hovered.province.population)}
+                      POP:{' '}
+                      <strong className='font-bold text-foreground'>
+                        {new Intl.NumberFormat('id-ID').format(
+                          hovered.province.population,
+                        )}
+                      </strong>
                     </span>
                   </div>
                 )}
@@ -601,19 +606,19 @@ export default function SVGElement({
 
             {/* Compare Status in Tooltip */}
             {hovered && comparedIds && comparedIds.includes(hovered.province.id) && (
-              <div className='mt-2 flex items-center justify-between rounded-lg border border-blue-500/30 bg-blue-50/60 p-1.5 text-xs text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'>
-                <span className='flex items-center gap-1.5 font-semibold'>
-                  <Scale className='size-3 text-blue-500' />
-                  <span>Komparasi #{comparedIds.indexOf(hovered.province.id) + 1}</span>
+              <div className='mt-2 flex items-center justify-between rounded border-2 border-black bg-cyan-400 p-1.5 font-mono text-xs font-black text-black shadow-brutal-sm dark:border-white'>
+                <span className='flex items-center gap-1.5'>
+                  <Scale className='size-3 stroke-[2.5]' />
+                  <span>KOMPARASI #{comparedIds.indexOf(hovered.province.id) + 1}</span>
                 </span>
-                <span className='rounded bg-background/80 px-1 py-0.5 text-[9px] font-bold'>
-                  Terpilih
+                <span className='rounded border border-black bg-black px-1 text-[9px] text-white'>
+                  TERPILIH
                 </span>
               </div>
             )}
 
-            <div className='mt-2 text-[10px] italic text-muted-foreground/75'>
-              Klik untuk melihat profil lengkap →
+            <div className='mt-2 border-t border-dashed border-black/30 pt-1.5 font-mono text-[10px] font-bold text-red-600 dark:border-white/30 dark:text-red-400'>
+              [KLIK UNTUK PROFIL LENGKAP →]
             </div>
           </motion.div>
         )}

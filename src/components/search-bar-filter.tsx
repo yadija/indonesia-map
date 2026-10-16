@@ -114,15 +114,21 @@ export default function SearchBarFilter({
   return (
     <div
       ref={containerRef}
-      className='fixed inset-x-0 top-4 z-40 mx-auto w-full max-w-4xl px-4'
+      className='fixed inset-x-0 top-3 z-40 mx-auto w-full max-w-4xl px-3 sm:px-4'
     >
-      <div className='rounded-2xl border border-border/70 bg-background/90 p-3 shadow-lg backdrop-blur-md transition-all'>
-        {/* Top Header Row - relative z-20 to stay above collapsible drawer */}
-        <div className='relative z-20 flex items-center justify-between gap-2.5'>
+      <div className='rounded-xl border-2 border-black bg-background p-2.5 shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white sm:p-3'>
+        {/* Top Header Row */}
+        <div className='relative z-20 flex items-center justify-between gap-2 sm:gap-2.5'>
+          {/* Brutalist Brand Tag on Desktop */}
+          <div className='hidden items-center gap-1.5 rounded-lg border-2 border-black bg-red-600 px-2.5 py-1.5 font-mono text-xs font-black tracking-wider text-white shadow-brutal-sm dark:border-white sm:flex'>
+            <span className='size-2 animate-pulse rounded-full bg-white' />
+            <span>IDN // 38</span>
+          </div>
+
           {/* Search Input Box */}
           <div className='relative flex-1'>
-            <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground'>
-              <Search className='size-4' />
+            <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-black dark:text-white'>
+              <Search className='size-4 stroke-[2.5]' />
             </div>
 
             <input
@@ -135,65 +141,69 @@ export default function SearchBarFilter({
               onFocus={() => {
                 if (query.trim()) setIsOpen(true);
               }}
-              placeholder='Cari provinsi atau ibu kota (misal: Surabaya, Bandung)...'
-              className='w-full rounded-lg border border-border/80 bg-background py-2 pl-9 pr-9 text-sm text-foreground shadow-sm transition placeholder:text-muted-foreground focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500'
+              placeholder='Cari provinsi / ibu kota (Surabaya, Padang...)'
+              className='w-full rounded-lg border-2 border-black bg-background py-1.5 pl-9 pr-9 font-mono text-xs font-bold text-foreground shadow-brutal-sm transition placeholder:font-sans placeholder:font-medium placeholder:text-muted-foreground focus:border-red-600 focus:shadow-brutal-red focus:outline-none dark:border-white dark:shadow-brutal-white-sm dark:focus:border-red-500 sm:py-2 sm:text-sm'
             />
 
             {query && (
-              <button
+              <motion.button
                 type='button'
+                whileHover={{ scale: 1.15, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => {
                   setQuery('');
                   setIsOpen(false);
                 }}
-                className='absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground transition hover:text-foreground'
+                className='absolute inset-y-0 right-0 flex items-center pr-3 font-bold text-foreground transition hover:text-red-600'
                 aria-label='Hapus pencarian'
               >
-                <X className='size-4' />
-              </button>
+                <X className='size-4 stroke-[2.5]' />
+              </motion.button>
             )}
 
-            {/* Auto-complete Search Suggestions Dropdown - z-50 above everything */}
+            {/* Auto-complete Search Suggestions Dropdown */}
             <AnimatePresence>
               {isOpen && query.trim() && (
                 <motion.div
-                  initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                  initial={{ opacity: 0, y: -8, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
-                  transition={{ duration: 0.15 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   onWheel={(e) => e.stopPropagation()}
-                  className='no-scrollbar absolute inset-x-0 top-full z-50 mt-2 max-h-64 overflow-y-auto rounded-xl border border-border bg-popover p-1.5 text-popover-foreground shadow-2xl backdrop-blur-md'
+                  className='no-scrollbar absolute inset-x-0 top-full z-50 mt-2 max-h-72 overflow-y-auto rounded-xl border-2 border-black bg-background p-1.5 text-foreground shadow-brutal-lg dark:border-white dark:bg-zinc-900 dark:shadow-brutal-white-lg'
                 >
                   {searchResults.length > 0 ? (
                     searchResults.map((prov) => (
-                      <button
+                      <motion.button
                         key={prov.id}
                         type='button'
+                        whileHover={{ x: 4 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => handleSelect(prov.id)}
-                        className='flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm transition hover:bg-accent hover:text-accent-foreground'
+                        className='group flex w-full items-center justify-between border-b border-dashed border-black/20 px-3 py-2 text-left text-sm transition-colors last:border-b-0 hover:bg-red-50 dark:border-white/20 dark:hover:bg-zinc-800'
                       >
                         <div className='flex flex-col'>
-                          <span className='font-semibold text-foreground'>
+                          <span className='font-bold text-foreground group-hover:text-red-600'>
                             {prov.name}
                           </span>
                           {prov.capital && (
-                            <span className='flex items-center gap-1 text-xs text-muted-foreground'>
-                              <MapPin className='size-3 text-red-500' />
+                            <span className='flex items-center gap-1 font-mono text-xs text-muted-foreground'>
+                              <MapPin className='size-3 stroke-[2.5] text-red-600' />
                               Ibu Kota: {prov.capital}
                             </span>
                           )}
                         </div>
                         {prov.island && (
-                          <span className='rounded bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground'>
+                          <span className='rounded border border-black bg-amber-300 px-2 py-0.5 font-mono text-[10px] font-bold text-black shadow-[1px_1px_0px_#000] dark:border-white'>
                             {prov.island}
                           </span>
                         )}
-                      </button>
+                      </motion.button>
                     ))
                   ) : (
-                    <div className='py-6 text-center text-sm text-muted-foreground'>
-                      Tidak ada provinsi atau ibu kota yang cocok dengan &quot;
-                      <span className='font-semibold text-foreground'>{query}</span>
+                    <div className='py-6 text-center font-mono text-xs text-muted-foreground'>
+                      Tidak ada hasil untuk &quot;
+                      <span className='font-bold text-red-600'>{query}</span>
                       &quot;
                     </div>
                   )}
@@ -202,16 +212,18 @@ export default function SearchBarFilter({
             </AnimatePresence>
           </div>
 
-          {/* Right Controls: Collapsible Options Toggle, Title Badge & Dark Mode */}
-          <div className='flex shrink-0 items-center gap-2'>
-            {/* Collapsible Toggle for Mode and Island Filters */}
-            <button
+          {/* Right Controls */}
+          <div className='flex shrink-0 items-center gap-1.5 sm:gap-2'>
+            {/* Collapsible Filter Toggle */}
+            <motion.button
               type='button'
+              whileHover={{ scale: 1.04, y: -1 }}
+              whileTap={{ scale: 0.96, y: 1 }}
               onClick={() => setIsOptionsOpen((prev) => !prev)}
-              className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-semibold transition ${
+              className={`flex items-center gap-1.5 rounded-lg border-2 border-black px-2.5 py-1.5 text-xs font-bold transition dark:border-white sm:py-2 ${
                 isOptionsOpen || hasActiveFilters
-                  ? 'border-red-500/40 bg-red-50 text-red-700 dark:bg-red-950/60 dark:text-red-300'
-                  : 'border-border bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  ? 'bg-red-600 text-white shadow-brutal-sm'
+                  : 'bg-background text-foreground shadow-brutal-sm hover:bg-muted active:shadow-none'
               }`}
               aria-label={
                 isOptionsOpen
@@ -219,21 +231,21 @@ export default function SearchBarFilter({
                   : 'Tampilkan filter dan mode'
               }
             >
-              <SlidersHorizontal className='size-3.5' />
-              <span className='hidden sm:inline'>
+              <SlidersHorizontal className='size-3.5 stroke-[2.5]' />
+              <span className='hidden font-mono sm:inline'>
                 {hasActiveFilters ? 'Filter Aktif' : 'Mode & Filter'}
               </span>
               {isOptionsOpen ? (
-                <ChevronUp className='size-3.5' />
+                <ChevronUp className='size-3.5 stroke-[2.5]' />
               ) : (
-                <ChevronDown className='size-3.5' />
+                <ChevronDown className='size-3.5 stroke-[2.5]' />
               )}
-            </button>
+            </motion.button>
 
-            {/* 38 Provinces Badge */}
-            <div className='hidden items-center gap-1.5 rounded-lg border bg-muted/40 px-3 py-2 text-xs font-semibold text-foreground md:flex'>
-              <Filter className='size-3.5 text-red-500' />
-              <span>38 Provinsi</span>
+            {/* 38 Provinces Counter Tag */}
+            <div className='hidden items-center gap-1.5 rounded-lg border-2 border-black bg-background px-2.5 py-1.5 font-mono text-xs font-black text-foreground shadow-brutal-sm dark:border-white dark:bg-zinc-900 md:flex'>
+              <Filter className='size-3.5 stroke-[2.5] text-red-600' />
+              <span>38 PROV</span>
             </div>
 
             {/* Theme Toggle Button */}
@@ -248,70 +260,66 @@ export default function SearchBarFilter({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 26 }}
               className='relative z-10 overflow-hidden'
             >
-              <div className='mt-3 space-y-2.5 border-t border-border/50 pt-2.5'>
-                {/* Thematic Map Mode Tabs - Flex wrap, no horizontal scroll needed */}
-                <div className='flex flex-wrap items-center gap-1.5'>
-                  <span className='mr-1 shrink-0 text-[11px] font-semibold text-muted-foreground'>
-                    Mode:
+              <div className='mt-3 space-y-3 border-t-2 border-black pt-3 dark:border-white'>
+                {/* Thematic Mode Tabs */}
+                <div className='flex flex-wrap items-center gap-1.5 sm:gap-2'>
+                  <span className='mr-1 shrink-0 font-mono text-[11px] font-bold uppercase tracking-wider text-muted-foreground'>
+                    [MODE]:
                   </span>
                   {METRIC_TABS.map((tab) => {
                     const Icon = tab.icon;
                     const isActive = activeMetric === tab.id;
-                    const activeColor =
-                      tab.id === 'none'
-                        ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900'
-                        : tab.id === 'population'
-                          ? 'bg-blue-600 text-white'
-                          : tab.id === 'density'
-                            ? 'bg-orange-600 text-white'
-                            : 'bg-emerald-600 text-white';
 
                     return (
-                      <button
+                      <motion.button
                         key={tab.id}
                         type='button'
+                        whileHover={{ y: -2, scale: 1.02 }}
+                        whileTap={{ y: 1, scale: 0.98 }}
                         onClick={() => onSelectMetric(tab.id)}
-                        className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition ${
+                        className={`flex items-center gap-1.5 rounded-lg border-2 border-black px-2.5 py-1 font-mono text-xs font-bold transition dark:border-white sm:px-3 sm:py-1.5 ${
                           isActive
-                            ? `${activeColor} shadow-sm`
-                            : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground'
+                            ? 'bg-red-600 text-white shadow-brutal-sm'
+                            : 'bg-card text-foreground shadow-brutal-sm hover:bg-muted dark:bg-zinc-900'
                         }`}
                       >
-                        <Icon className='size-3' />
+                        <Icon className='size-3.5 stroke-[2.5]' />
                         <span>{tab.label}</span>
-                      </button>
+                      </motion.button>
                     );
                   })}
 
                   {/* Mode Komparasi Toggle Button */}
                   {onToggleCompareMode && (
-                    <button
+                    <motion.button
                       type='button'
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ y: 1, scale: 0.98 }}
                       onClick={onToggleCompareMode}
-                      className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition ${
+                      className={`flex items-center gap-1.5 rounded-lg border-2 border-black px-2.5 py-1 font-mono text-xs font-bold transition dark:border-white sm:px-3 sm:py-1.5 ${
                         isCompareActive || (compareCount && compareCount > 0)
-                          ? 'bg-blue-600 text-white shadow-sm hover:bg-blue-700'
-                          : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground'
+                          ? 'bg-cyan-400 text-black shadow-brutal-sm dark:bg-cyan-400'
+                          : 'bg-card text-foreground shadow-brutal-sm hover:bg-muted dark:bg-zinc-900'
                       }`}
                     >
-                      <Scale className='size-3' />
-                      <span>Komparasi</span>
+                      <Scale className='size-3.5 stroke-[2.5]' />
+                      <span>KOMPARASI</span>
                       {compareCount && compareCount > 0 ? (
-                        <span className='rounded bg-white/20 px-1 text-[10px] font-bold'>
+                        <span className='rounded border border-black bg-black px-1.5 text-[10px] font-black text-white dark:border-white'>
                           {compareCount}
                         </span>
                       ) : null}
-                    </button>
+                    </motion.button>
                   )}
                 </div>
 
-                {/* Island Filter Tabs (Pills) - Flex wrap, no horizontal scroll needed */}
-                <div className='flex flex-wrap items-center gap-1.5'>
-                  <span className='mr-1 shrink-0 text-[11px] font-semibold text-muted-foreground'>
-                    Pulau:
+                {/* Island Filter Tabs */}
+                <div className='flex flex-wrap items-center gap-1.5 sm:gap-2'>
+                  <span className='mr-1 shrink-0 font-mono text-[11px] font-bold uppercase tracking-wider text-muted-foreground'>
+                    [PULAU]:
                   </span>
                   {ISLANDS.map((island) => {
                     const isAll = island === 'Semua';
@@ -319,18 +327,20 @@ export default function SearchBarFilter({
                     const count = islandCounts[island] || 0;
 
                     return (
-                      <button
+                      <motion.button
                         key={island}
                         type='button'
+                        whileHover={{ y: -1.5, scale: 1.02 }}
+                        whileTap={{ y: 1, scale: 0.98 }}
                         onClick={() => onSelectIsland(isAll ? null : island)}
-                        className={`rounded-full px-2.5 py-1 text-xs font-medium transition ${
+                        className={`rounded-lg border-2 border-black px-2 py-0.5 font-mono text-xs font-bold transition dark:border-white sm:px-2.5 sm:py-1 ${
                           isActive
-                            ? 'bg-red-600 text-white shadow-sm hover:bg-red-700'
-                            : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground'
+                            ? 'bg-red-600 text-white shadow-brutal-sm'
+                            : 'bg-card text-foreground shadow-brutal-sm hover:bg-muted dark:bg-zinc-900'
                         }`}
                       >
-                        {island} <span className='opacity-75'>({count})</span>
-                      </button>
+                        {island} <span className='opacity-80'>[{count}]</span>
+                      </motion.button>
                     );
                   })}
                 </div>

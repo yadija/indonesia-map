@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import {
   Clock,
   ExternalLink,
@@ -39,132 +40,156 @@ export default function InfoSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className='w-full overflow-y-auto sm:max-w-md'>
+      <SheetContent className='w-full overflow-y-auto border-l-2 border-black bg-background p-6 shadow-brutal-xl dark:border-white sm:max-w-md'>
         <SheetHeader className='space-y-2 text-left'>
           {province?.island && (
-            <div className='inline-flex w-fit items-center rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 dark:bg-red-950 dark:text-red-300'>
-              Wilayah {province.island}
+            <div className='inline-flex w-fit items-center rounded-lg border-2 border-black bg-amber-300 px-3 py-1 font-mono text-xs font-black uppercase text-black shadow-brutal-sm dark:border-white'>
+              WILAYAH {province.island}
             </div>
           )}
-          <SheetTitle className='text-2xl font-bold tracking-tight'>
+          <SheetTitle className='font-mono text-2xl font-black uppercase tracking-tight text-foreground sm:text-3xl'>
             {province ? province.name : 'Informasi Wilayah'}
           </SheetTitle>
-          <SheetDescription className='text-sm text-muted-foreground'>
+          <SheetDescription className='font-mono text-xs text-muted-foreground'>
             {province
-              ? `Profil dan statistik resmi Provinsi ${province.name}`
+              ? `[STATISTIK RESMI // PROVINSI ${province.name.toUpperCase()}]`
               : 'Silakan klik salah satu provinsi pada peta untuk melihat detail informasi.'}
           </SheetDescription>
         </SheetHeader>
 
         {province && (
-          <div className='mt-6 space-y-5'>
+          <div className='mt-6 space-y-4'>
             {/* Action: Tambahkan ke Komparasi */}
             {onAddToCompare && (
-              <button
+              <motion.button
                 type='button'
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98, y: 1 }}
                 onClick={() => onAddToCompare(province)}
-                className={`flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-semibold shadow-sm transition ${
+                className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 border-black px-4 py-2.5 font-mono text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all dark:border-white ${
                   isAlreadyCompared
-                    ? 'border-blue-500/50 bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
-                    : 'border-border bg-card text-foreground hover:bg-muted'
+                    ? 'bg-cyan-400 text-black shadow-brutal'
+                    : 'bg-card text-foreground hover:bg-muted dark:bg-zinc-900'
                 }`}
               >
-                <Scale className='size-3.5 text-blue-500' />
+                <Scale className='size-3.5 stroke-[2.5]' />
                 <span>
-                  {isAlreadyCompared
-                    ? '✓ Sudah di Daftar Perbandingan'
-                    : '+ Tambahkan ke Perbandingan'}
+                  {isAlreadyCompared ? '✓ DI DAFTAR KOMPARASI' : '+ TAMBAH KE KOMPARASI'}
                 </span>
-              </button>
+              </motion.button>
             )}
 
             {/* Quick Stat Cards */}
             <div className='grid grid-cols-2 gap-3'>
               {/* Ibu Kota */}
-              <div className='rounded-lg border bg-card p-3 shadow-sm'>
-                <div className='flex items-center space-x-2 text-muted-foreground'>
-                  <MapPin className='size-4 text-red-500' />
-                  <span className='text-xs font-medium'>Ibu Kota</span>
+              <motion.div
+                whileHover={{ y: -2, scale: 1.02 }}
+                className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
+              >
+                <div className='flex items-center space-x-1.5 text-muted-foreground'>
+                  <MapPin className='size-3.5 stroke-[2.5] text-red-600' />
+                  <span className='font-mono text-[10px] font-bold uppercase'>
+                    IBU KOTA
+                  </span>
                 </div>
-                <p className='mt-1 text-sm font-semibold'>{province.capital || '-'}</p>
-              </div>
+                <p className='mt-1 truncate font-mono text-sm font-bold text-foreground'>
+                  {province.capital || '-'}
+                </p>
+              </motion.div>
 
               {/* Zona Waktu */}
-              <div className='rounded-lg border bg-card p-3 shadow-sm'>
-                <div className='flex items-center space-x-2 text-muted-foreground'>
-                  <Clock className='size-4 text-amber-500' />
-                  <span className='text-xs font-medium'>Zona Waktu</span>
+              <motion.div
+                whileHover={{ y: -2, scale: 1.02 }}
+                className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
+              >
+                <div className='flex items-center space-x-1.5 text-muted-foreground'>
+                  <Clock className='size-3.5 stroke-[2.5] text-amber-500' />
+                  <span className='font-mono text-[10px] font-bold uppercase'>
+                    ZONA WAKTU
+                  </span>
                 </div>
-                <p className='mt-1 text-sm font-semibold'>{province.timezone || '-'}</p>
-              </div>
+                <p className='mt-1 font-mono text-sm font-bold text-foreground'>
+                  {province.timezone || '-'}
+                </p>
+              </motion.div>
 
               {/* Penduduk */}
-              <div className='rounded-lg border bg-card p-3 shadow-sm'>
-                <div className='flex items-center space-x-2 text-muted-foreground'>
-                  <Users className='size-4 text-blue-500' />
-                  <span className='text-xs font-medium'>Populasi</span>
+              <motion.div
+                whileHover={{ y: -2, scale: 1.02 }}
+                className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
+              >
+                <div className='flex items-center space-x-1.5 text-muted-foreground'>
+                  <Users className='size-3.5 stroke-[2.5] text-blue-600' />
+                  <span className='font-mono text-[10px] font-bold uppercase'>
+                    POPULASI
+                  </span>
                 </div>
-                <p className='mt-1 text-sm font-semibold'>
-                  {formatNumber(province.population)} jiwa
+                <p className='mt-1 font-mono text-sm font-bold text-foreground'>
+                  {formatNumber(province.population)}
                 </p>
-              </div>
+              </motion.div>
 
               {/* Luas Wilayah */}
-              <div className='rounded-lg border bg-card p-3 shadow-sm'>
-                <div className='flex items-center space-x-2 text-muted-foreground'>
-                  <Maximize2 className='size-4 text-emerald-500' />
-                  <span className='text-xs font-medium'>Luas Wilayah</span>
+              <motion.div
+                whileHover={{ y: -2, scale: 1.02 }}
+                className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
+              >
+                <div className='flex items-center space-x-1.5 text-muted-foreground'>
+                  <Maximize2 className='size-3.5 stroke-[2.5] text-emerald-600' />
+                  <span className='font-mono text-[10px] font-bold uppercase'>
+                    LUAS WILAYAH
+                  </span>
                 </div>
-                <p className='mt-1 text-sm font-semibold'>
+                <p className='mt-1 font-mono text-sm font-bold text-foreground'>
                   {formatNumber(province.areaKm2)} km²
                 </p>
-              </div>
+              </motion.div>
             </div>
 
             {/* Ringkasan & Deskripsi */}
             {province.description && (
-              <div className='rounded-lg border bg-muted/40 p-4'>
-                <h4 className='mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground'>
-                  Tentang Provinsi
+              <div className='rounded-lg border-2 border-black bg-card p-4 shadow-brutal-sm dark:border-white dark:bg-zinc-900'>
+                <h4 className='mb-2 font-mono text-[10px] font-black uppercase tracking-wider text-muted-foreground'>
+                  [TENTANG PROVINSI]
                 </h4>
-                <p className='text-sm leading-relaxed text-foreground/90'>
+                <p className='text-xs leading-relaxed text-foreground'>
                   {province.description}
                 </p>
               </div>
             )}
 
             {/* Catatan Validitas & Sumber Data Resmi */}
-            <div className='rounded-xl border border-border/80 bg-muted/30 p-3.5 text-xs text-muted-foreground'>
-              <div className='flex items-center gap-1.5 font-semibold text-foreground'>
-                <ShieldCheck className='size-4 text-emerald-500' />
-                <span>Validitas & Rujukan Data Resmi</span>
+            <div className='rounded-lg border-2 border-black bg-muted/60 p-3.5 text-xs text-muted-foreground dark:border-white dark:bg-zinc-900'>
+              <div className='flex items-center gap-1.5 font-mono font-bold text-foreground'>
+                <ShieldCheck className='size-4 stroke-[2.5] text-emerald-600' />
+                <span>[RUJUKAN RESMI GEOSPASIAL]</span>
               </div>
-              <ul className='mt-2 space-y-1.5 text-[11px] leading-relaxed'>
+              <ul className='mt-2 space-y-1 font-mono text-[10px] leading-relaxed'>
                 <li>
-                  • <strong>Estimasi Populasi:</strong> Badan Pusat Statistik (BPS RI) —
-                  Proyeksi Penduduk Interim 2023.
+                  • <strong>Populasi:</strong> BPS RI — Proyeksi Penduduk Interim 2023.
                 </li>
                 <li>
-                  • <strong>Luas Wilayah & Pemekaran 38 Provinsi:</strong> Kementerian
-                  Dalam Negeri (Kepmen No. 100.1.1-6117 Tahun 2022) & Badan Informasi
-                  Geospasial (BIG).
+                  • <strong>Pemekaran 38 Provinsi:</strong> Kemendagri & BIG.
                 </li>
               </ul>
             </div>
 
             {/* Tautan Wikipedia */}
             {province.wikipediaUrl && (
-              <div>
+              <motion.div
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98, y: 1 }}
+              >
                 <a
                   href={province.wikipediaUrl}
                   target='_blank'
                   rel='noopener noreferrer'
-                  className='inline-flex w-full items-center justify-center gap-2 rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground'
+                  className='inline-flex w-full items-center justify-center gap-2 rounded-lg border-2 border-black bg-red-600 px-4 py-2 font-mono text-xs font-black uppercase tracking-wider text-white shadow-brutal-sm transition hover:bg-red-500 hover:shadow-brutal dark:border-white'
                 >
-                  <span>Baca Selengkapnya di Wikipedia</span>
-                  <ExternalLink className='size-4' />
+                  <span>BACA DI WIKIPEDIA</span>
+                  <ExternalLink className='size-3.5 stroke-[2.5]' />
                 </a>
-              </div>
+              </motion.div>
             )}
           </div>
         )}

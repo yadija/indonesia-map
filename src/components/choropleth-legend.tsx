@@ -47,44 +47,48 @@ export default function ChoroplethLegend({
   return (
     <motion.aside
       aria-label='Legenda Peta Tematik'
-      initial={{ opacity: 0, y: 16, scale: 0.96 }}
+      initial={{ opacity: 0, y: 24, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 16, scale: 0.96 }}
-      transition={{ duration: 0.2 }}
-      className={`fixed bottom-5 left-5 z-40 w-72 max-w-[calc(100vw-2.5rem)] rounded-2xl border border-border/80 bg-background/95 shadow-2xl backdrop-blur-md transition-all ${
-        isCollapsed ? 'p-3' : 'p-3.5'
+      exit={{ opacity: 0, y: 24, scale: 0.95 }}
+      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+      className={`fixed bottom-5 left-5 z-40 w-72 max-w-[calc(100vw-2.5rem)] rounded-xl border-2 border-black bg-background shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white ${
+        isCollapsed ? 'p-2.5' : 'p-3.5'
       }`}
     >
-      {/* Header Bar - Border is completely removed when collapsed */}
+      {/* Header Bar */}
       <div
         className={`flex items-center justify-between gap-2 transition-all ${
-          isCollapsed ? 'pb-0' : 'border-b border-border/60 pb-2.5'
+          isCollapsed ? 'pb-0' : 'border-b-2 border-black pb-2.5 dark:border-white'
         }`}
       >
         <div className='flex items-center gap-2 overflow-hidden'>
-          <MetricIcon />
+          <div className='flex size-7 shrink-0 items-center justify-center rounded border-2 border-black bg-card shadow-[1px_1px_0px_#000] dark:border-white dark:bg-zinc-900'>
+            <MetricIcon />
+          </div>
           <div className='truncate'>
-            <h2 className='text-xs font-bold leading-tight text-foreground'>
+            <h2 className='font-mono text-xs font-black uppercase leading-tight text-foreground'>
               {config.name}
             </h2>
-            <span className='text-[10px] text-muted-foreground'>
-              Satuan: {config.unit}
+            <span className='font-mono text-[10px] font-bold text-muted-foreground'>
+              SATUAN: [{config.unit}]
             </span>
           </div>
         </div>
 
-        <button
+        <motion.button
           type='button'
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => setIsCollapsed((prev) => !prev)}
-          className='flex size-6 shrink-0 items-center justify-center rounded-md border border-border/70 text-muted-foreground transition hover:bg-muted hover:text-foreground'
+          className='flex size-6 shrink-0 items-center justify-center rounded border-2 border-black bg-background text-foreground shadow-[1px_1px_0px_#000] transition hover:bg-muted dark:border-white'
           aria-label={isCollapsed ? 'Buka legenda' : 'Ciutkan legenda'}
         >
           {isCollapsed ? (
-            <ChevronUp className='size-3.5' />
+            <ChevronUp className='size-3.5 stroke-[2.5]' />
           ) : (
-            <ChevronDown className='size-3.5' />
+            <ChevronDown className='size-3.5 stroke-[2.5]' />
           )}
-        </button>
+        </motion.button>
       </div>
 
       {/* Collapsible Content */}
@@ -94,10 +98,10 @@ export default function ChoroplethLegend({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ type: 'spring', stiffness: 350, damping: 25 }}
             className='overflow-hidden'
           >
-            <p className='mt-2 text-[11px] leading-relaxed text-muted-foreground'>
+            <p className='mt-2 font-mono text-[11px] leading-relaxed text-muted-foreground'>
               {config.description}. Sorot tingkatan untuk melihat provinsi terkait.
             </p>
 
@@ -109,54 +113,55 @@ export default function ChoroplethLegend({
                 const isOtherHovered = hoveredTier !== null && !isHovered;
 
                 return (
-                  <div
+                  <motion.div
                     key={t.tier}
+                    whileHover={{ x: 4 }}
                     onMouseEnter={() => onHoverTier(t.tier)}
                     onMouseLeave={() => onHoverTier(null)}
-                    className={`flex cursor-pointer items-center justify-between rounded-lg px-2 py-1 text-xs transition ${
+                    className={`flex cursor-pointer items-center justify-between rounded border-2 border-black px-2 py-1 text-xs transition dark:border-white ${
                       isHovered
-                        ? 'bg-accent/80 font-semibold shadow-sm ring-1 ring-border'
+                        ? 'bg-amber-300 font-bold text-black shadow-brutal-sm dark:bg-amber-300 dark:text-black'
                         : isOtherHovered
-                          ? 'opacity-40 hover:opacity-100'
-                          : 'hover:bg-muted/60'
+                          ? 'opacity-40 hover:opacity-100 dark:bg-zinc-900'
+                          : 'bg-card text-foreground shadow-[1px_1px_0px_#000] hover:bg-muted dark:bg-zinc-900 dark:shadow-[1px_1px_0px_#fff]'
                     }`}
                   >
                     <div className='flex items-center gap-2'>
                       <span
                         style={{ backgroundColor: color }}
-                        className='size-3.5 shrink-0 rounded border border-black/15 shadow-sm'
+                        className='size-3 shrink-0 border border-black shadow-[1px_1px_0px_#000]'
                       />
-                      <span className='text-[11px] text-foreground'>{t.label}</span>
+                      <span className='font-mono text-[11px] font-bold'>{t.label}</span>
                     </div>
 
-                    <span className='rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground'>
-                      {t.count} prov
+                    <span className='rounded border border-black bg-background px-1.5 py-0.5 font-mono text-[10px] font-black dark:border-white'>
+                      {t.count} PROV
                     </span>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
 
             {/* Min and Max National Highlights */}
-            <div className='mt-3 space-y-1.5 border-t border-border/60 pt-2.5 text-[11px]'>
-              <div className='flex items-center justify-between text-muted-foreground'>
-                <span className='flex items-center gap-1 text-emerald-600 dark:text-emerald-400'>
-                  <TrendingUp className='size-3' /> Tertinggi:
+            <div className='mt-3 space-y-1.5 border-t-2 border-black pt-2.5 text-[11px] dark:border-white'>
+              <div className='flex items-center justify-between font-mono text-muted-foreground'>
+                <span className='flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400'>
+                  <TrendingUp className='size-3 stroke-[2.5]' /> MAX:
                 </span>
                 <span
-                  className='truncate font-medium text-foreground'
+                  className='truncate font-bold text-foreground'
                   title={config.maxProvince.name}
                 >
                   {config.maxProvince.name} ({formatNumber(config.maxProvince.value)})
                 </span>
               </div>
 
-              <div className='flex items-center justify-between text-muted-foreground'>
-                <span className='flex items-center gap-1 text-amber-600 dark:text-amber-400'>
-                  <TrendingDown className='size-3' /> Terendah:
+              <div className='flex items-center justify-between font-mono text-muted-foreground'>
+                <span className='flex items-center gap-1 font-bold text-amber-600 dark:text-amber-400'>
+                  <TrendingDown className='size-3 stroke-[2.5]' /> MIN:
                 </span>
                 <span
-                  className='truncate font-medium text-foreground'
+                  className='truncate font-bold text-foreground'
                   title={config.minProvince.name}
                 >
                   {config.minProvince.name} ({formatNumber(config.minProvince.value)})
@@ -165,9 +170,8 @@ export default function ChoroplethLegend({
             </div>
 
             {/* Official Data Source Attribution */}
-            <div className='mt-3 border-t border-border/60 pt-2 text-[10px] text-muted-foreground'>
-              <span className='font-semibold text-foreground/80'>Sumber Data:</span>{' '}
-              {config.source}
+            <div className='mt-2.5 border-t border-dashed border-black/40 pt-2 font-mono text-[9px] text-muted-foreground dark:border-white/40'>
+              <span className='font-bold text-foreground'>[SUMBER]:</span> {config.source}
             </div>
           </motion.div>
         )}

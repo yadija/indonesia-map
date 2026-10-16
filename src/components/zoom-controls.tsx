@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
 
 interface ZoomControlsProps {
@@ -18,50 +19,56 @@ export default function ZoomControls({
   const canZoomOut = scale > 0.75;
 
   return (
-    <div className='fixed bottom-6 right-6 z-30 flex flex-col items-center rounded-2xl border border-border/80 bg-background/90 p-1.5 shadow-xl backdrop-blur-md transition-all'>
+    <div className='fixed bottom-6 right-6 z-30 flex flex-col items-center rounded-xl border-2 border-black bg-background p-1.5 shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white'>
       {/* Zoom In Button */}
-      <button
+      <motion.button
         type='button'
+        whileHover={{ scale: 1.1, y: -1 }}
+        whileTap={{ scale: 0.9, y: 1 }}
         onClick={onZoomIn}
         disabled={!canZoomIn}
-        className='flex size-8 items-center justify-center rounded-xl text-muted-foreground transition hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-40'
+        className='flex size-8 items-center justify-center rounded-lg border-2 border-transparent font-bold text-foreground transition-colors hover:border-black hover:bg-amber-300 hover:text-black disabled:pointer-events-none disabled:opacity-30 dark:hover:border-white dark:hover:bg-red-600 dark:hover:text-white'
         title='Perbesar (Zoom In)'
         aria-label='Perbesar peta'
       >
-        <ZoomIn className='size-4' />
-      </button>
+        <ZoomIn className='size-4 stroke-[2.5]' />
+      </motion.button>
 
       {/* Current Zoom Percentage Badge */}
-      <span className='my-0.5 select-none px-1 text-[11px] font-semibold text-muted-foreground'>
+      <span className='my-0.5 select-none font-mono text-[11px] font-black text-foreground'>
         {percentage}%
       </span>
 
       {/* Zoom Out Button */}
-      <button
+      <motion.button
         type='button'
+        whileHover={{ scale: 1.1, y: 1 }}
+        whileTap={{ scale: 0.9, y: -1 }}
         onClick={onZoomOut}
         disabled={!canZoomOut}
-        className='flex size-8 items-center justify-center rounded-xl text-muted-foreground transition hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-40'
+        className='flex size-8 items-center justify-center rounded-lg border-2 border-transparent font-bold text-foreground transition-colors hover:border-black hover:bg-amber-300 hover:text-black disabled:pointer-events-none disabled:opacity-30 dark:hover:border-white dark:hover:bg-red-600 dark:hover:text-white'
         title='Perkecil (Zoom Out hingga 75%)'
         aria-label='Perkecil peta'
       >
-        <ZoomOut className='size-4' />
-      </button>
+        <ZoomOut className='size-4 stroke-[2.5]' />
+      </motion.button>
 
       {/* Separator */}
-      <div className='my-1 h-px w-5 bg-border/80' />
+      <div className='my-1 h-0.5 w-5 bg-black dark:bg-white' />
 
       {/* Reset View Button */}
-      <button
+      <motion.button
         type='button'
+        whileHover={{ scale: 1.1, rotate: -45 }}
+        whileTap={{ scale: 0.9 }}
         onClick={onReset}
         disabled={scale === 1}
-        className='flex size-8 items-center justify-center rounded-xl text-muted-foreground transition hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-40'
+        className='flex size-8 items-center justify-center rounded-lg border-2 border-transparent font-bold text-foreground transition-colors hover:border-black hover:bg-red-600 hover:text-white disabled:pointer-events-none disabled:opacity-30 dark:hover:border-white dark:hover:bg-red-600 dark:hover:text-white'
         title='Reset Tampilan (100%)'
         aria-label='Reset posisi dan zoom peta ke 100%'
       >
-        <RotateCcw className='size-3.5' />
-      </button>
+        <RotateCcw className='size-3.5 stroke-[2.5]' />
+      </motion.button>
     </div>
   );
 }

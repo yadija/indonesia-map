@@ -53,9 +53,9 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       toast({
-        title: 'Info',
-        description: 'Peta interaktif 38 provinsi Indonesia',
-        duration: 8000,
+        title: 'IDN // PETA INTERAKTIF',
+        description: 'Sistem informasi spasial & demografi 38 provinsi Indonesia',
+        duration: 6000,
       });
     }, 0);
 
@@ -67,14 +67,14 @@ export default function App() {
     if (comparedIds.includes(prov.id)) {
       setComparedIds((prev) => prev.filter((id) => id !== prov.id));
       toast({
-        title: 'Dihapus dari Komparasi',
-        description: `${prov.name} dihapus dari daftar perbandingan.`,
+        title: 'DIHAPUS DARI KOMPARASI',
+        description: `${prov.name} telah dikeluarkan dari daftar perbandingan.`,
         duration: 3000,
       });
     } else {
       if (comparedIds.length >= 3) {
         toast({
-          title: 'Batas Maksimal Tercapai',
+          title: 'BATAS MAKSIMAL TERCAPAI',
           description: 'Maksimal 3 provinsi untuk dibandingkan sekaligus.',
           duration: 4000,
         });
@@ -83,8 +83,8 @@ export default function App() {
       setComparedIds((prev) => [...prev, prov.id]);
       setIsCompareMode(true);
       toast({
-        title: 'Ditambahkan ke Komparasi',
-        description: `${prov.name} (${comparedIds.length + 1}/3) ditambahkan ke daftar perbandingan.`,
+        title: 'DITAMBAHKAN KE KOMPARASI',
+        description: `${prov.name} (${comparedIds.length + 1}/3) masuk daftar komparasi.`,
         duration: 3000,
       });
     }
@@ -108,7 +108,7 @@ export default function App() {
       const next = !prev;
       if (next && comparedIds.length === 0) {
         toast({
-          title: 'Mode Komparasi Aktif',
+          title: 'MODE KOMPARASI AKTIF',
           description: 'Klik 2 atau 3 provinsi di peta untuk mulai membandingkannya.',
           duration: 5000,
         });
@@ -145,7 +145,29 @@ export default function App() {
   };
 
   return (
-    <section className='relative grid h-screen place-items-center overflow-hidden bg-background text-foreground transition-colors duration-200'>
+    <section className='bg-brutalist-grid relative grid h-screen select-none place-items-center overflow-hidden bg-background text-foreground transition-colors duration-200'>
+      {/* Brutalist Architectural Coordinates & Corner Marks */}
+      <div className='pointer-events-none absolute left-4 top-4 z-10 hidden select-none flex-col gap-0.5 font-mono text-[10px] font-bold text-muted-foreground/50 md:flex'>
+        <span>[IDN-GRID // 0°47&apos;S 113°55&apos;E]</span>
+        <span>[GEODETIC WGS84 // EPSG:4326]</span>
+      </div>
+      <div className='pointer-events-none absolute right-4 top-4 z-10 hidden select-none flex-col items-end gap-0.5 font-mono text-[10px] font-bold text-muted-foreground/50 md:flex'>
+        <span>[38 PROVINSI // 17.000+ PULAU]</span>
+        <span>[BPS RI &amp; KEMENDAGRI DATA]</span>
+      </div>
+      <div className='pointer-events-none absolute left-2 top-2 font-mono text-sm font-bold text-foreground/30'>
+        +
+      </div>
+      <div className='pointer-events-none absolute right-2 top-2 font-mono text-sm font-bold text-foreground/30'>
+        +
+      </div>
+      <div className='pointer-events-none absolute bottom-8 left-2 font-mono text-sm font-bold text-foreground/30'>
+        +
+      </div>
+      <div className='pointer-events-none absolute bottom-8 right-2 font-mono text-sm font-bold text-foreground/30'>
+        +
+      </div>
+
       {/* Floating Search Bar, Island Filter, Mode Switcher & Theme Switcher */}
       <SearchBarFilter
         provinces={provincesList}
@@ -162,7 +184,7 @@ export default function App() {
       />
 
       {/* Map Canvas */}
-      <div className='flex size-full items-center justify-center pb-6 pt-24'>
+      <div className='flex size-full items-center justify-center pb-8 pt-20'>
         <SVGElement
           shapes={provincesList}
           selectedIsland={selectedIsland}
@@ -218,6 +240,24 @@ export default function App() {
         onRemoveProvince={handleRemoveCompared}
         onReplaceProvince={handleReplaceCompared}
       />
+
+      {/* Continuous Motion-Driven Marquee Ticker Ribbon */}
+      <div className='pointer-events-none absolute inset-x-0 bottom-0 z-20 overflow-hidden border-t-2 border-black bg-red-600 py-1 font-mono text-[11px] font-black uppercase tracking-widest text-white shadow-brutal-sm dark:border-white'>
+        <div className='flex animate-marquee whitespace-nowrap'>
+          <span className='mx-4'>★ REPUBLIK INDONESIA</span>
+          <span className='mx-4'>• 38 PROVINSI RESMI</span>
+          <span className='mx-4'>• DARI SABANG SAMPAI MERAUKE</span>
+          <span className='mx-4'>• 17.000+ PULAU</span>
+          <span className='mx-4'>• BHINNEKA TUNGGAL IKA</span>
+          <span className='mx-4'>• PETA INTERAKTIF DIGITAL</span>
+          <span className='mx-4'>★ REPUBLIK INDONESIA</span>
+          <span className='mx-4'>• 38 PROVINSI RESMI</span>
+          <span className='mx-4'>• DARI SABANG SAMPAI MERAUKE</span>
+          <span className='mx-4'>• 17.000+ PULAU</span>
+          <span className='mx-4'>• BHINNEKA TUNGGAL IKA</span>
+          <span className='mx-4'>• PETA INTERAKTIF DIGITAL</span>
+        </div>
+      </div>
     </section>
   );
 }

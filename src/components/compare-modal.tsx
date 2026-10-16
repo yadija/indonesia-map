@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import {
   ArrowLeftRight,
   ChevronsUpDown,
@@ -36,21 +37,21 @@ interface CompareModalProps {
 const COLUMN_COLORS = [
   {
     badge: 'bg-blue-600 text-white',
-    border: 'border-blue-500/40',
-    bar: 'bg-blue-500',
-    text: 'text-blue-600 dark:text-blue-400',
+    border: 'border-black dark:border-white',
+    bar: 'bg-blue-600',
+    tag: 'bg-blue-100 text-blue-900 border border-black',
   },
   {
-    badge: 'bg-amber-500 text-white',
-    border: 'border-amber-500/40',
-    bar: 'bg-amber-500',
-    text: 'text-amber-600 dark:text-amber-400',
+    badge: 'bg-amber-400 text-black',
+    border: 'border-black dark:border-white',
+    bar: 'bg-amber-400',
+    tag: 'bg-amber-100 text-amber-900 border border-black',
   },
   {
-    badge: 'bg-emerald-600 text-white',
-    border: 'border-emerald-500/40',
+    badge: 'bg-emerald-500 text-black',
+    border: 'border-black dark:border-white',
     bar: 'bg-emerald-500',
-    text: 'text-emerald-600 dark:text-emerald-400',
+    tag: 'bg-emerald-100 text-emerald-900 border border-black',
   },
 ];
 
@@ -116,19 +117,18 @@ export default function CompareModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='max-h-[90vh] w-full max-w-5xl overflow-y-auto p-4 sm:p-6'>
+      <DialogContent className='max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-xl border-2 border-black p-4 shadow-brutal-xl dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg sm:p-6'>
         <DialogHeader className='text-left'>
-          <div className='flex items-center gap-2'>
-            <div className='flex size-8 items-center justify-center rounded-xl bg-red-100 text-red-600 dark:bg-red-950 dark:text-red-400'>
-              <Scale className='size-4' />
+          <div className='flex items-center gap-2.5'>
+            <div className='flex size-9 items-center justify-center rounded-lg border-2 border-black bg-red-600 text-white shadow-brutal-sm dark:border-white'>
+              <Scale className='size-5 stroke-[2.5]' />
             </div>
             <div>
-              <DialogTitle className='text-xl font-bold tracking-tight'>
-                Perbandingan Antar-Provinsi
+              <DialogTitle className='font-mono text-xl font-black uppercase tracking-tight text-foreground sm:text-2xl'>
+                KOMPARASI ANTAR-PROVINSI
               </DialogTitle>
-              <DialogDescription className='text-xs text-muted-foreground'>
-                Analisis komparatif statistik kependudukan, luas wilayah, dan profil
-                daerah
+              <DialogDescription className='font-mono text-xs text-muted-foreground'>
+                [ANALISIS KOMPARATIF STATISTIK KEPENDUDUKAN & GEOSPASIAL]
               </DialogDescription>
             </div>
           </div>
@@ -138,16 +138,16 @@ export default function CompareModal({
         {comparedProvinces.length < 3 && availableProvinces.length > 0 && (
           <form
             onSubmit={handleAdd}
-            className='flex flex-wrap items-center gap-2.5 rounded-xl border border-dashed border-border/80 bg-muted/20 p-2.5 sm:p-3'
+            className='flex flex-wrap items-center gap-2.5 rounded-lg border-2 border-dashed border-black bg-muted/40 p-2.5 dark:border-white dark:bg-zinc-900 sm:p-3'
           >
-            <span className='text-xs font-semibold text-muted-foreground'>
-              Tambah provinsi ke-3:
+            <span className='font-mono text-xs font-bold uppercase text-foreground'>
+              + TAMBAH PROVINSI KE-3:
             </span>
             <div className='relative min-w-[200px] max-w-xs flex-1'>
               <select
                 value={selectedToAdd}
                 onChange={(e) => setSelectedToAdd(e.target.value)}
-                className='h-8 w-full cursor-pointer appearance-none rounded-lg border border-border/80 bg-background py-1.5 pl-3 pr-8 text-xs font-medium text-foreground shadow-sm transition hover:border-foreground/30 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500'
+                className='h-8 w-full cursor-pointer appearance-none rounded border-2 border-black bg-background py-1 pl-3 pr-8 font-mono text-xs font-bold text-foreground shadow-[2px_2px_0px_#000] transition focus:border-red-600 focus:outline-none dark:border-white'
               >
                 <option value=''>-- Pilih Provinsi Lain --</option>
                 {Object.entries(groupedProvinces).map(([island, list]) => (
@@ -160,18 +160,20 @@ export default function CompareModal({
                   </optgroup>
                 ))}
               </select>
-              <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-muted-foreground'>
-                <ChevronsUpDown className='size-3.5 opacity-60' />
+              <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-foreground'>
+                <ChevronsUpDown className='size-3.5 stroke-[2.5]' />
               </div>
             </div>
-            <button
+            <motion.button
               type='submit'
               disabled={!selectedToAdd}
-              className='flex h-8 items-center gap-1 rounded-lg bg-red-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-red-700 disabled:opacity-50'
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className='flex h-8 items-center gap-1 rounded border-2 border-black bg-red-600 px-3 font-mono text-xs font-black uppercase text-white shadow-brutal-sm transition hover:bg-red-500 disabled:opacity-50 dark:border-white'
             >
-              <Plus className='size-3.5' />
-              <span>Tambah</span>
-            </button>
+              <Plus className='size-3.5 stroke-[2.5]' />
+              <span>TAMBAH</span>
+            </motion.button>
           </form>
         )}
 
@@ -192,27 +194,28 @@ export default function CompareModal({
               stats.list.length > 1 && prov.density === stats.maxDensity;
 
             return (
-              <div
+              <motion.div
                 key={prov.id}
-                className={`relative flex flex-col justify-between rounded-2xl border ${colors.border} bg-card p-4 shadow-sm transition hover:shadow-md`}
+                whileHover={{ y: -2 }}
+                className={`relative flex flex-col justify-between rounded-xl border-2 ${colors.border} bg-card p-4 shadow-brutal transition-all dark:bg-zinc-900`}
               >
                 <div>
                   {/* Column Header */}
-                  <div className='border-b border-border/60 pb-3'>
+                  <div className='border-b-2 border-black pb-3 dark:border-white'>
                     {/* Top Row: Slot Badge, Full Province Title, Island Badge & Remove Button */}
                     <div className='flex items-start justify-between gap-2'>
-                      <div className='flex min-w-0 flex-1 items-start gap-2.5'>
+                      <div className='flex min-w-0 flex-1 items-start gap-2'>
                         <span
-                          className={`mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${colors.badge}`}
+                          className={`mt-0.5 flex size-6 shrink-0 items-center justify-center rounded border border-black font-mono text-xs font-black shadow-[1px_1px_0px_#000] ${colors.badge}`}
                         >
                           {index + 1}
                         </span>
                         <div className='min-w-0 flex-1'>
-                          <h3 className='break-words text-base font-bold leading-snug text-foreground'>
+                          <h3 className='break-words font-mono text-base font-black leading-snug text-foreground'>
                             {prov.name}
                           </h3>
                           {prov.island && (
-                            <span className='mt-1 inline-block rounded bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground'>
+                            <span className='mt-1 inline-block rounded border border-black bg-amber-300 px-2 py-0.5 font-mono text-[10px] font-bold text-black shadow-[1px_1px_0px_#000]'>
                               {prov.island}
                             </span>
                           )}
@@ -220,32 +223,34 @@ export default function CompareModal({
                       </div>
 
                       {stats.list.length > 2 && (
-                        <button
+                        <motion.button
                           type='button'
+                          whileHover={{ scale: 1.15, rotate: 90 }}
+                          whileTap={{ scale: 0.85 }}
                           onClick={() => onRemoveProvince(prov.id)}
-                          className='flex size-7 shrink-0 items-center justify-center rounded-lg border border-border text-muted-foreground transition hover:bg-muted hover:text-foreground'
+                          className='flex size-6 shrink-0 items-center justify-center rounded border border-black bg-background text-foreground shadow-[1px_1px_0px_#000] transition hover:bg-red-600 hover:text-white dark:border-white'
                           aria-label={`Hapus ${prov.name}`}
                           title={`Hapus ${prov.name}`}
                         >
-                          <X className='size-3.5' />
-                        </button>
+                          <X className='size-3 stroke-[2.5]' />
+                        </motion.button>
                       )}
                     </div>
 
-                    {/* Sub Row: Elegant Switch Province Control */}
+                    {/* Sub Row: Switch Province Control */}
                     <div className='mt-3'>
                       <div className='group relative flex items-center'>
-                        <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5 text-muted-foreground transition-colors group-hover:text-foreground'>
-                          <ArrowLeftRight className='size-3.5 text-blue-500' />
+                        <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5 text-foreground'>
+                          <ArrowLeftRight className='size-3.5 stroke-[2.5] text-red-600' />
                         </div>
                         <select
                           aria-label={`Ganti provinsi ${prov.name}`}
                           value={prov.id}
                           onChange={(e) => onReplaceProvince(prov.id, e.target.value)}
-                          className='h-8 w-full cursor-pointer appearance-none rounded-xl border border-border/80 bg-background/80 px-8 py-1 text-xs font-medium text-muted-foreground shadow-sm transition-all hover:border-foreground/30 hover:bg-muted/40 hover:text-foreground focus:border-blue-500 focus:bg-background focus:text-foreground focus:outline-none focus:ring-1 focus:ring-blue-500'
+                          className='h-8 w-full cursor-pointer appearance-none rounded border-2 border-black bg-background px-8 py-1 font-mono text-xs font-bold text-foreground shadow-brutal-sm transition-all focus:border-red-600 focus:outline-none dark:border-white dark:bg-zinc-950'
                         >
                           <option value={prov.id} disabled>
-                            Ganti dengan provinsi lain...
+                            Ganti provinsi...
                           </option>
                           {Object.entries(groupedProvinces).map(([island, list]) => (
                             <optgroup key={island} label={`── ${island} ──`}>
@@ -257,39 +262,39 @@ export default function CompareModal({
                             </optgroup>
                           ))}
                         </select>
-                        <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-muted-foreground transition-colors group-hover:text-foreground'>
-                          <ChevronsUpDown className='size-3.5 opacity-60' />
+                        <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-foreground'>
+                          <ChevronsUpDown className='size-3.5 stroke-[2.5]' />
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Quantitative Metrics with Relative Progress Bars */}
-                  <div className='mt-4 space-y-4 text-xs'>
+                  <div className='mt-4 space-y-4 font-mono text-xs'>
                     {/* Populasi */}
                     <div>
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 font-medium text-muted-foreground'>
-                          <Users className='size-3.5 text-blue-500' />
-                          Populasi:
+                        <span className='flex items-center gap-1.5 font-bold uppercase text-muted-foreground'>
+                          <Users className='size-3.5 stroke-[2.5] text-blue-600' />
+                          POPULASI:
                         </span>
                         <div className='flex items-center gap-1'>
-                          <strong className='font-bold text-foreground'>
-                            {formatNumber(prov.population)} jiwa
+                          <strong className='font-black text-foreground'>
+                            {formatNumber(prov.population)}
                           </strong>
                           {isHighestPop && (
-                            <span className='rounded bg-blue-100 px-1 py-0.5 text-[9px] font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300'>
-                              Tertinggi
+                            <span className='py-0.2 rounded border border-black bg-blue-300 px-1 text-[9px] font-black text-black shadow-[1px_1px_0px_#000]'>
+                              MAX
                             </span>
                           )}
                         </div>
                       </div>
-                      <div className='mt-1.5 h-2 w-full overflow-hidden rounded-full bg-muted'>
+                      <div className='mt-1.5 h-2.5 w-full overflow-hidden border-2 border-black bg-muted shadow-[1px_1px_0px_#000] dark:border-white'>
                         <div
                           style={{
                             width: `${((prov.population || 0) / stats.maxPop) * 100}%`,
                           }}
-                          className={`h-full rounded-full ${colors.bar} transition-all duration-300`}
+                          className={`h-full ${colors.bar} transition-all duration-300`}
                         />
                       </div>
                     </div>
@@ -297,27 +302,27 @@ export default function CompareModal({
                     {/* Luas Wilayah */}
                     <div>
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 font-medium text-muted-foreground'>
-                          <Maximize2 className='size-3.5 text-emerald-500' />
-                          Luas Wilayah:
+                        <span className='flex items-center gap-1.5 font-bold uppercase text-muted-foreground'>
+                          <Maximize2 className='size-3.5 stroke-[2.5] text-emerald-600' />
+                          LUAS:
                         </span>
                         <div className='flex items-center gap-1'>
-                          <strong className='font-bold text-foreground'>
+                          <strong className='font-black text-foreground'>
                             {formatNumber(prov.areaKm2)} km²
                           </strong>
                           {isHighestArea && (
-                            <span className='rounded bg-emerald-100 px-1 py-0.5 text-[9px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'>
-                              Terluas
+                            <span className='py-0.2 rounded border border-black bg-emerald-300 px-1 text-[9px] font-black text-black shadow-[1px_1px_0px_#000]'>
+                              MAX
                             </span>
                           )}
                         </div>
                       </div>
-                      <div className='mt-1.5 h-2 w-full overflow-hidden rounded-full bg-muted'>
+                      <div className='mt-1.5 h-2.5 w-full overflow-hidden border-2 border-black bg-muted shadow-[1px_1px_0px_#000] dark:border-white'>
                         <div
                           style={{
                             width: `${((prov.areaKm2 || 0) / stats.maxArea) * 100}%`,
                           }}
-                          className={`h-full rounded-full ${colors.bar} transition-all duration-300`}
+                          className={`h-full ${colors.bar} transition-all duration-300`}
                         />
                       </div>
                     </div>
@@ -325,49 +330,49 @@ export default function CompareModal({
                     {/* Kepadatan Penduduk */}
                     <div>
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 font-medium text-muted-foreground'>
-                          <TrendingUp className='size-3.5 text-orange-500' />
-                          Kepadatan:
+                        <span className='flex items-center gap-1.5 font-bold uppercase text-muted-foreground'>
+                          <TrendingUp className='size-3.5 stroke-[2.5] text-amber-500' />
+                          KEPADATAN:
                         </span>
                         <div className='flex items-center gap-1'>
-                          <strong className='font-bold text-foreground'>
+                          <strong className='font-black text-foreground'>
                             {formatNumber(prov.density)} jiwa/km²
                           </strong>
                           {isHighestDensity && (
-                            <span className='rounded bg-orange-100 px-1 py-0.5 text-[9px] font-bold text-orange-700 dark:bg-orange-950 dark:text-orange-300'>
-                              Terpadat
+                            <span className='py-0.2 rounded border border-black bg-amber-300 px-1 text-[9px] font-black text-black shadow-[1px_1px_0px_#000]'>
+                              MAX
                             </span>
                           )}
                         </div>
                       </div>
-                      <div className='mt-1.5 h-2 w-full overflow-hidden rounded-full bg-muted'>
+                      <div className='mt-1.5 h-2.5 w-full overflow-hidden border-2 border-black bg-muted shadow-[1px_1px_0px_#000] dark:border-white'>
                         <div
                           style={{
                             width: `${(prov.density / stats.maxDensity) * 100}%`,
                           }}
-                          className={`h-full rounded-full ${colors.bar} transition-all duration-300`}
+                          className={`h-full ${colors.bar} transition-all duration-300`}
                         />
                       </div>
                     </div>
 
                     {/* Quick Facts */}
-                    <div className='space-y-1.5 border-t border-border/60 pt-3'>
+                    <div className='space-y-1.5 border-t-2 border-black pt-3 dark:border-white'>
                       <div className='flex items-center justify-between'>
                         <span className='flex items-center gap-1.5 text-muted-foreground'>
-                          <MapPin className='size-3.5 text-red-500' />
-                          Ibu Kota:
+                          <MapPin className='size-3.5 stroke-[2.5] text-red-600' />
+                          IBU KOTA:
                         </span>
-                        <span className='font-semibold text-foreground'>
+                        <span className='font-bold text-foreground'>
                           {prov.capital || '-'}
                         </span>
                       </div>
 
                       <div className='flex items-center justify-between'>
                         <span className='flex items-center gap-1.5 text-muted-foreground'>
-                          <Clock className='size-3.5 text-amber-500' />
-                          Zona Waktu:
+                          <Clock className='size-3.5 stroke-[2.5] text-amber-500' />
+                          ZONA WAKTU:
                         </span>
-                        <span className='font-semibold text-foreground'>
+                        <span className='font-bold text-foreground'>
                           {prov.timezone || '-'}
                         </span>
                       </div>
@@ -375,7 +380,7 @@ export default function CompareModal({
 
                     {/* Deskripsi */}
                     {prov.description && (
-                      <div className='border-t border-border/60 pt-3'>
+                      <div className='border-t border-dashed border-black/30 pt-3 dark:border-white/30'>
                         <p className='line-clamp-3 text-[11px] leading-relaxed text-muted-foreground'>
                           {prov.description}
                         </p>
@@ -386,40 +391,41 @@ export default function CompareModal({
 
                 {/* Wikipedia Link */}
                 {prov.wikipediaUrl && (
-                  <div className='mt-4 border-t border-border/60 pt-3'>
-                    <a
+                  <div className='mt-4 border-t-2 border-black pt-3 dark:border-white'>
+                    <motion.a
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       href={prov.wikipediaUrl}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border bg-background py-1.5 text-[11px] font-medium text-foreground transition hover:bg-muted'
+                      className='inline-flex w-full items-center justify-center gap-1.5 rounded border-2 border-black bg-background py-1.5 font-mono text-[11px] font-bold text-foreground shadow-brutal-sm transition hover:bg-muted dark:border-white'
                     >
-                      <span>Profil di Wikipedia</span>
-                      <ExternalLink className='size-3' />
-                    </a>
+                      <span>PROFIL WIKIPEDIA</span>
+                      <ExternalLink className='size-3 stroke-[2.5]' />
+                    </motion.a>
                   </div>
                 )}
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Footer & Source Citation */}
-        <div className='mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-3 text-[11px] text-muted-foreground'>
+        <div className='mt-4 flex flex-wrap items-center justify-between gap-2 border-t-2 border-black pt-3 font-mono text-[11px] text-muted-foreground dark:border-white'>
           <div className='flex items-center gap-1.5'>
-            <ShieldCheck className='size-3.5 text-emerald-500' />
-            <span>
-              Rujukan Resmi: BPS RI (Proyeksi 2023) & Kemendagri RI (Kepmen No.
-              100.1.1-6117 Tahun 2022)
-            </span>
+            <ShieldCheck className='size-3.5 stroke-[2.5] text-emerald-600' />
+            <span>[RUJUKAN RESMI: BPS RI (2023) & KEMENDAGRI RI]</span>
           </div>
 
-          <button
+          <motion.button
             type='button'
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => onOpenChange(false)}
-            className='rounded-lg bg-muted px-3 py-1.5 text-xs font-semibold text-foreground transition hover:bg-muted/80'
+            className='rounded border-2 border-black bg-black px-4 py-1.5 font-mono text-xs font-black uppercase text-white shadow-brutal-sm transition hover:bg-zinc-800 dark:border-white dark:bg-white dark:text-black'
           >
-            Tutup
-          </button>
+            TUTUP
+          </motion.button>
         </div>
       </DialogContent>
     </Dialog>

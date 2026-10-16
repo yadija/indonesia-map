@@ -145,7 +145,7 @@ export default function App() {
   };
 
   return (
-    <section className='bg-brutalist-grid relative grid h-screen min-h-[100dvh] select-none place-items-center overflow-hidden bg-background text-foreground transition-colors duration-200'>
+    <section className='bg-brutalist-grid relative grid h-screen min-h-dvh select-none place-items-center overflow-hidden bg-background text-foreground transition-colors duration-200'>
       {/* Brutalist Architectural Coordinates & Corner Marks */}
       <div className='pointer-events-none absolute left-4 top-4 z-10 hidden select-none flex-col gap-0.5 font-mono text-[10px] font-bold text-muted-foreground/50 md:flex'>
         <span>[IDN-GRID // 0°47&apos;S 113°55&apos;E]</span>

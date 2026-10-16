@@ -19,6 +19,10 @@ module.exports = {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },
+    tailwindcss: {
+      callees: ['cn', 'cva'],
+      config: 'tailwind.config.js',
+    },
   },
   env: {
     browser: true,
@@ -38,6 +42,8 @@ module.exports = {
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'prettier/prettier': ['error', { usePrettierrc: true }],
+    'tailwindcss/classnames-order': 'off', // Delegated to prettier-plugin-tailwindcss to eliminate conflicts
+    'tailwindcss/no-custom-classname': 'off', // Support custom theme tokens (shadow-brutal, etc.) & Radix UI data attributes
     'react/react-in-jsx-scope': 'off',
     'jsx-a11y/accessible-emoji': 'off',
     'react/prop-types': 'off',

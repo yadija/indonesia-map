@@ -56,7 +56,7 @@ export default function CompareFloatingBar({
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.8, opacity: 0 }}
                   whileHover={{ scale: 1.04 }}
-                  className='flex items-center gap-1 rounded-lg border-2 border-black bg-card py-0.5 pl-1.5 pr-1.5 font-mono text-xs font-bold text-foreground shadow-[2px_2px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_#fff] sm:py-1 sm:pr-2'
+                  className='flex items-center gap-1 rounded-lg border-2 border-black bg-card px-1.5 py-0.5 font-mono text-xs font-bold text-foreground shadow-[2px_2px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_#fff] sm:py-1 sm:pr-2'
                 >
                   <span
                     className={`flex size-4 items-center justify-center rounded border border-black text-[10px] font-black ${

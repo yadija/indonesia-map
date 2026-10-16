@@ -14,7 +14,7 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      'fixed bottom-9 left-0 right-0 z-[100] flex max-h-screen w-full flex-col gap-2 p-3 sm:bottom-4 sm:left-auto sm:right-4 sm:max-w-[380px]',
+      'fixed inset-x-0 bottom-9 z-[100] flex max-h-screen w-full flex-col gap-2 p-3 sm:bottom-4 sm:left-auto sm:right-4 sm:max-w-[380px]',
       className,
     )}
     {...props}
@@ -24,7 +24,7 @@ ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 // eslint-disable-next-line tailwindcss/no-custom-classname
 const toastVariants = cva(
-  'group pointer-events-auto relative flex w-full items-center justify-between space-x-3 overflow-hidden rounded-lg border-2 border-black p-3.5 pr-8 shadow-brutal transition-all font-mono data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full dark:border-white dark:shadow-brutal-white',
+  'group pointer-events-auto relative flex w-full items-center justify-between space-x-3 overflow-hidden rounded-lg border-2 border-black p-3.5 pr-8 font-mono shadow-brutal transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full dark:border-white dark:shadow-brutal-white data-[state=open]:sm:slide-in-from-bottom-full',
   {
     variants: {
       variant: {

@@ -50,6 +50,7 @@ Statistical and geospatial data utilized in this application are derived from of
    - **Baseline 34 Provinces Reference:** [Simplemaps Indonesia SVG](https://simplemaps.com/svg/country/id)
 
 4. **Regional Profiles & Historical Summaries:**
+
    - [Indonesian Wikipedia](https://id.wikipedia.org) for provincial capitals, time zones, and brief historical descriptions.
 
 5. **Real-time Weather & Air Quality (Atmospheric Data):**

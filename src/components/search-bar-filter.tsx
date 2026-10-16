@@ -178,7 +178,7 @@ export default function SearchBarFilter({
               }}
               onKeyDown={handleKeyDown}
               placeholder='Cari provinsi / ibu kota...'
-              className='w-full rounded-lg border-2 border-black bg-background py-1.5 pl-9 pr-9 font-mono text-xs font-bold text-foreground shadow-brutal-sm transition placeholder:font-sans placeholder:font-medium placeholder:text-muted-foreground focus:border-red-600 focus:shadow-brutal-red focus:outline-none dark:border-white dark:shadow-brutal-white-sm dark:focus:border-red-500 sm:py-2 sm:text-sm'
+              className='w-full rounded-lg border-2 border-black bg-background px-9 py-1.5 font-mono text-xs font-bold text-foreground shadow-brutal-sm transition placeholder:font-sans placeholder:font-medium placeholder:text-muted-foreground focus:border-red-600 focus:shadow-brutal-red focus:outline-none dark:border-white dark:shadow-brutal-white-sm dark:focus:border-red-500 sm:py-2 sm:text-sm'
             />
 
             {query && (

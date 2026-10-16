@@ -59,11 +59,15 @@ function processSvgExtraction() {
   const extractedPaths = extractPathsFromSvg(svgContent);
 
   if (extractedPaths.length === 0) {
-    console.warn('[SVG Extractor] Warning: No <path> elements with id and d found in SVG.');
+    console.warn(
+      '[SVG Extractor] Warning: No <path> elements with id and d found in SVG.',
+    );
     return;
   }
 
-  console.log(`[SVG Extractor] Successfully parsed ${extractedPaths.length} paths from SVG.`);
+  console.log(
+    `[SVG Extractor] Successfully parsed ${extractedPaths.length} paths from SVG.`,
+  );
 
   // If destination JSON exists, merge to preserve demographic & geographic metadata
   let mergedData = extractedPaths;

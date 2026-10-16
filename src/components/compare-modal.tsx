@@ -379,7 +379,7 @@ export default function CompareModal({
                             {formatNumber(prov.population)}
                           </strong>
                           {isHighestPop && (
-                            <span className='py-0.2 rounded border border-black bg-blue-300 px-1 text-[9px] font-black text-black shadow-[1px_1px_0px_#000]'>
+                            <span className='rounded border border-black bg-blue-300 px-1 py-0.5 text-[9px] font-black text-black shadow-[1px_1px_0px_#000]'>
                               MAX
                             </span>
                           )}
@@ -407,7 +407,7 @@ export default function CompareModal({
                             {formatNumber(prov.areaKm2)} km²
                           </strong>
                           {isHighestArea && (
-                            <span className='py-0.2 rounded border border-black bg-emerald-300 px-1 text-[9px] font-black text-black shadow-[1px_1px_0px_#000]'>
+                            <span className='rounded border border-black bg-emerald-300 px-1 py-0.5 text-[9px] font-black text-black shadow-[1px_1px_0px_#000]'>
                               MAX
                             </span>
                           )}
@@ -435,7 +435,7 @@ export default function CompareModal({
                             {formatNumber(prov.density)} jiwa/km²
                           </strong>
                           {isHighestDensity && (
-                            <span className='py-0.2 rounded border border-black bg-amber-300 px-1 text-[9px] font-black text-black shadow-[1px_1px_0px_#000]'>
+                            <span className='rounded border border-black bg-amber-300 px-1 py-0.5 text-[9px] font-black text-black shadow-[1px_1px_0px_#000]'>
                               MAX
                             </span>
                           )}

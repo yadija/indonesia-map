@@ -32,22 +32,30 @@ npm run preview
 
 # 📖 Data Sources & References
 
-Data statistik dan geospasial yang digunakan dalam aplikasi ini bersumber dari rujukan resmi pemerintah Republik Indonesia:
+Statistical and geospatial data utilized in this application are derived from official government references of the Republic of Indonesia:
 
-1. **Estimasi Populasi & Demografi:**
+1. **Population Estimates & Demographics:**
 
-   - **Badan Pusat Statistik (BPS RI)** — Proyeksi Penduduk Interim 2020–2023 dan Publikasi _Provinsi Dalam Angka 2023/2024_.
-   - Portal Resmi: [https://www.bps.go.id](https://www.bps.go.id)
+   - **Statistics Indonesia (BPS RI)** — Interim Population Projections 2020–2023 and the publication _Provinces in Figures 2023/2024_.
+   - Official Portal: [https://www.bps.go.id](https://www.bps.go.id)
 
-2. **Luas Wilayah & Administrasi 38 Provinsi:**
+2. **Land Area & Administrative Data (38 Provinces):**
 
-   - **Kementerian Dalam Negeri Republik Indonesia (Kemendagri RI)** — _Keputusan Menteri Dalam Negeri (Kepmen Mendagri) No. 100.1.1-6117 Tahun 2022_ tentang Pemberian dan Pemutakhiran Kode, Data Wilayah Administrasi Pemerintahan, dan Pulau (mencakup 4 Daerah Otonom Baru di Papua: Papua Selatan, Papua Tengah, Papua Pegunungan, dan Papua Barat Daya).
-   - **Badan Informasi Geospasial (BIG)** — Data batas wilayah dan luas daratan resmi provinsi Indonesia.
+   - **Ministry of Home Affairs of the Republic of Indonesia (Kemendagri RI)** — _Ministerial Decree (Kepmen Mendagri) No. 100.1.1-6117 of 2022_ on Granting and Updating Codes, Government Administrative Region Data, and Islands (including the 4 New Autonomous Regions in Papua: South Papua, Central Papua, Highland Papua, and Southwest Papua).
+   - **Geospatial Information Agency (BIG)** — Official territorial boundaries and land area data for Indonesian provinces.
 
-3. **Geometri & Peta Vektor (SVG):**
+3. **Geometry & Vector SVG Maps:**
 
-   - **Peta SVG 38 Provinsi:** [amCharts standard via yunanmr/map-indonesia-svg](https://github.com/yunanmr/map-indonesia-svg)
-   - **Peta Referensi Awal (34 Provinsi):** [Simplemaps Indonesia SVG](https://simplemaps.com/svg/country/id)
+   - **38 Provinces SVG Map:** [amCharts standard via yunanmr/map-indonesia-svg](https://github.com/yunanmr/map-indonesia-svg)
+   - **Baseline 34 Provinces Reference:** [Simplemaps Indonesia SVG](https://simplemaps.com/svg/country/id)
 
-4. **Profil & Ringkasan Sejarah Wilayah:**
-   - Ensiklopedia [Wikipedia Bahasa Indonesia](https://id.wikipedia.org) untuk informasi ibu kota, zona waktu, dan deskripsi ringkas setiap provinsi.
+4. **Regional Profiles & Historical Summaries:**
+   - [Indonesian Wikipedia](https://id.wikipedia.org) for provincial capitals, time zones, and brief historical descriptions.
+
+# 📚 Technical Documentation
+
+This repository provides comprehensive technical and product engineering documentation:
+
+- 📄 [**Product Requirements Document (PRD.md)**](./PRD.md) — Product vision, target user personas, functional and non-functional specifications, user flow diagrams, and the product evolution roadmap.
+- 🏛️ [**System Architecture (ARCHITECTURE.md)**](./ARCHITECTURE.md) — System architecture, module layout, component hierarchy, 5-quantile statistical formulas, canvas pan-zoom boundary math, and Neobrutalism design tokens.
+- 🔬 [**Codebase Quality Evaluation (EVALUATION.md)**](./EVALUATION.md) — Multi-axis code quality audit (correctness, readability, architecture, security, performance), accessibility assessment, and prioritized technical recommendations.

@@ -1,4 +1,12 @@
-import { Clock, ExternalLink, MapPin, Maximize2, ShieldCheck, Users } from 'lucide-react';
+import {
+  Clock,
+  ExternalLink,
+  MapPin,
+  Maximize2,
+  Scale,
+  ShieldCheck,
+  Users,
+} from 'lucide-react';
 
 import { IProvince } from '../interfaces/IProvince';
 import {
@@ -13,9 +21,17 @@ interface InfoSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   province: IProvince | null;
+  isAlreadyCompared?: boolean;
+  onAddToCompare?: (province: IProvince) => void;
 }
 
-export default function InfoSheet({ open, onOpenChange, province }: InfoSheetProps) {
+export default function InfoSheet({
+  open,
+  onOpenChange,
+  province,
+  isAlreadyCompared,
+  onAddToCompare,
+}: InfoSheetProps) {
   const formatNumber = (val?: number) => {
     if (!val) return '-';
     return new Intl.NumberFormat('id-ID').format(val);
@@ -41,7 +57,27 @@ export default function InfoSheet({ open, onOpenChange, province }: InfoSheetPro
         </SheetHeader>
 
         {province && (
-          <div className='mt-6 space-y-6'>
+          <div className='mt-6 space-y-5'>
+            {/* Action: Tambahkan ke Komparasi */}
+            {onAddToCompare && (
+              <button
+                type='button'
+                onClick={() => onAddToCompare(province)}
+                className={`flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-semibold shadow-sm transition ${
+                  isAlreadyCompared
+                    ? 'border-blue-500/50 bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
+                    : 'border-border bg-card text-foreground hover:bg-muted'
+                }`}
+              >
+                <Scale className='size-3.5 text-blue-500' />
+                <span>
+                  {isAlreadyCompared
+                    ? '✓ Sudah di Daftar Perbandingan'
+                    : '+ Tambahkan ke Perbandingan'}
+                </span>
+              </button>
+            )}
+
             {/* Quick Stat Cards */}
             <div className='grid grid-cols-2 gap-3'>
               {/* Ibu Kota */}

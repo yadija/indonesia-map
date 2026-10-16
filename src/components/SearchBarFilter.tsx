@@ -7,6 +7,7 @@ import {
   Map,
   MapPin,
   Maximize2,
+  Scale,
   Search,
   SlidersHorizontal,
   Users,
@@ -23,7 +24,10 @@ interface SearchBarFilterProps {
   selectedIsland: string | null;
   activeMetric: ChoroplethMetric;
   isDark: boolean;
+  isCompareActive?: boolean;
+  compareCount?: number;
   onToggleTheme: () => void;
+  onToggleCompareMode?: () => void;
   onSelectMetric: (metric: ChoroplethMetric) => void;
   onSelectIsland: (island: string | null) => void;
   onSelectProvince: (id: string) => void;
@@ -52,7 +56,10 @@ export default function SearchBarFilter({
   selectedIsland,
   activeMetric,
   isDark,
+  isCompareActive,
+  compareCount,
   onToggleTheme,
+  onToggleCompareMode,
   onSelectMetric,
   onSelectIsland,
   onSelectProvince,
@@ -278,6 +285,27 @@ export default function SearchBarFilter({
                       </button>
                     );
                   })}
+
+                  {/* Mode Komparasi Toggle Button */}
+                  {onToggleCompareMode && (
+                    <button
+                      type='button'
+                      onClick={onToggleCompareMode}
+                      className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition ${
+                        isCompareActive || (compareCount && compareCount > 0)
+                          ? 'bg-blue-600 text-white shadow-sm hover:bg-blue-700'
+                          : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground'
+                      }`}
+                    >
+                      <Scale className='size-3' />
+                      <span>Komparasi</span>
+                      {compareCount && compareCount > 0 ? (
+                        <span className='rounded bg-white/20 px-1 text-[10px] font-bold'>
+                          {compareCount}
+                        </span>
+                      ) : null}
+                    </button>
+                  )}
                 </div>
 
                 {/* Island Filter Tabs (Pills) - Flex wrap, no horizontal scroll needed */}

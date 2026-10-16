@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Award, MapPin, Users } from 'lucide-react';
+import { Award, MapPin, Scale, Users } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { IChoroplethConfig } from '../interfaces/IChoropleth';
@@ -10,6 +10,7 @@ interface SVGElementProps {
   shapes: IProvince[];
   selectedIsland?: string | null;
   highlightedId?: string | null;
+  comparedIds?: string[];
   isDark?: boolean;
   choroplethConfig?: IChoroplethConfig | null;
   hoveredTier?: number | null;
@@ -29,6 +30,7 @@ export default function SVGElement({
   shapes,
   selectedIsland,
   highlightedId,
+  comparedIds,
   isDark,
   choroplethConfig,
   hoveredTier,
@@ -360,6 +362,9 @@ export default function SVGElement({
             let opacity = 1;
 
             const isHovered = hovered?.province.id === id;
+            const compareIndex = comparedIds ? comparedIds.indexOf(id) : -1;
+            const isCompared = compareIndex !== -1;
+            const compareColors = ['#2563eb', '#f59e0b', '#10b981'];
 
             if (choroplethConfig) {
               const choroData = choroplethConfig.provincesData[id];
@@ -377,7 +382,13 @@ export default function SVGElement({
                       ? '#34d399'
                       : '#059669';
 
-              if (isHighlighted) {
+              if (isCompared) {
+                // When in comparison list: highlight with distinctive numbered color outline
+                fill = tierColor || '#94a3b8';
+                stroke = compareColors[compareIndex % compareColors.length];
+                strokeWidth = '2.5';
+                opacity = 1;
+              } else if (isHighlighted) {
                 // When clicked/selected: preserve authentic tier data color, highlight with bold border
                 fill = tierColor || '#94a3b8';
                 stroke = isDark ? '#ffffff' : '#0f172a';
@@ -413,7 +424,12 @@ export default function SVGElement({
               }
             } else {
               // Default standard map colors
-              if (isHighlighted) {
+              if (isCompared) {
+                fill = '#ef4444';
+                stroke = compareColors[compareIndex % compareColors.length];
+                strokeWidth = '2.5';
+                opacity = 1;
+              } else if (isHighlighted) {
                 // When clicked: preserve red map fill with bold high-contrast outline
                 fill = '#ef4444';
                 stroke = isDark ? '#ffffff' : '#0f172a';
@@ -582,6 +598,19 @@ export default function SVGElement({
                   </div>
                 )}
             </div>
+
+            {/* Compare Status in Tooltip */}
+            {hovered && comparedIds && comparedIds.includes(hovered.province.id) && (
+              <div className='mt-2 flex items-center justify-between rounded-lg border border-blue-500/30 bg-blue-50/60 p-1.5 text-xs text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'>
+                <span className='flex items-center gap-1.5 font-semibold'>
+                  <Scale className='size-3 text-blue-500' />
+                  <span>Komparasi #{comparedIds.indexOf(hovered.province.id) + 1}</span>
+                </span>
+                <span className='rounded bg-background/80 px-1 py-0.5 text-[9px] font-bold'>
+                  Terpilih
+                </span>
+              </div>
+            )}
 
             <div className='mt-2 text-[10px] italic text-muted-foreground/75'>
               Klik untuk melihat profil lengkap →

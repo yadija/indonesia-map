@@ -9,6 +9,7 @@ import {
   CloudSun,
   Droplets,
   ExternalLink,
+  Info,
   RefreshCw,
   Sun,
   Thermometer,
@@ -136,28 +137,30 @@ export default function WeatherCard({
       </div>
 
       {/* Tab Switcher: Cuaca vs Kualitas Udara */}
-      <div className='mt-2.5 flex items-center gap-1.5 rounded-lg border border-black/20 bg-muted/60 p-1 dark:border-white/20'>
+      <div className='mt-2.5 grid grid-cols-2 gap-1.5 rounded-lg border-2 border-black bg-muted/60 p-1 dark:border-white'>
         <button
           type='button'
           onClick={() => setActiveTab('weather')}
-          className={`flex-1 rounded px-2 py-1 font-mono text-[10px] font-black uppercase transition-all ${
+          className={`flex h-8 items-center justify-center gap-1.5 rounded font-mono text-xs font-black uppercase transition-all ${
             activeTab === 'weather'
-              ? 'border border-black bg-amber-300 text-black shadow-[1px_1px_0px_#000]'
-              : 'text-muted-foreground hover:text-foreground'
+              ? 'border-2 border-black bg-amber-300 text-black shadow-brutal-sm dark:border-white dark:bg-amber-400'
+              : 'border-2 border-transparent text-muted-foreground hover:bg-black/5 hover:text-foreground dark:hover:bg-white/10'
           }`}
         >
-          🌤️ Cuaca {weather ? `(${weather.temperature}°C)` : ''}
+          <CloudSun className='-mt-0.5 size-4 shrink-0 stroke-[2.2]' />
+          <span className='leading-none'>Cuaca</span>
         </button>
         <button
           type='button'
           onClick={() => setActiveTab('airQuality')}
-          className={`flex-1 rounded px-2 py-1 font-mono text-[10px] font-black uppercase transition-all ${
+          className={`flex h-8 items-center justify-center gap-1.5 rounded font-mono text-xs font-black uppercase transition-all ${
             activeTab === 'airQuality'
-              ? 'border border-black bg-emerald-400 text-black shadow-[1px_1px_0px_#000]'
-              : 'text-muted-foreground hover:text-foreground'
+              ? 'border-2 border-black bg-emerald-400 text-black shadow-brutal-sm dark:border-white dark:bg-emerald-400'
+              : 'border-2 border-transparent text-muted-foreground hover:bg-black/5 hover:text-foreground dark:hover:bg-white/10'
           }`}
         >
-          🍃 Kualitas Udara {airQuality ? `(AQI ${airQuality.aqi})` : ''}
+          <Wind className='-mt-0.5 size-4 shrink-0 stroke-[2.2]' />
+          <span className='leading-none'>Kualitas Udara</span>
         </button>
       </div>
 
@@ -187,7 +190,8 @@ export default function WeatherCard({
               onClick={loadWeather}
               className='mt-2 inline-flex items-center gap-1.5 rounded border border-black bg-muted px-2.5 py-1 font-mono text-[10px] font-bold uppercase hover:bg-muted/80 dark:border-white'
             >
-              <RefreshCw className='size-2.5' /> Coba Lagi
+              <RefreshCw className='size-2.5 shrink-0' />
+              <span className='leading-none'>Coba Lagi</span>
             </button>
           </div>
         ) : weather ? (
@@ -216,8 +220,10 @@ export default function WeatherCard({
             <div className='grid grid-cols-3 gap-1.5 sm:gap-2'>
               <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
                 <div className='flex items-center justify-center gap-1 text-muted-foreground'>
-                  <Thermometer className='size-3 text-orange-500' />
-                  <span className='font-mono text-[9px] font-bold uppercase'>TERASA</span>
+                  <Thermometer className='size-3 shrink-0 text-orange-500' />
+                  <span className='font-mono text-[9px] font-bold uppercase leading-none'>
+                    TERASA
+                  </span>
                 </div>
                 <p className='mt-0.5 font-mono text-xs font-bold text-foreground'>
                   {weather.apparentTemperature}°C
@@ -226,8 +232,10 @@ export default function WeatherCard({
 
               <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
                 <div className='flex items-center justify-center gap-1 text-muted-foreground'>
-                  <Droplets className='size-3 text-blue-500' />
-                  <span className='font-mono text-[9px] font-bold uppercase'>LEMBAP</span>
+                  <Droplets className='size-3 shrink-0 text-blue-500' />
+                  <span className='font-mono text-[9px] font-bold uppercase leading-none'>
+                    LEMBAP
+                  </span>
                 </div>
                 <p className='mt-0.5 font-mono text-xs font-bold text-foreground'>
                   {weather.humidity}%
@@ -236,8 +244,10 @@ export default function WeatherCard({
 
               <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
                 <div className='flex items-center justify-center gap-1 text-muted-foreground'>
-                  <Wind className='size-3 text-teal-500' />
-                  <span className='font-mono text-[9px] font-bold uppercase'>ANGIN</span>
+                  <Wind className='size-3 shrink-0 text-teal-500' />
+                  <span className='font-mono text-[9px] font-bold uppercase leading-none'>
+                    ANGIN
+                  </span>
                 </div>
                 <p className='mt-0.5 font-mono text-xs font-bold text-foreground'>
                   {weather.windSpeed} <span className='text-[9px] font-normal'>km/h</span>
@@ -271,7 +281,8 @@ export default function WeatherCard({
             onClick={loadAirQuality}
             className='mt-2 inline-flex items-center gap-1.5 rounded border border-black bg-muted px-2.5 py-1 font-mono text-[10px] font-bold uppercase hover:bg-muted/80 dark:border-white'
           >
-            <RefreshCw className='size-2.5' /> Coba Lagi
+            <RefreshCw className='size-2.5 shrink-0' />
+            <span className='leading-none'>Coba Lagi</span>
           </button>
         </div>
       ) : airQuality ? (
@@ -302,7 +313,13 @@ export default function WeatherCard({
           {/* Visual Gauge Bar */}
           <div>
             <div className='relative h-2.5 w-full overflow-hidden rounded-full border border-black bg-muted shadow-[1px_1px_0px_#000] dark:border-white'>
-              <div className='size-full bg-gradient-to-r from-emerald-400 via-amber-300 via-orange-400 via-red-500 to-purple-600' />
+              <div
+                style={{
+                  background:
+                    'linear-gradient(to right, #34d399 0%, #fcd34d 25%, #fb923c 50%, #ef4444 75%, #9333ea 100%)',
+                }}
+                className='size-full'
+              />
               {/* Pointer / Marker */}
               <div
                 style={{
@@ -323,8 +340,10 @@ export default function WeatherCard({
           <div className='grid grid-cols-3 gap-1.5 sm:gap-2'>
             <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
               <div className='flex items-center justify-center gap-1 text-muted-foreground'>
-                <Activity className='size-3 text-red-500' />
-                <span className='font-mono text-[9px] font-bold uppercase'>PM2.5</span>
+                <Activity className='size-3 shrink-0 text-red-500' />
+                <span className='font-mono text-[9px] font-bold uppercase leading-none'>
+                  PM2.5
+                </span>
               </div>
               <p className='mt-0.5 font-mono text-xs font-bold text-foreground'>
                 {airQuality.pm2_5}{' '}
@@ -336,8 +355,10 @@ export default function WeatherCard({
 
             <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
               <div className='flex items-center justify-center gap-1 text-muted-foreground'>
-                <Activity className='size-3 text-amber-500' />
-                <span className='font-mono text-[9px] font-bold uppercase'>PM10</span>
+                <Activity className='size-3 shrink-0 text-amber-500' />
+                <span className='font-mono text-[9px] font-bold uppercase leading-none'>
+                  PM10
+                </span>
               </div>
               <p className='mt-0.5 font-mono text-xs font-bold text-foreground'>
                 {airQuality.pm10}{' '}
@@ -349,8 +370,8 @@ export default function WeatherCard({
 
             <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
               <div className='flex items-center justify-center gap-1 text-muted-foreground'>
-                <Wind className='size-3 text-sky-500' />
-                <span className='font-mono text-[9px] font-bold uppercase'>
+                <Wind className='size-3 shrink-0 text-sky-500' />
+                <span className='font-mono text-[9px] font-bold uppercase leading-none'>
                   OZON (O₃)
                 </span>
               </div>
@@ -364,9 +385,13 @@ export default function WeatherCard({
           </div>
 
           {/* Rekomendasi Kesehatan */}
-          <div className='rounded border border-border/70 bg-muted/40 p-2'>
-            <p className='font-mono text-[10px] leading-relaxed text-muted-foreground'>
-              💡 <strong>Rekomendasi:</strong> {airQuality.category.recommendation}
+          <div className='rounded border border-border/70 bg-muted/40 p-2 font-mono text-[10px]'>
+            <div className='mb-1 flex items-center gap-1.5 font-bold text-foreground'>
+              <Info className='size-3.5 shrink-0 stroke-[2.5] text-amber-500' />
+              <span className='leading-none'>REKOMENDASI:</span>
+            </div>
+            <p className='leading-relaxed text-muted-foreground'>
+              {airQuality.category.recommendation}
             </p>
           </div>
         </div>
@@ -374,7 +399,7 @@ export default function WeatherCard({
 
       {/* Legal & Open Source Attribution Footer */}
       <div className='mt-3 flex items-center justify-between border-t border-border/50 pt-2 text-[10px] text-muted-foreground'>
-        <span className='font-mono'>Data Terbuka (Open Data)</span>
+        <span className='font-mono leading-none'>Data Terbuka (Open Data)</span>
         <a
           href={
             activeTab === 'weather'
@@ -385,12 +410,12 @@ export default function WeatherCard({
           rel='noopener noreferrer'
           className='inline-flex items-center gap-1 font-mono font-medium hover:text-foreground hover:underline'
         >
-          <span>
+          <span className='leading-none'>
             {activeTab === 'weather'
               ? 'Open-Meteo Weather (CC BY 4.0)'
               : 'Open-Meteo Air Quality (CC BY 4.0)'}
           </span>
-          <ExternalLink className='size-2.5' />
+          <ExternalLink className='size-2.5 shrink-0' />
         </a>
       </div>
     </div>

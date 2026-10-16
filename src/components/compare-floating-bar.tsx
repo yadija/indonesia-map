@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, Scale, X } from 'lucide-react';
+import { ArrowRight, Plus, Scale, X } from 'lucide-react';
 
 import { Province } from '../interfaces/province';
 
@@ -80,8 +80,11 @@ export default function CompareFloatingBar({
               ))}
 
               {comparedProvinces.length < 3 && (
-                <span className='hidden font-mono text-[11px] font-semibold text-muted-foreground md:inline'>
-                  + Pilih {3 - comparedProvinces.length} lagi di peta
+                <span className='hidden items-center gap-1 font-mono text-[11px] font-semibold text-muted-foreground md:inline-flex'>
+                  <Plus className='size-3 shrink-0 stroke-[2.5]' />
+                  <span className='leading-none'>
+                    Pilih {3 - comparedProvinces.length} lagi di peta
+                  </span>
                 </span>
               )}
             </div>
@@ -111,8 +114,8 @@ export default function CompareFloatingBar({
                   : 'cursor-not-allowed bg-muted text-muted-foreground opacity-50 shadow-none'
               }`}
             >
-              <span>BANDINGKAN</span>
-              <ArrowRight className='size-3 stroke-[2.5] sm:size-3.5' />
+              <span className='leading-none'>BANDINGKAN</span>
+              <ArrowRight className='-mt-0.5 size-3 shrink-0 stroke-[2.5] sm:size-3.5' />
             </motion.button>
           </div>
         </div>

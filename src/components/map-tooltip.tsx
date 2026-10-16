@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Award, MapPin, Scale, Users } from 'lucide-react';
+import { ArrowRight, Award, MapPin, Scale, Users } from 'lucide-react';
 
 import { ChoroplethConfig } from '../interfaces/choropleth';
 import { Province } from '../interfaces/province';
@@ -118,8 +118,8 @@ export default function MapTooltip({
         <div className='mt-2 space-y-1 font-mono text-xs text-muted-foreground'>
           {hovered.province.capital && (
             <div className='flex items-center gap-1.5'>
-              <MapPin className='size-3 stroke-[2.5] text-red-600' />
-              <span>
+              <MapPin className='size-3 shrink-0 stroke-[2.5] text-red-600' />
+              <span className='leading-none'>
                 IBU KOTA:{' '}
                 <strong className='font-bold text-foreground'>
                   {hovered.province.capital}
@@ -130,8 +130,8 @@ export default function MapTooltip({
           {(!choroplethConfig || choroplethConfig.id !== 'population') &&
             hovered.province.population && (
               <div className='flex items-center gap-1.5'>
-                <Users className='size-3 stroke-[2.5] text-blue-600' />
-                <span>
+                <Users className='size-3 shrink-0 stroke-[2.5] text-blue-600' />
+                <span className='leading-none'>
                   POP:{' '}
                   <strong className='font-bold text-foreground'>
                     {new Intl.NumberFormat('id-ID').format(hovered.province.population)}
@@ -145,8 +145,8 @@ export default function MapTooltip({
         {isCompared && (
           <div className='mt-2 flex items-center justify-between rounded border-2 border-black bg-cyan-400 p-1.5 font-mono text-xs font-black text-black shadow-brutal-sm dark:border-white'>
             <span className='flex items-center gap-1.5'>
-              <Scale className='size-3 stroke-[2.5]' />
-              <span>KOMPARASI #{compareIndex + 1}</span>
+              <Scale className='size-3 shrink-0 stroke-[2.5]' />
+              <span className='leading-none'>KOMPARASI #{compareIndex + 1}</span>
             </span>
             <span className='rounded border border-black bg-black px-1 text-[9px] text-white'>
               TERPILIH
@@ -154,8 +154,9 @@ export default function MapTooltip({
           </div>
         )}
 
-        <div className='mt-2 border-t border-dashed border-black/30 pt-1.5 font-mono text-[10px] font-bold text-red-600 dark:border-white/30 dark:text-red-400'>
-          [KLIK UNTUK PROFIL LENGKAP →]
+        <div className='mt-2 flex items-center justify-between border-t border-dashed border-black/30 pt-1.5 font-mono text-[10px] font-bold text-red-600 dark:border-white/30 dark:text-red-400'>
+          <span className='leading-none'>[KLIK UNTUK PROFIL LENGKAP]</span>
+          <ArrowRight className='-mt-0.5 size-3 shrink-0 stroke-[2.5]' />
         </div>
       </motion.div>
     </AnimatePresence>

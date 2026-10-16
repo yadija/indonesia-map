@@ -236,8 +236,9 @@ export default function CompareModal({
             onSubmit={handleAdd}
             className='flex flex-wrap items-center gap-2 rounded-lg border-2 border-dashed border-black bg-muted/40 p-2 dark:border-white dark:bg-zinc-900 sm:gap-2.5 sm:p-3'
           >
-            <span className='font-mono text-xs font-bold uppercase text-foreground'>
-              + TAMBAH PROVINSI KE-3:
+            <span className='flex items-center gap-1 font-mono text-xs font-bold uppercase leading-none text-foreground'>
+              <Plus className='size-3 shrink-0 stroke-[2.5]' />
+              <span className='leading-none'>TAMBAH PROVINSI KE-3:</span>
             </span>
             <div className='relative w-full flex-1 sm:w-auto sm:min-w-[200px] sm:max-w-xs'>
               <select
@@ -267,8 +268,8 @@ export default function CompareModal({
               whileTap={{ scale: 0.95 }}
               className='flex h-8 items-center gap-1 rounded border-2 border-black bg-red-600 px-3 font-mono text-xs font-black uppercase text-white shadow-brutal-sm transition hover:bg-red-500 disabled:opacity-50 dark:border-white'
             >
-              <Plus className='size-3.5 stroke-[2.5]' />
-              <span>TAMBAH</span>
+              <Plus className='size-3.5 shrink-0 stroke-[2.5]' />
+              <span className='leading-none'>TAMBAH</span>
             </motion.button>
           </form>
         )}
@@ -370,9 +371,9 @@ export default function CompareModal({
                     {/* Populasi */}
                     <div>
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 font-bold uppercase text-muted-foreground'>
-                          <Users className='size-3.5 stroke-[2.5] text-blue-600' />
-                          POPULASI:
+                        <span className='flex items-center gap-1.5 font-bold uppercase leading-none text-muted-foreground'>
+                          <Users className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-blue-600' />
+                          <span className='leading-none'>POPULASI:</span>
                         </span>
                         <div className='flex items-center gap-1'>
                           <strong className='font-black text-foreground'>
@@ -398,9 +399,9 @@ export default function CompareModal({
                     {/* Luas Wilayah */}
                     <div>
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 font-bold uppercase text-muted-foreground'>
-                          <Maximize2 className='size-3.5 stroke-[2.5] text-emerald-600' />
-                          LUAS:
+                        <span className='flex items-center gap-1.5 font-bold uppercase leading-none text-muted-foreground'>
+                          <Maximize2 className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-emerald-600' />
+                          <span className='leading-none'>LUAS:</span>
                         </span>
                         <div className='flex items-center gap-1'>
                           <strong className='font-black text-foreground'>
@@ -426,9 +427,9 @@ export default function CompareModal({
                     {/* Kepadatan Penduduk */}
                     <div>
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 font-bold uppercase text-muted-foreground'>
-                          <TrendingUp className='size-3.5 stroke-[2.5] text-amber-500' />
-                          KEPADATAN:
+                        <span className='flex items-center gap-1.5 font-bold uppercase leading-none text-muted-foreground'>
+                          <TrendingUp className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-amber-500' />
+                          <span className='leading-none'>KEPADATAN:</span>
                         </span>
                         <div className='flex items-center gap-1'>
                           <strong className='font-black text-foreground'>
@@ -454,9 +455,9 @@ export default function CompareModal({
                     {/* Quick Facts */}
                     <div className='space-y-1.5 border-t-2 border-black pt-3 dark:border-white'>
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 text-muted-foreground'>
-                          <MapPin className='size-3.5 stroke-[2.5] text-red-600' />
-                          IBU KOTA:
+                        <span className='flex items-center gap-1.5 leading-none text-muted-foreground'>
+                          <MapPin className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-red-600' />
+                          <span className='leading-none'>IBU KOTA:</span>
                         </span>
                         <span className='font-bold text-foreground'>
                           {prov.capital || '-'}
@@ -464,9 +465,9 @@ export default function CompareModal({
                       </div>
 
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 text-muted-foreground'>
-                          <Clock className='size-3.5 stroke-[2.5] text-amber-500' />
-                          ZONA WAKTU:
+                        <span className='flex items-center gap-1.5 leading-none text-muted-foreground'>
+                          <Clock className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-amber-500' />
+                          <span className='leading-none'>ZONA WAKTU:</span>
                         </span>
                         <span className='font-bold text-foreground'>
                           {prov.timezone || '-'}
@@ -474,17 +475,17 @@ export default function CompareModal({
                       </div>
 
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 text-muted-foreground'>
-                          <CloudSun className='size-3.5 stroke-[2.5] text-amber-500' />
-                          CUACA SAAT INI:
+                        <span className='flex items-center gap-1.5 leading-none text-muted-foreground'>
+                          <CloudSun className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-amber-500' />
+                          <span className='leading-none'>CUACA SAAT INI:</span>
                         </span>
                         <CompareWeatherBadge provinceId={prov.id} />
                       </div>
 
                       <div className='flex items-center justify-between'>
-                        <span className='flex items-center gap-1.5 text-muted-foreground'>
-                          <Wind className='size-3.5 stroke-[2.5] text-emerald-500' />
-                          UDARA (AQI):
+                        <span className='flex items-center gap-1.5 leading-none text-muted-foreground'>
+                          <Wind className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-emerald-500' />
+                          <span className='leading-none'>UDARA (AQI):</span>
                         </span>
                         <CompareAirQualityBadge provinceId={prov.id} />
                       </div>
@@ -512,8 +513,8 @@ export default function CompareModal({
                       rel='noopener noreferrer'
                       className='inline-flex w-full items-center justify-center gap-1.5 rounded border-2 border-black bg-background py-1.5 font-mono text-[11px] font-bold text-foreground shadow-brutal-sm transition hover:bg-muted dark:border-white'
                     >
-                      <span>PROFIL WIKIPEDIA</span>
-                      <ExternalLink className='size-3 stroke-[2.5]' />
+                      <span className='leading-none'>PROFIL WIKIPEDIA</span>
+                      <ExternalLink className='size-3 shrink-0 stroke-[2.5]' />
                     </motion.a>
                   </div>
                 )}
@@ -524,9 +525,11 @@ export default function CompareModal({
 
         {/* Footer & Source Citation */}
         <div className='mt-4 flex flex-wrap items-center justify-between gap-2 border-t-2 border-black pt-3 font-mono text-[11px] text-muted-foreground dark:border-white'>
-          <div className='flex items-center gap-1.5'>
-            <ShieldCheck className='size-3.5 stroke-[2.5] text-emerald-600' />
-            <span>[RUJUKAN: BPS RI (2023), KEMENDAGRI RI & OPEN-METEO (CC BY 4.0)]</span>
+          <div className='flex items-center gap-1.5 leading-none'>
+            <ShieldCheck className='size-3.5 shrink-0 stroke-[2.5] text-emerald-600' />
+            <span className='leading-none'>
+              [RUJUKAN: BPS RI (2023), KEMENDAGRI RI & OPEN-METEO (CC BY 4.0)]
+            </span>
           </div>
 
           <motion.button

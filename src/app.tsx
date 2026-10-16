@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 // components
@@ -243,20 +244,56 @@ export default function App() {
       />
 
       {/* Continuous Motion-Driven Marquee Ticker Ribbon */}
-      <div className='pointer-events-none absolute inset-x-0 bottom-0 z-20 overflow-hidden border-t-2 border-black bg-red-600 py-1 font-mono text-[11px] font-black uppercase tracking-widest text-white shadow-brutal-sm dark:border-white'>
-        <div className='flex animate-marquee whitespace-nowrap'>
-          <span className='mx-4'>★ REPUBLIK INDONESIA</span>
-          <span className='mx-4'>• 38 PROVINSI RESMI</span>
-          <span className='mx-4'>• DARI SABANG SAMPAI MERAUKE</span>
-          <span className='mx-4'>• 17.000+ PULAU</span>
-          <span className='mx-4'>• BHINNEKA TUNGGAL IKA</span>
-          <span className='mx-4'>• PETA INTERAKTIF DIGITAL</span>
-          <span className='mx-4'>★ REPUBLIK INDONESIA</span>
-          <span className='mx-4'>• 38 PROVINSI RESMI</span>
-          <span className='mx-4'>• DARI SABANG SAMPAI MERAUKE</span>
-          <span className='mx-4'>• 17.000+ PULAU</span>
-          <span className='mx-4'>• BHINNEKA TUNGGAL IKA</span>
-          <span className='mx-4'>• PETA INTERAKTIF DIGITAL</span>
+      <div className='pointer-events-none absolute inset-x-0 bottom-0 z-20 flex h-7 items-center overflow-hidden border-t-2 border-black bg-red-600 font-mono text-[11px] font-black uppercase tracking-widest text-white shadow-brutal-sm dark:border-white'>
+        <div className='flex animate-marquee items-center whitespace-nowrap'>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <Star className='-mt-0.5 size-3 shrink-0 fill-white stroke-none' />
+            <span className='leading-none'>REPUBLIK INDONESIA</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>38 PROVINSI RESMI</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>DARI SABANG SAMPAI MERAUKE</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>17.000+ PULAU</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>BHINNEKA TUNGGAL IKA</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>PETA INTERAKTIF DIGITAL</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <Star className='-mt-0.5 size-3 shrink-0 fill-white stroke-none' />
+            <span className='leading-none'>REPUBLIK INDONESIA</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>38 PROVINSI RESMI</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>DARI SABANG SAMPAI MERAUKE</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>17.000+ PULAU</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>BHINNEKA TUNGGAL IKA</span>
+          </span>
+          <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>
+            <span className='-mt-0.5 size-1.5 shrink-0 rounded-full bg-white' />
+            <span className='leading-none'>PETA INTERAKTIF DIGITAL</span>
+          </span>
         </div>
       </div>
     </section>

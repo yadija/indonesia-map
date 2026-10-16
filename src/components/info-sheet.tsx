@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import {
+  Check,
   Clock,
   ExternalLink,
   MapPin,
   Maximize2,
-  Scale,
+  Plus,
   ShieldCheck,
   Users,
 } from 'lucide-react';
@@ -73,9 +74,13 @@ export default function InfoSheet({
                     : 'bg-card text-foreground hover:bg-muted dark:bg-zinc-900'
                 }`}
               >
-                <Scale className='size-3.5 stroke-[2.5]' />
-                <span>
-                  {isAlreadyCompared ? '✓ DI DAFTAR KOMPARASI' : '+ TAMBAH KE KOMPARASI'}
+                {isAlreadyCompared ? (
+                  <Check className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5]' />
+                ) : (
+                  <Plus className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5]' />
+                )}
+                <span className='leading-none'>
+                  {isAlreadyCompared ? 'DI DAFTAR KOMPARASI' : 'TAMBAH KE KOMPARASI'}
                 </span>
               </motion.button>
             )}
@@ -87,9 +92,9 @@ export default function InfoSheet({
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
               >
-                <div className='flex items-center space-x-1.5 text-muted-foreground'>
-                  <MapPin className='size-3 stroke-[2.5] text-red-600 sm:size-3.5' />
-                  <span className='font-mono text-[9px] font-bold uppercase sm:text-[10px]'>
+                <div className='flex items-center gap-1.5 text-muted-foreground'>
+                  <MapPin className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-red-600' />
+                  <span className='font-mono text-[9px] font-bold uppercase leading-none sm:text-[10px]'>
                     IBU KOTA
                   </span>
                 </div>
@@ -103,9 +108,9 @@ export default function InfoSheet({
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
               >
-                <div className='flex items-center space-x-1.5 text-muted-foreground'>
-                  <Clock className='size-3.5 stroke-[2.5] text-amber-500' />
-                  <span className='font-mono text-[10px] font-bold uppercase'>
+                <div className='flex items-center gap-1.5 text-muted-foreground'>
+                  <Clock className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-amber-500' />
+                  <span className='font-mono text-[10px] font-bold uppercase leading-none'>
                     ZONA WAKTU
                   </span>
                 </div>
@@ -119,9 +124,9 @@ export default function InfoSheet({
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
               >
-                <div className='flex items-center space-x-1.5 text-muted-foreground'>
-                  <Users className='size-3.5 stroke-[2.5] text-blue-600' />
-                  <span className='font-mono text-[10px] font-bold uppercase'>
+                <div className='flex items-center gap-1.5 text-muted-foreground'>
+                  <Users className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-blue-600' />
+                  <span className='font-mono text-[10px] font-bold uppercase leading-none'>
                     POPULASI
                   </span>
                 </div>
@@ -135,9 +140,9 @@ export default function InfoSheet({
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
               >
-                <div className='flex items-center space-x-1.5 text-muted-foreground'>
-                  <Maximize2 className='size-3.5 stroke-[2.5] text-emerald-600' />
-                  <span className='font-mono text-[10px] font-bold uppercase'>
+                <div className='flex items-center gap-1.5 text-muted-foreground'>
+                  <Maximize2 className='-mt-0.5 size-3.5 shrink-0 stroke-[2.5] text-emerald-600' />
+                  <span className='font-mono text-[10px] font-bold uppercase leading-none'>
                     LUAS WILAYAH
                   </span>
                 </div>
@@ -169,19 +174,30 @@ export default function InfoSheet({
             {/* Catatan Validitas & Sumber Data Resmi */}
             <div className='rounded-lg border-2 border-black bg-muted/60 p-3.5 text-xs text-muted-foreground dark:border-white dark:bg-zinc-900'>
               <div className='flex items-center gap-1.5 font-mono font-bold text-foreground'>
-                <ShieldCheck className='size-4 stroke-[2.5] text-emerald-600' />
-                <span>[RUJUKAN RESMI GEOSPASIAL & LINGKUNGAN]</span>
+                <ShieldCheck className='size-4 shrink-0 stroke-[2.5] text-emerald-600' />
+                <span className='leading-none'>
+                  [RUJUKAN RESMI GEOSPASIAL & LINGKUNGAN]
+                </span>
               </div>
-              <ul className='mt-2 space-y-1 font-mono text-[10px] leading-relaxed'>
-                <li>
-                  • <strong>Populasi:</strong> BPS RI — Proyeksi Penduduk Interim 2023.
+              <ul className='mt-2 space-y-1.5 font-mono text-[10px] leading-relaxed'>
+                <li className='flex items-start gap-1.5'>
+                  <span className='mt-1.5 size-1.5 shrink-0 rounded-full bg-foreground/60' />
+                  <span>
+                    <strong>Populasi:</strong> BPS RI — Proyeksi Penduduk Interim 2023.
+                  </span>
                 </li>
-                <li>
-                  • <strong>Pemekaran 38 Provinsi:</strong> Kemendagri & BIG.
+                <li className='flex items-start gap-1.5'>
+                  <span className='mt-1.5 size-1.5 shrink-0 rounded-full bg-foreground/60' />
+                  <span>
+                    <strong>Pemekaran 38 Provinsi:</strong> Kemendagri & BIG.
+                  </span>
                 </li>
-                <li>
-                  • <strong>Cuaca & Kualitas Udara (AQI):</strong> Open-Meteo API (Lisensi
-                  Terbuka CC BY 4.0).
+                <li className='flex items-start gap-1.5'>
+                  <span className='mt-1.5 size-1.5 shrink-0 rounded-full bg-foreground/60' />
+                  <span>
+                    <strong>Cuaca & Kualitas Udara (AQI):</strong> Open-Meteo API (Lisensi
+                    Terbuka CC BY 4.0).
+                  </span>
                 </li>
               </ul>
             </div>
@@ -198,8 +214,8 @@ export default function InfoSheet({
                   rel='noopener noreferrer'
                   className='inline-flex w-full items-center justify-center gap-2 rounded-lg border-2 border-black bg-red-600 px-4 py-2 font-mono text-xs font-black uppercase tracking-wider text-white shadow-brutal-sm transition hover:bg-red-500 hover:shadow-brutal dark:border-white'
                 >
-                  <span>BACA DI WIKIPEDIA</span>
-                  <ExternalLink className='size-3.5 stroke-[2.5]' />
+                  <span className='leading-none'>BACA DI WIKIPEDIA</span>
+                  <ExternalLink className='size-3.5 shrink-0 stroke-[2.5]' />
                 </a>
               </motion.div>
             )}

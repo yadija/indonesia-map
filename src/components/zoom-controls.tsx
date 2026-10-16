@@ -19,7 +19,7 @@ export default function ZoomControls({
   const canZoomOut = scale > 0.75;
 
   return (
-    <div className='fixed bottom-6 right-6 z-30 flex flex-col items-center rounded-xl border-2 border-black bg-background p-1.5 shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white'>
+    <div className='fixed bottom-9 right-3 z-30 flex flex-col items-center rounded-xl border-2 border-black bg-background p-1.5 shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white sm:bottom-10 sm:right-6'>
       {/* Zoom In Button */}
       <motion.button
         type='button'

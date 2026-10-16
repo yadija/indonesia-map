@@ -40,17 +40,17 @@ export default function InfoSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className='w-full overflow-y-auto border-l-2 border-black bg-background p-6 shadow-brutal-xl dark:border-white sm:max-w-md'>
-        <SheetHeader className='space-y-2 text-left'>
+      <SheetContent className='w-full overflow-y-auto border-l-2 border-black bg-background p-4 shadow-brutal-xl dark:border-white sm:max-w-md sm:p-6'>
+        <SheetHeader className='space-y-1.5 text-left sm:space-y-2'>
           {province?.island && (
-            <div className='inline-flex w-fit items-center rounded-lg border-2 border-black bg-amber-300 px-3 py-1 font-mono text-xs font-black uppercase text-black shadow-brutal-sm dark:border-white'>
+            <div className='inline-flex w-fit items-center rounded-lg border-2 border-black bg-amber-300 px-2.5 py-0.5 font-mono text-[11px] font-black uppercase text-black shadow-brutal-sm dark:border-white sm:px-3 sm:py-1 sm:text-xs'>
               WILAYAH {province.island}
             </div>
           )}
-          <SheetTitle className='font-mono text-2xl font-black uppercase tracking-tight text-foreground sm:text-3xl'>
+          <SheetTitle className='font-mono text-xl font-black uppercase tracking-tight text-foreground sm:text-2xl'>
             {province ? province.name : 'Informasi Wilayah'}
           </SheetTitle>
-          <SheetDescription className='font-mono text-xs text-muted-foreground'>
+          <SheetDescription className='font-mono text-[11px] text-muted-foreground sm:text-xs'>
             {province
               ? `[STATISTIK RESMI // PROVINSI ${province.name.toUpperCase()}]`
               : 'Silakan klik salah satu provinsi pada peta untuk melihat detail informasi.'}
@@ -58,7 +58,7 @@ export default function InfoSheet({
         </SheetHeader>
 
         {province && (
-          <div className='mt-6 space-y-4'>
+          <div className='mt-4 space-y-3.5 sm:mt-6 sm:space-y-4'>
             {/* Action: Tambahkan ke Komparasi */}
             {onAddToCompare && (
               <motion.button
@@ -66,7 +66,7 @@ export default function InfoSheet({
                 whileHover={{ scale: 1.02, y: -1 }}
                 whileTap={{ scale: 0.98, y: 1 }}
                 onClick={() => onAddToCompare(province)}
-                className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 border-black px-4 py-2.5 font-mono text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all dark:border-white ${
+                className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 border-black px-3 py-2 font-mono text-xs font-black uppercase tracking-wider shadow-brutal-sm transition-all dark:border-white sm:px-4 sm:py-2.5 ${
                   isAlreadyCompared
                     ? 'bg-cyan-400 text-black shadow-brutal'
                     : 'bg-card text-foreground hover:bg-muted dark:bg-zinc-900'
@@ -80,19 +80,19 @@ export default function InfoSheet({
             )}
 
             {/* Quick Stat Cards */}
-            <div className='grid grid-cols-2 gap-3'>
+            <div className='grid grid-cols-2 gap-2 sm:gap-3'>
               {/* Ibu Kota */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
-                className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
+                className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
               >
                 <div className='flex items-center space-x-1.5 text-muted-foreground'>
-                  <MapPin className='size-3.5 stroke-[2.5] text-red-600' />
-                  <span className='font-mono text-[10px] font-bold uppercase'>
+                  <MapPin className='size-3 stroke-[2.5] text-red-600 sm:size-3.5' />
+                  <span className='font-mono text-[9px] font-bold uppercase sm:text-[10px]'>
                     IBU KOTA
                   </span>
                 </div>
-                <p className='mt-1 truncate font-mono text-sm font-bold text-foreground'>
+                <p className='mt-1 truncate font-mono text-xs font-bold text-foreground sm:text-sm'>
                   {province.capital || '-'}
                 </p>
               </motion.div>

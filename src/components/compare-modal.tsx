@@ -117,17 +117,17 @@ export default function CompareModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-xl border-2 border-black p-4 shadow-brutal-xl dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg sm:p-6'>
+      <DialogContent className='max-h-[90dvh] w-[96vw] max-w-5xl overflow-y-auto rounded-xl border-2 border-black p-3.5 shadow-brutal-xl dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg sm:p-6'>
         <DialogHeader className='text-left'>
           <div className='flex items-center gap-2.5'>
-            <div className='flex size-9 items-center justify-center rounded-lg border-2 border-black bg-red-600 text-white shadow-brutal-sm dark:border-white'>
-              <Scale className='size-5 stroke-[2.5]' />
+            <div className='flex size-8 shrink-0 items-center justify-center rounded-lg border-2 border-black bg-red-600 text-white shadow-brutal-sm dark:border-white sm:size-9'>
+              <Scale className='size-4 stroke-[2.5] sm:size-5' />
             </div>
             <div>
-              <DialogTitle className='font-mono text-xl font-black uppercase tracking-tight text-foreground sm:text-2xl'>
+              <DialogTitle className='font-mono text-lg font-black uppercase tracking-tight text-foreground sm:text-2xl'>
                 KOMPARASI ANTAR-PROVINSI
               </DialogTitle>
-              <DialogDescription className='font-mono text-xs text-muted-foreground'>
+              <DialogDescription className='font-mono text-[11px] text-muted-foreground sm:text-xs'>
                 [ANALISIS KOMPARATIF STATISTIK KEPENDUDUKAN & GEOSPASIAL]
               </DialogDescription>
             </div>
@@ -138,12 +138,12 @@ export default function CompareModal({
         {comparedProvinces.length < 3 && availableProvinces.length > 0 && (
           <form
             onSubmit={handleAdd}
-            className='flex flex-wrap items-center gap-2.5 rounded-lg border-2 border-dashed border-black bg-muted/40 p-2.5 dark:border-white dark:bg-zinc-900 sm:p-3'
+            className='flex flex-wrap items-center gap-2 rounded-lg border-2 border-dashed border-black bg-muted/40 p-2 dark:border-white dark:bg-zinc-900 sm:gap-2.5 sm:p-3'
           >
             <span className='font-mono text-xs font-bold uppercase text-foreground'>
               + TAMBAH PROVINSI KE-3:
             </span>
-            <div className='relative min-w-[200px] max-w-xs flex-1'>
+            <div className='relative w-full flex-1 sm:w-auto sm:min-w-[200px] sm:max-w-xs'>
               <select
                 value={selectedToAdd}
                 onChange={(e) => setSelectedToAdd(e.target.value)}

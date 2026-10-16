@@ -314,17 +314,23 @@ export default function SVGElement({
     };
   }, [isDragging, scale, position.x, position.y, getPanBounds]);
 
-  // Tooltip position boundary
+  // Tooltip position boundary with viewport clamping
   const tooltipX = hovered
-    ? Math.min(
-        hovered.x + 16,
-        typeof window !== 'undefined' ? window.innerWidth - 240 : 0,
+    ? Math.max(
+        12,
+        Math.min(
+          hovered.x + 16,
+          typeof window !== 'undefined' ? window.innerWidth - 240 : 0,
+        ),
       )
     : 0;
   const tooltipY = hovered
-    ? Math.min(
-        hovered.y + 16,
-        typeof window !== 'undefined' ? window.innerHeight - 170 : 0,
+    ? Math.max(
+        12,
+        Math.min(
+          hovered.y + 16,
+          typeof window !== 'undefined' ? window.innerHeight - 200 : 0,
+        ),
       )
     : 0;
 
@@ -517,7 +523,7 @@ export default function SVGElement({
             exit={{ opacity: 0, scale: 0.9, y: 8 }}
             transition={{ type: 'spring', stiffness: 450, damping: 28 }}
             style={{ left: tooltipX, top: tooltipY }}
-            className='pointer-events-none fixed z-50 min-w-52 rounded-xl border-2 border-black bg-background p-3 shadow-brutal-lg dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg'
+            className='pointer-events-none fixed z-50 min-w-48 max-w-[calc(100vw-24px)] rounded-xl border-2 border-black bg-background p-3 shadow-brutal-lg dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg'
           >
             {/* Header: Name and Island badge */}
             <div className='flex items-center justify-between gap-2 border-b-2 border-black pb-2 dark:border-white'>

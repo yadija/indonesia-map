@@ -141,7 +141,7 @@ export default function SearchBarFilter({
               onFocus={() => {
                 if (query.trim()) setIsOpen(true);
               }}
-              placeholder='Cari provinsi / ibu kota (Surabaya, Padang...)'
+              placeholder='Cari provinsi / ibu kota...'
               className='w-full rounded-lg border-2 border-black bg-background py-1.5 pl-9 pr-9 font-mono text-xs font-bold text-foreground shadow-brutal-sm transition placeholder:font-sans placeholder:font-medium placeholder:text-muted-foreground focus:border-red-600 focus:shadow-brutal-red focus:outline-none dark:border-white dark:shadow-brutal-white-sm dark:focus:border-red-500 sm:py-2 sm:text-sm'
             />
 
@@ -170,7 +170,7 @@ export default function SearchBarFilter({
                   exit={{ opacity: 0, y: -8, scale: 0.98 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   onWheel={(e) => e.stopPropagation()}
-                  className='no-scrollbar absolute inset-x-0 top-full z-50 mt-2 max-h-72 overflow-y-auto rounded-xl border-2 border-black bg-background p-1.5 text-foreground shadow-brutal-lg dark:border-white dark:bg-zinc-900 dark:shadow-brutal-white-lg'
+                  className='no-scrollbar absolute inset-x-0 top-full z-50 mt-2 max-h-56 overflow-y-auto overscroll-contain rounded-xl border-2 border-black bg-background p-1.5 text-foreground shadow-brutal-lg dark:border-white dark:bg-zinc-900 dark:shadow-brutal-white-lg sm:max-h-72'
                 >
                   {searchResults.length > 0 ? (
                     searchResults.map((prov) => (
@@ -261,7 +261,7 @@ export default function SearchBarFilter({
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-              className='relative z-10 overflow-hidden'
+              className='no-scrollbar relative z-10 max-h-[60vh] overflow-y-auto overflow-x-hidden overscroll-contain'
             >
               <div className='mt-3 space-y-3 border-t-2 border-black pt-3 dark:border-white'>
                 {/* Thematic Mode Tabs */}

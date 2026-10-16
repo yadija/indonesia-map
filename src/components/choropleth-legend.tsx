@@ -27,7 +27,10 @@ export default function ChoroplethLegend({
   hoveredTier,
   onHoverTier,
 }: ChoroplethLegendProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  // Start collapsed on small mobile screens to keep the map visible
+  const [isCollapsed, setIsCollapsed] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 640,
+  );
 
   if (!config) return null;
 
@@ -51,14 +54,14 @@ export default function ChoroplethLegend({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 24, scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-      className={`fixed bottom-5 left-5 z-40 w-72 max-w-[calc(100vw-2.5rem)] rounded-xl border-2 border-black bg-background shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white ${
-        isCollapsed ? 'p-2.5' : 'p-3.5'
+      className={`fixed bottom-9 left-3 z-30 w-64 max-w-[calc(100vw-5rem)] rounded-xl border-2 border-black bg-background shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white sm:bottom-10 sm:left-6 sm:w-72 ${
+        isCollapsed ? 'p-2' : 'p-3'
       }`}
     >
       {/* Header Bar */}
       <div
         className={`flex items-center justify-between gap-2 transition-all ${
-          isCollapsed ? 'pb-0' : 'border-b-2 border-black pb-2.5 dark:border-white'
+          isCollapsed ? 'pb-0' : 'border-b-2 border-black pb-2 dark:border-white'
         }`}
       >
         <div className='flex items-center gap-2 overflow-hidden'>
@@ -101,12 +104,12 @@ export default function ChoroplethLegend({
             transition={{ type: 'spring', stiffness: 350, damping: 25 }}
             className='overflow-hidden'
           >
-            <p className='mt-2 font-mono text-[11px] leading-relaxed text-muted-foreground'>
-              {config.description}. Sorot tingkatan untuk melihat provinsi terkait.
+            <p className='mt-2 font-mono text-[10px] leading-relaxed text-muted-foreground sm:text-[11px]'>
+              {config.description}. Ketuk tingkatan untuk melihat provinsi terkait.
             </p>
 
             {/* 5 Tiers List */}
-            <div className='mt-3 space-y-1.5'>
+            <div className='mt-2.5 space-y-1.5'>
               {config.tiers.map((t) => {
                 const color = isDark ? t.colorDark : t.colorLight;
                 const isHovered = hoveredTier === t.tier;
@@ -116,6 +119,7 @@ export default function ChoroplethLegend({
                   <motion.div
                     key={t.tier}
                     whileHover={{ x: 4 }}
+                    onClick={() => onHoverTier(hoveredTier === t.tier ? null : t.tier)}
                     onMouseEnter={() => onHoverTier(t.tier)}
                     onMouseLeave={() => onHoverTier(null)}
                     className={`flex cursor-pointer items-center justify-between rounded border-2 border-black px-2 py-1 text-xs transition dark:border-white ${

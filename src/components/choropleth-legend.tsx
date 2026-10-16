@@ -18,6 +18,7 @@ interface ChoroplethLegendProps {
   config: ChoroplethConfig | null;
   isDark: boolean;
   hoveredTier: number | null;
+  hasCompareBar?: boolean;
   onHoverTier: (tier: number | null) => void;
 }
 
@@ -25,6 +26,7 @@ export default function ChoroplethLegend({
   config,
   isDark,
   hoveredTier,
+  hasCompareBar = false,
   onHoverTier,
 }: ChoroplethLegendProps) {
   // Start collapsed on small mobile screens to keep the map visible
@@ -54,7 +56,9 @@ export default function ChoroplethLegend({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 24, scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-      className={`fixed bottom-9 left-3 z-30 w-64 max-w-[calc(100vw-5rem)] rounded-xl border-2 border-black bg-background shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white sm:bottom-10 sm:left-6 sm:w-72 ${
+      className={`fixed ${
+        hasCompareBar ? 'bottom-28 sm:bottom-10' : 'bottom-9 sm:bottom-10'
+      } left-3 z-30 w-64 max-w-[calc(100vw-5rem)] rounded-xl border-2 border-black bg-background shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white sm:left-6 sm:w-72 ${
         isCollapsed ? 'p-2' : 'p-3'
       }`}
     >

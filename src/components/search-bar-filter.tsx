@@ -67,6 +67,7 @@ export default function SearchBarFilter({
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
@@ -74,6 +75,7 @@ export default function SearchBarFilter({
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        setSelectedIndex(-1);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -107,6 +109,34 @@ export default function SearchBarFilter({
     onSelectProvince(id);
     setQuery('');
     setIsOpen(false);
+    setSelectedIndex(-1);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!isOpen || searchResults.length === 0) {
+      if (e.key === 'ArrowDown' && searchResults.length > 0) {
+        setIsOpen(true);
+        setSelectedIndex(0);
+        e.preventDefault();
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev < searchResults.length - 1 ? prev + 1 : 0));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : searchResults.length - 1));
+    } else if (e.key === 'Enter') {
+      if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
+        e.preventDefault();
+        handleSelect(searchResults[selectedIndex].id);
+      }
+    } else if (e.key === 'Escape') {
+      setIsOpen(false);
+      setSelectedIndex(-1);
+    }
   };
 
   const hasActiveFilters = activeMetric !== 'none' || selectedIsland !== null;
@@ -133,14 +163,20 @@ export default function SearchBarFilter({
 
             <input
               type='text'
+              role='combobox'
+              aria-expanded={isOpen && searchResults.length > 0}
+              aria-controls='province-search-results'
+              aria-autocomplete='list'
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
                 setIsOpen(true);
+                setSelectedIndex(-1);
               }}
               onFocus={() => {
                 if (query.trim()) setIsOpen(true);
               }}
+              onKeyDown={handleKeyDown}
               placeholder='Cari provinsi / ibu kota...'
               className='w-full rounded-lg border-2 border-black bg-background py-1.5 pl-9 pr-9 font-mono text-xs font-bold text-foreground shadow-brutal-sm transition placeholder:font-sans placeholder:font-medium placeholder:text-muted-foreground focus:border-red-600 focus:shadow-brutal-red focus:outline-none dark:border-white dark:shadow-brutal-white-sm dark:focus:border-red-500 sm:py-2 sm:text-sm'
             />
@@ -153,6 +189,7 @@ export default function SearchBarFilter({
                 onClick={() => {
                   setQuery('');
                   setIsOpen(false);
+                  setSelectedIndex(-1);
                 }}
                 className='absolute inset-y-0 right-0 flex items-center pr-3 font-bold text-foreground transition hover:text-red-600'
                 aria-label='Hapus pencarian'
@@ -165,6 +202,9 @@ export default function SearchBarFilter({
             <AnimatePresence>
               {isOpen && query.trim() && (
                 <motion.div
+                  id='province-search-results'
+                  role='listbox'
+                  aria-label='Hasil pencarian provinsi'
                   initial={{ opacity: 0, y: -8, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -8, scale: 0.98 }}
@@ -173,33 +213,49 @@ export default function SearchBarFilter({
                   className='no-scrollbar absolute inset-x-0 top-full z-50 mt-2 max-h-56 overflow-y-auto overscroll-contain rounded-xl border-2 border-black bg-background p-1.5 text-foreground shadow-brutal-lg dark:border-white dark:bg-zinc-900 dark:shadow-brutal-white-lg sm:max-h-72'
                 >
                   {searchResults.length > 0 ? (
-                    searchResults.map((prov) => (
-                      <motion.button
-                        key={prov.id}
-                        type='button'
-                        whileHover={{ x: 4 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => handleSelect(prov.id)}
-                        className='group flex w-full items-center justify-between border-b border-dashed border-black/20 px-3 py-2 text-left text-sm transition-colors last:border-b-0 hover:bg-red-50 dark:border-white/20 dark:hover:bg-zinc-800'
-                      >
-                        <div className='flex flex-col'>
-                          <span className='font-bold text-foreground group-hover:text-red-600'>
-                            {prov.name}
-                          </span>
-                          {prov.capital && (
-                            <span className='flex items-center gap-1 font-mono text-xs text-muted-foreground'>
-                              <MapPin className='size-3 stroke-[2.5] text-red-600' />
-                              Ibu Kota: {prov.capital}
+                    searchResults.map((prov, index) => {
+                      const isHighlighted = selectedIndex === index;
+                      return (
+                        <motion.button
+                          key={prov.id}
+                          type='button'
+                          role='option'
+                          aria-selected={isHighlighted}
+                          whileHover={{ x: 4 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => handleSelect(prov.id)}
+                          onMouseEnter={() => setSelectedIndex(index)}
+                          className={`group flex w-full items-center justify-between border-b border-dashed border-black/20 px-3 py-2 text-left text-sm transition-colors last:border-b-0 ${
+                            isHighlighted
+                              ? 'bg-amber-100 dark:bg-zinc-800'
+                              : 'hover:bg-red-50 dark:border-white/20 dark:hover:bg-zinc-800'
+                          }`}
+                        >
+                          <div className='flex flex-col'>
+                            <span
+                              className={`font-bold ${
+                                isHighlighted
+                                  ? 'text-red-600 dark:text-red-400'
+                                  : 'text-foreground group-hover:text-red-600'
+                              }`}
+                            >
+                              {prov.name}
+                            </span>
+                            {prov.capital && (
+                              <span className='flex items-center gap-1 font-mono text-xs text-muted-foreground'>
+                                <MapPin className='size-3 stroke-[2.5] text-red-600' />
+                                Ibu Kota: {prov.capital}
+                              </span>
+                            )}
+                          </div>
+                          {prov.island && (
+                            <span className='rounded border border-black bg-amber-300 px-2 py-0.5 font-mono text-[10px] font-bold text-black shadow-[1px_1px_0px_#000] dark:border-white'>
+                              {prov.island}
                             </span>
                           )}
-                        </div>
-                        {prov.island && (
-                          <span className='rounded border border-black bg-amber-300 px-2 py-0.5 font-mono text-[10px] font-bold text-black shadow-[1px_1px_0px_#000] dark:border-white'>
-                            {prov.island}
-                          </span>
-                        )}
-                      </motion.button>
-                    ))
+                        </motion.button>
+                      );
+                    })
                   ) : (
                     <div className='py-6 text-center font-mono text-xs text-muted-foreground'>
                       Tidak ada hasil untuk &quot;

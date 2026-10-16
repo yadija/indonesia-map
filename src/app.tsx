@@ -202,6 +202,7 @@ export default function App() {
         config={choroplethConfig}
         isDark={isDark}
         hoveredTier={hoveredTier}
+        hasCompareBar={comparedProvinces.length > 0}
         onHoverTier={setHoveredTier}
       />
 

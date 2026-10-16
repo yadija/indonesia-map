@@ -8,7 +8,7 @@ import {
   Users,
 } from 'lucide-react';
 
-import { IProvince } from '../interfaces/IProvince';
+import { Province } from '../interfaces/province';
 import {
   Sheet,
   SheetContent,
@@ -20,9 +20,9 @@ import {
 interface InfoSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  province: IProvince | null;
+  province: Province | null;
   isAlreadyCompared?: boolean;
-  onAddToCompare?: (province: IProvince) => void;
+  onAddToCompare?: (province: Province) => void;
 }
 
 export default function InfoSheet({

@@ -1,27 +1,27 @@
 import { useEffect, useMemo, useState } from 'react';
 
 // components
-import ChoroplethLegend from './components/ChoroplethLegend';
-import CompareFloatingBar from './components/CompareFloatingBar';
-import CompareModal from './components/CompareModal';
-import InfoSheet from './components/InfoSheet';
-import SearchBarFilter from './components/SearchBarFilter';
-import SVGElement from './components/SVGElement';
+import ChoroplethLegend from './components/choropleth-legend';
+import CompareFloatingBar from './components/compare-floating-bar';
+import CompareModal from './components/compare-modal';
+import InfoSheet from './components/info-sheet';
+import SearchBarFilter from './components/search-bar-filter';
+import SVGElement from './components/svg-element';
 // data
 import indonesiaMap from './data/indonesia-map.json';
 import { useTheme } from './hooks/use-theme';
 // hooks
 import { useToast } from './hooks/use-toast';
-import { ChoroplethMetric } from './interfaces/IChoropleth';
+import { ChoroplethMetric } from './interfaces/choropleth';
 // interfaces
-import { IProvince } from './interfaces/IProvince';
+import { Province } from './interfaces/province';
 import { computeChoropleth } from './utils/choropleth';
 
-const provincesList: IProvince[] = indonesiaMap as IProvince[];
+const provincesList: Province[] = indonesiaMap as Province[];
 
 export default function App() {
   const [open, setOpen] = useState(false);
-  const [province, setProvince] = useState<IProvince | null>(null);
+  const [province, setProvince] = useState<Province | null>(null);
   const [selectedIsland, setSelectedIsland] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
   const [activeMetric, setActiveMetric] = useState<ChoroplethMetric>('none');
@@ -46,7 +46,7 @@ export default function App() {
     () =>
       comparedIds
         .map((id) => provincesList.find((p) => p.id === id))
-        .filter((p): p is IProvince => p !== undefined),
+        .filter((p): p is Province => p !== undefined),
     [comparedIds],
   );
 
@@ -63,7 +63,7 @@ export default function App() {
   }, [toast]);
 
   // Handle adding or removing province from comparison list
-  const handleToggleCompare = (prov: IProvince) => {
+  const handleToggleCompare = (prov: Province) => {
     if (comparedIds.includes(prov.id)) {
       setComparedIds((prev) => prev.filter((id) => id !== prov.id));
       toast({

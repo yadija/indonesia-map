@@ -1,6 +1,6 @@
 export type ChoroplethMetric = 'none' | 'population' | 'density' | 'area';
 
-export interface IChoroplethTier {
+export interface ChoroplethTier {
   tier: number; // 1 to 5
   label: string; // e.g. "< 1,4 Jt"
   min: number;
@@ -10,7 +10,7 @@ export interface IChoroplethTier {
   count: number;
 }
 
-export interface IProvinceChoroplethData {
+export interface ProvinceChoroplethData {
   id: string;
   value: number;
   tier: number; // 1 to 5
@@ -21,7 +21,7 @@ export interface IProvinceChoroplethData {
   fillDark: string;
 }
 
-export interface IChoroplethConfig {
+export interface ChoroplethConfig {
   id: ChoroplethMetric;
   name: string;
   shortName: string;
@@ -31,6 +31,6 @@ export interface IChoroplethConfig {
   totalNational: number;
   minProvince: { name: string; value: number };
   maxProvince: { name: string; value: number };
-  tiers: IChoroplethTier[];
-  provincesData: Record<string, IProvinceChoroplethData>;
+  tiers: ChoroplethTier[];
+  provincesData: Record<string, ProvinceChoroplethData>;
 }

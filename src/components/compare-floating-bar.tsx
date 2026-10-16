@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Scale, X } from 'lucide-react';
 
-import { IProvince } from '../interfaces/IProvince';
+import { Province } from '../interfaces/province';
 
 interface CompareFloatingBarProps {
-  comparedProvinces: IProvince[];
+  comparedProvinces: Province[];
   onRemove: (id: string) => void;
   onClear: () => void;
   onOpenModal: () => void;

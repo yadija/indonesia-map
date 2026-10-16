@@ -11,11 +11,11 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-import { IChoroplethConfig } from '../interfaces/IChoropleth';
+import { ChoroplethConfig } from '../interfaces/choropleth';
 import { formatNumber } from '../utils/choropleth';
 
 interface ChoroplethLegendProps {
-  config: IChoroplethConfig | null;
+  config: ChoroplethConfig | null;
   isDark: boolean;
   hoveredTier: number | null;
   onHoverTier: (tier: number | null) => void;

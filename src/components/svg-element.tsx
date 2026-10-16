@@ -2,23 +2,23 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Award, MapPin, Scale, Users } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { IChoroplethConfig } from '../interfaces/IChoropleth';
-import { IProvince } from '../interfaces/IProvince';
-import ZoomControls from './ZoomControls';
+import { ChoroplethConfig } from '../interfaces/choropleth';
+import { Province } from '../interfaces/province';
+import ZoomControls from './zoom-controls';
 
 interface SVGElementProps {
-  shapes: IProvince[];
+  shapes: Province[];
   selectedIsland?: string | null;
   highlightedId?: string | null;
   comparedIds?: string[];
   isDark?: boolean;
-  choroplethConfig?: IChoroplethConfig | null;
+  choroplethConfig?: ChoroplethConfig | null;
   hoveredTier?: number | null;
   onPathClick: (id: string) => void;
 }
 
 interface HoveredState {
-  province: IProvince;
+  province: Province;
   x: number;
   y: number;
 }

@@ -1,10 +1,10 @@
 import {
+  ChoroplethConfig,
   ChoroplethMetric,
-  IChoroplethConfig,
-  IChoroplethTier,
-  IProvinceChoroplethData,
-} from '../interfaces/IChoropleth';
-import { IProvince } from '../interfaces/IProvince';
+  ChoroplethTier,
+  ProvinceChoroplethData,
+} from '../interfaces/choropleth';
+import { Province } from '../interfaces/province';
 
 export const CHOROPLETH_METRICS: {
   id: ChoroplethMetric;
@@ -94,7 +94,7 @@ export const formatCompact = (val: number, metric: ChoroplethMetric): string => 
 };
 
 export const getProvinceMetricValue = (
-  province: IProvince,
+  province: Province,
   metric: ChoroplethMetric,
 ): number => {
   if (metric === 'population') {
@@ -112,8 +112,8 @@ export const getProvinceMetricValue = (
 
 export function computeChoropleth(
   metric: ChoroplethMetric,
-  provinces: IProvince[],
-): IChoroplethConfig | null {
+  provinces: Province[],
+): ChoroplethConfig | null {
   if (metric === 'none' || provinces.length === 0) return null;
 
   const metricMeta = {
@@ -163,7 +163,7 @@ export function computeChoropleth(
   const palette = PALETTES[metric];
 
   // Build 5 tiers
-  const tiers: IChoroplethTier[] = [
+  const tiers: ChoroplethTier[] = [
     {
       tier: 1,
       min: minVal,
@@ -220,7 +220,7 @@ export function computeChoropleth(
     return 5;
   };
 
-  const provincesData: Record<string, IProvinceChoroplethData> = {};
+  const provincesData: Record<string, ProvinceChoroplethData> = {};
 
   sortedAsc.forEach((item) => {
     const tier = getTier(item.value);

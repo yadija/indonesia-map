@@ -15,12 +15,12 @@ import {
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { ChoroplethMetric } from '../interfaces/IChoropleth';
-import { IProvince } from '../interfaces/IProvince';
-import ThemeToggle from './ThemeToggle';
+import { ChoroplethMetric } from '../interfaces/choropleth';
+import { Province } from '../interfaces/province';
+import ThemeToggle from './theme-toggle';
 
 interface SearchBarFilterProps {
-  provinces: IProvince[];
+  provinces: Province[];
   selectedIsland: string | null;
   activeMetric: ChoroplethMetric;
   isDark: boolean;

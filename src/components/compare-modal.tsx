@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import React, { useMemo, useState } from 'react';
 
-import { IProvince } from '../interfaces/IProvince';
+import { Province } from '../interfaces/province';
 import {
   Dialog,
   DialogContent,
@@ -26,8 +26,8 @@ import {
 interface CompareModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  comparedProvinces: IProvince[];
-  allProvinces: IProvince[];
+  comparedProvinces: Province[];
+  allProvinces: Province[];
   onAddProvince: (id: string) => void;
   onRemoveProvince: (id: string) => void;
   onReplaceProvince: (oldId: string, newId: string) => void;
@@ -98,7 +98,7 @@ export default function CompareModal({
 
   // Group available unselected provinces by island for organized browsing
   const groupedProvinces = useMemo(() => {
-    const groups: Record<string, IProvince[]> = {};
+    const groups: Record<string, Province[]> = {};
     availableProvinces.forEach((p) => {
       const island = p.island || 'Lainnya';
       if (!groups[island]) groups[island] = [];

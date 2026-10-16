@@ -170,7 +170,7 @@ export default function InfoSheet({
             <div className='rounded-lg border-2 border-black bg-muted/60 p-3.5 text-xs text-muted-foreground dark:border-white dark:bg-zinc-900'>
               <div className='flex items-center gap-1.5 font-mono font-bold text-foreground'>
                 <ShieldCheck className='size-4 stroke-[2.5] text-emerald-600' />
-                <span>[RUJUKAN RESMI GEOSPASIAL & CUACA]</span>
+                <span>[RUJUKAN RESMI GEOSPASIAL & LINGKUNGAN]</span>
               </div>
               <ul className='mt-2 space-y-1 font-mono text-[10px] leading-relaxed'>
                 <li>
@@ -180,8 +180,8 @@ export default function InfoSheet({
                   • <strong>Pemekaran 38 Provinsi:</strong> Kemendagri & BIG.
                 </li>
                 <li>
-                  • <strong>Cuaca Terkini:</strong> Open-Meteo API (Lisensi Terbuka CC BY
-                  4.0).
+                  • <strong>Cuaca & Kualitas Udara (AQI):</strong> Open-Meteo API (Lisensi
+                  Terbuka CC BY 4.0).
                 </li>
               </ul>
             </div>

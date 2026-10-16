@@ -52,10 +52,10 @@ Statistical and geospatial data utilized in this application are derived from of
 4. **Regional Profiles & Historical Summaries:**
    - [Indonesian Wikipedia](https://id.wikipedia.org) for provincial capitals, time zones, and brief historical descriptions.
 
-5. **Real-time Weather & Atmospheric Data:**
-   - **Open-Meteo Weather API** — Open-source weather forecast API providing real-time meteorological conditions (temperature, apparent temperature, relative humidity, wind speed, and WMO weather interpretation codes) for all 38 provincial capitals.
+5. **Real-time Weather & Air Quality (Atmospheric Data):**
+   - **Open-Meteo Weather & Air Quality API** — Open-source environmental forecast APIs providing real-time meteorological conditions (temperature, apparent temperature, relative humidity, wind speed, and WMO weather codes) and air quality metrics (US AQI, PM2.5, PM10, and Ozone) for all 38 provincial capitals without requiring an API key.
    - License: [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)
-   - Official Portal: [https://open-meteo.com](https://open-meteo.com)
+   - Official Portals: [Open-Meteo Weather](https://open-meteo.com) | [Open-Meteo Air Quality](https://open-meteo.com/en/docs/air-quality-api)
 
 # 📚 Technical Documentation
 

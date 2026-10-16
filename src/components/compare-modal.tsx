@@ -12,12 +12,15 @@ import {
   ShieldCheck,
   TrendingUp,
   Users,
+  Wind,
   X,
 } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { AirQualityData } from '../interfaces/air-quality';
 import { Province } from '../interfaces/province';
 import { WeatherData } from '../interfaces/weather';
+import { fetchProvinceAirQuality } from '../utils/air-quality';
 import { fetchProvinceWeather } from '../utils/weather';
 import {
   Dialog,
@@ -97,6 +100,52 @@ function CompareWeatherBadge({ provinceId }: { provinceId: string }) {
       <span className='text-amber-500'>{weather.temperature}°C</span>
       <span className='text-[10px] font-normal text-muted-foreground'>
         ({weather.label})
+      </span>
+    </span>
+  );
+}
+
+function CompareAirQualityBadge({ provinceId }: { provinceId: string }) {
+  const [aqi, setAqi] = useState<AirQualityData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    fetchProvinceAirQuality(provinceId)
+      .then((data) => {
+        if (isMounted) {
+          setAqi(data);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setLoading(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [provinceId]);
+
+  if (loading) {
+    return (
+      <span className='animate-pulse font-mono text-[10px] text-muted-foreground'>
+        Memuat...
+      </span>
+    );
+  }
+
+  if (!aqi) {
+    return <span className='font-mono text-[10px] text-muted-foreground'>-</span>;
+  }
+
+  return (
+    <span className='inline-flex items-center gap-1 font-mono text-xs font-bold'>
+      <span className='text-foreground'>{aqi.aqi} AQI</span>
+      <span
+        className={`rounded px-1.5 py-0.5 text-[9px] font-black uppercase ${aqi.category.badgeClass}`}
+      >
+        {aqi.category.label}
       </span>
     </span>
   );
@@ -430,6 +479,14 @@ export default function CompareModal({
                           CUACA SAAT INI:
                         </span>
                         <CompareWeatherBadge provinceId={prov.id} />
+                      </div>
+
+                      <div className='flex items-center justify-between'>
+                        <span className='flex items-center gap-1.5 text-muted-foreground'>
+                          <Wind className='size-3.5 stroke-[2.5] text-emerald-500' />
+                          UDARA (AQI):
+                        </span>
+                        <CompareAirQualityBadge provinceId={prov.id} />
                       </div>
                     </div>
 

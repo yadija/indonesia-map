@@ -3,6 +3,7 @@ import {
   ArrowLeftRight,
   ChevronsUpDown,
   Clock,
+  CloudSun,
   ExternalLink,
   MapPin,
   Maximize2,
@@ -13,9 +14,11 @@ import {
   Users,
   X,
 } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Province } from '../interfaces/province';
+import { WeatherData } from '../interfaces/weather';
+import { fetchProvinceWeather } from '../utils/weather';
 import {
   Dialog,
   DialogContent,
@@ -54,6 +57,50 @@ const COLUMN_COLORS = [
     tag: 'bg-emerald-100 text-emerald-900 border border-black',
   },
 ];
+
+function CompareWeatherBadge({ provinceId }: { provinceId: string }) {
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    fetchProvinceWeather(provinceId)
+      .then((data) => {
+        if (isMounted) {
+          setWeather(data);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setLoading(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [provinceId]);
+
+  if (loading) {
+    return (
+      <span className='animate-pulse font-mono text-[10px] text-muted-foreground'>
+        Memuat...
+      </span>
+    );
+  }
+
+  if (!weather) {
+    return <span className='font-mono text-[10px] text-muted-foreground'>-</span>;
+  }
+
+  return (
+    <span className='inline-flex items-center gap-1 font-mono text-xs font-bold text-foreground'>
+      <span className='text-amber-500'>{weather.temperature}°C</span>
+      <span className='text-[10px] font-normal text-muted-foreground'>
+        ({weather.label})
+      </span>
+    </span>
+  );
+}
 
 export default function CompareModal({
   open,
@@ -376,6 +423,14 @@ export default function CompareModal({
                           {prov.timezone || '-'}
                         </span>
                       </div>
+
+                      <div className='flex items-center justify-between'>
+                        <span className='flex items-center gap-1.5 text-muted-foreground'>
+                          <CloudSun className='size-3.5 stroke-[2.5] text-amber-500' />
+                          CUACA SAAT INI:
+                        </span>
+                        <CompareWeatherBadge provinceId={prov.id} />
+                      </div>
                     </div>
 
                     {/* Deskripsi */}
@@ -414,7 +469,7 @@ export default function CompareModal({
         <div className='mt-4 flex flex-wrap items-center justify-between gap-2 border-t-2 border-black pt-3 font-mono text-[11px] text-muted-foreground dark:border-white'>
           <div className='flex items-center gap-1.5'>
             <ShieldCheck className='size-3.5 stroke-[2.5] text-emerald-600' />
-            <span>[RUJUKAN RESMI: BPS RI (2023) & KEMENDAGRI RI]</span>
+            <span>[RUJUKAN: BPS RI (2023), KEMENDAGRI RI & OPEN-METEO (CC BY 4.0)]</span>
           </div>
 
           <motion.button

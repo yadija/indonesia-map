@@ -52,6 +52,11 @@ Statistical and geospatial data utilized in this application are derived from of
 4. **Regional Profiles & Historical Summaries:**
    - [Indonesian Wikipedia](https://id.wikipedia.org) for provincial capitals, time zones, and brief historical descriptions.
 
+5. **Real-time Weather & Atmospheric Data:**
+   - **Open-Meteo Weather API** — Open-source weather forecast API providing real-time meteorological conditions (temperature, apparent temperature, relative humidity, wind speed, and WMO weather interpretation codes) for all 38 provincial capitals.
+   - License: [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)
+   - Official Portal: [https://open-meteo.com](https://open-meteo.com)
+
 # 📚 Technical Documentation
 
 This repository provides comprehensive technical and product engineering documentation:

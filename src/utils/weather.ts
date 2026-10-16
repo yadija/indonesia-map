@@ -131,6 +131,11 @@ export async function fetchProvinceWeather(
     if (!current) throw new Error('Invalid weather payload');
 
     const interpretation = interpretWeatherCode(current.weather_code);
+    const tzAbbr = getIndonesianTimezoneLabel(
+      json.utc_offset_seconds,
+      json.timezone,
+      json.timezone_abbreviation,
+    );
 
     const weatherData: WeatherData = {
       temperature: Math.round(current.temperature_2m),
@@ -141,6 +146,9 @@ export async function fetchProvinceWeather(
       label: interpretation.label,
       iconName: interpretation.iconName,
       time: current.time,
+      timezone: json.timezone,
+      timezoneAbbreviation: tzAbbr,
+      fetchedAt: Date.now(),
       capital: coord.capital,
     };
 
@@ -155,4 +163,90 @@ export async function fetchProvinceWeather(
     console.error(`Error fetching weather for ${provinceId}:`, error);
     throw error;
   }
+}
+
+/**
+ * Mendapatkan singkatan zona waktu resmi Indonesia (WIB, WITA, WIT)
+ * berdasarkan offset UTC atau string zona waktu Open-Meteo.
+ */
+export function getIndonesianTimezoneLabel(
+  utcOffsetSeconds?: number,
+  timezone?: string,
+  fallbackAbbr?: string,
+): string {
+  if (utcOffsetSeconds === 25200) return 'WIB';
+  if (utcOffsetSeconds === 28800) return 'WITA';
+  if (utcOffsetSeconds === 32400) return 'WIT';
+
+  if (timezone) {
+    if (timezone.includes('Jakarta') || timezone.includes('Pontianak')) return 'WIB';
+    if (timezone.includes('Makassar') || timezone.includes('Ujung_Pandang'))
+      return 'WITA';
+    if (timezone.includes('Jayapura')) return 'WIT';
+  }
+
+  return fallbackAbbr || '';
+}
+
+/**
+ * Format waktu pada data Open-Meteo (e.g. "2026-10-16T21:00")
+ * menjadi format lokal ramah baca Indonesia (e.g. "16 Okt 2026, 21.00 WIB").
+ */
+export function formatDataTime(timeString?: string, tzLabel?: string): string {
+  if (!timeString) return '-';
+
+  const match = timeString.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+  if (match) {
+    const [, year, month, day, hour, minute] = match;
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'Mei',
+      'Jun',
+      'Jul',
+      'Ags',
+      'Sep',
+      'Okt',
+      'Nov',
+      'Des',
+    ];
+    const monthName = months[parseInt(month, 10) - 1] || month;
+    const tzSuffix = tzLabel ? ` ${tzLabel}` : '';
+    return `${parseInt(day, 10)} ${monthName} ${year}, ${hour}.${minute}${tzSuffix}`;
+  }
+
+  const date = new Date(timeString);
+  if (!Number.isNaN(date.getTime())) {
+    return date.toLocaleString('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+  }
+
+  return timeString;
+}
+
+/**
+ * Format timestamp pengambilan data Open-Meteo dalam format waktu lokal Indonesia.
+ */
+export function formatFetchTime(timestamp?: number | string): string {
+  if (!timestamp) return '-';
+  const date = typeof timestamp === 'number' ? new Date(timestamp) : new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return String(timestamp);
+  return new Intl.DateTimeFormat('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZoneName: 'short',
+  }).format(date);
 }

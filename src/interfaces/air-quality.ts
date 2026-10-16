@@ -22,5 +22,8 @@ export interface AirQualityData {
   pm10: number;
   ozone: number;
   time: string;
+  timezone?: string;
+  timezoneAbbreviation?: string;
+  fetchedAt?: number;
   capital: string;
 }

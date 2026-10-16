@@ -21,7 +21,7 @@ import { AirQualityData } from '../interfaces/air-quality';
 import { Province } from '../interfaces/province';
 import { WeatherData } from '../interfaces/weather';
 import { fetchProvinceAirQuality } from '../utils/air-quality';
-import { fetchProvinceWeather } from '../utils/weather';
+import { fetchProvinceWeather, formatDataTime } from '../utils/weather';
 import {
   Dialog,
   DialogContent,
@@ -96,7 +96,10 @@ function CompareWeatherBadge({ provinceId }: { provinceId: string }) {
   }
 
   return (
-    <span className='inline-flex items-center gap-1 font-mono text-xs font-bold text-foreground'>
+    <span
+      title={`Waktu Data: ${formatDataTime(weather.time, weather.timezoneAbbreviation)}`}
+      className='inline-flex cursor-help items-center gap-1 font-mono text-xs font-bold text-foreground'
+    >
       <span className='text-amber-500'>{weather.temperature}°C</span>
       <span className='text-[10px] font-normal text-muted-foreground'>
         ({weather.label})
@@ -140,7 +143,10 @@ function CompareAirQualityBadge({ provinceId }: { provinceId: string }) {
   }
 
   return (
-    <span className='inline-flex items-center gap-1 font-mono text-xs font-bold'>
+    <span
+      title={`Waktu Data: ${formatDataTime(aqi.time, aqi.timezoneAbbreviation)}`}
+      className='inline-flex cursor-help items-center gap-1 font-mono text-xs font-bold'
+    >
       <span className='text-foreground'>{aqi.aqi} AQI</span>
       <span
         className={`rounded px-1.5 py-0.5 text-[9px] font-black uppercase ${aqi.category.badgeClass}`}

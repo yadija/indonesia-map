@@ -16,6 +16,9 @@ export interface WeatherData {
   label: string;
   iconName: WeatherIconType;
   time: string;
+  timezone?: string;
+  timezoneAbbreviation?: string;
+  fetchedAt?: number;
   capital: string;
 }
 

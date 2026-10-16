@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import {
   Activity,
+  Clock,
   Cloud,
   CloudDrizzle,
   CloudFog,
@@ -20,7 +21,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { AirQualityData } from '../interfaces/air-quality';
 import { WeatherData, WeatherIconType } from '../interfaces/weather';
 import { fetchProvinceAirQuality } from '../utils/air-quality';
-import { fetchProvinceWeather } from '../utils/weather';
+import { fetchProvinceWeather, formatDataTime } from '../utils/weather';
 
 interface WeatherCardProps {
   provinceId: string;
@@ -106,6 +107,10 @@ export default function WeatherCard({
   };
 
   const isLoading = activeTab === 'weather' ? loadingWeather : loadingAQI;
+  const currentDataTime =
+    activeTab === 'weather'
+      ? formatDataTime(weather?.time, weather?.timezoneAbbreviation)
+      : formatDataTime(airQuality?.time, airQuality?.timezoneAbbreviation);
 
   return (
     <div className='rounded-lg border-2 border-black bg-card p-3.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-4'>
@@ -127,7 +132,7 @@ export default function WeatherCard({
           whileTap={{ scale: 0.9 }}
           onClick={refreshAll}
           disabled={isLoading}
-          title='Muat Ulang Data Lingkungan'
+          title={`Muat Ulang Data Lingkungan (Waktu Data: ${currentDataTime})`}
           className='flex size-6 items-center justify-center rounded border border-border bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50'
         >
           <RefreshCw
@@ -397,26 +402,38 @@ export default function WeatherCard({
         </div>
       ) : null}
 
-      {/* Legal & Open Source Attribution Footer */}
-      <div className='mt-3 flex items-center justify-between border-t border-border/50 pt-2 text-[10px] text-muted-foreground'>
-        <span className='font-mono leading-none'>Data Terbuka (Open Data)</span>
-        <a
-          href={
-            activeTab === 'weather'
-              ? 'https://open-meteo.com/'
-              : 'https://open-meteo.com/en/docs/air-quality-api'
-          }
-          target='_blank'
-          rel='noopener noreferrer'
-          className='inline-flex items-center gap-1 font-mono font-medium hover:text-foreground hover:underline'
-        >
-          <span className='leading-none'>
-            {activeTab === 'weather'
-              ? 'Open-Meteo Weather (CC BY 4.0)'
-              : 'Open-Meteo Air Quality (CC BY 4.0)'}
+      {/* Waktu Pada Data & Legal Attribution Footer */}
+      <div className='mt-3 space-y-1.5 border-t border-border/50 pt-2 font-mono text-[10px]'>
+        <div className='flex items-center justify-between'>
+          <span className='flex items-center gap-1.5 leading-none text-muted-foreground'>
+            <Clock className='-mt-0.5 size-3 shrink-0 stroke-[2.2]' />
+            <span className='leading-none'>WAKTU DATA:</span>
           </span>
-          <ExternalLink className='size-2.5 shrink-0' />
-        </a>
+          <span className='font-bold leading-none text-foreground'>
+            {currentDataTime}
+          </span>
+        </div>
+
+        <div className='flex items-center justify-between text-muted-foreground'>
+          <span className='leading-none'>Data Terbuka (Open Data)</span>
+          <a
+            href={
+              activeTab === 'weather'
+                ? 'https://open-meteo.com/'
+                : 'https://open-meteo.com/en/docs/air-quality-api'
+            }
+            target='_blank'
+            rel='noopener noreferrer'
+            className='inline-flex items-center gap-1 font-medium hover:text-foreground hover:underline'
+          >
+            <span className='leading-none'>
+              {activeTab === 'weather'
+                ? 'Open-Meteo Weather (CC BY 4.0)'
+                : 'Open-Meteo Air Quality (CC BY 4.0)'}
+            </span>
+            <ExternalLink className='size-2.5 shrink-0' />
+          </a>
+        </div>
       </div>
     </div>
   );

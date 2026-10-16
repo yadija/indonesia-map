@@ -1,5 +1,5 @@
 import { AirQualityData, AQICategory } from '../interfaces/air-quality';
-import { PROVINCE_COORDINATES } from './weather';
+import { getIndonesianTimezoneLabel, PROVINCE_COORDINATES } from './weather';
 
 export function evaluateAQI(aqi: number): AQICategory {
   if (aqi <= 50) {
@@ -109,6 +109,12 @@ export async function fetchProvinceAirQuality(
         : 0;
     const category = evaluateAQI(rawAqi);
 
+    const tzAbbr = getIndonesianTimezoneLabel(
+      json.utc_offset_seconds,
+      json.timezone,
+      json.timezone_abbreviation,
+    );
+
     const aqiData: AirQualityData = {
       aqi: rawAqi,
       category,
@@ -116,6 +122,9 @@ export async function fetchProvinceAirQuality(
       pm10: current.pm10 !== undefined ? Math.round(current.pm10 * 10) / 10 : 0,
       ozone: current.ozone !== undefined ? Math.round(current.ozone) : 0,
       time: current.time || '',
+      timezone: json.timezone,
+      timezoneAbbreviation: tzAbbr,
+      fetchedAt: Date.now(),
       capital: coord.capital,
     };
 

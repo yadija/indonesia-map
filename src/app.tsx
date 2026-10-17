@@ -2,6 +2,7 @@ import { Star } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 // components
+import AboutModal from './components/about-modal';
 import ChoroplethLegend from './components/choropleth-legend';
 import CompareFloatingBar from './components/compare-floating-bar';
 import CompareModal from './components/compare-modal';
@@ -27,6 +28,9 @@ export default function App() {
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
   const [activeMetric, setActiveMetric] = useState<ChoroplethMetric>('none');
   const [hoveredTier, setHoveredTier] = useState<number | null>(null);
+
+  // Modal States
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
   // Compare Mode States
   const [comparedIds, setComparedIds] = useState<string[]>([]);
@@ -182,6 +186,7 @@ export default function App() {
         onSelectMetric={setActiveMetric}
         onSelectIsland={setSelectedIsland}
         onSelectProvince={handleSelectProvince}
+        onOpenAbout={() => setIsAboutModalOpen(true)}
       />
 
       {/* Map Canvas */}
@@ -242,6 +247,9 @@ export default function App() {
         onRemoveProvince={handleRemoveCompared}
         onReplaceProvince={handleReplaceCompared}
       />
+
+      {/* About & Developer Profile Dialog Modal */}
+      <AboutModal open={isAboutModalOpen} onOpenChange={setIsAboutModalOpen} />
 
       {/* Continuous Motion-Driven Marquee Ticker Ribbon */}
       <div className='pointer-events-none absolute inset-x-0 bottom-0 z-20 flex h-7 items-center overflow-hidden border-t-2 border-black bg-red-600 font-mono text-[11px] font-black uppercase tracking-widest text-white shadow-brutal-sm dark:border-white'>

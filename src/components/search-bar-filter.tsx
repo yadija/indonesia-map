@@ -4,6 +4,7 @@ import {
   ChevronDown,
   ChevronUp,
   Filter,
+  Info,
   Map,
   MapPin,
   Maximize2,
@@ -31,6 +32,7 @@ interface SearchBarFilterProps {
   onSelectMetric: (metric: ChoroplethMetric) => void;
   onSelectIsland: (island: string | null) => void;
   onSelectProvince: (id: string) => void;
+  onOpenAbout?: () => void;
 }
 
 const ISLANDS = [
@@ -63,6 +65,7 @@ export default function SearchBarFilter({
   onSelectMetric,
   onSelectIsland,
   onSelectProvince,
+  onOpenAbout,
 }: SearchBarFilterProps) {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -306,6 +309,21 @@ export default function SearchBarFilter({
 
             {/* Theme Toggle Button */}
             <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
+
+            {/* About & Developer Profile Modal Button */}
+            {onOpenAbout && (
+              <motion.button
+                type='button'
+                onClick={onOpenAbout}
+                whileHover={{ scale: 1.05, y: -1 }}
+                whileTap={{ scale: 0.95, y: 1 }}
+                className='flex size-9 items-center justify-center rounded-lg border-2 border-black bg-background text-foreground shadow-brutal-sm transition-colors hover:bg-muted active:shadow-none dark:border-white dark:bg-zinc-900 dark:shadow-brutal-white-sm dark:hover:bg-zinc-800'
+                title='Tentang Aplikasi & Profil Pengembang'
+                aria-label='Tentang Aplikasi dan Profil Pengembang'
+              >
+                <Info className='size-4 stroke-[2.5]' />
+              </motion.button>
+            )}
           </div>
         </div>
 

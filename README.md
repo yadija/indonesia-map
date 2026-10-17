@@ -2,7 +2,7 @@
 
 # ⌛ Introduction
 
-This is an interactive web application that displays the map of Indonesia with **38 provinces**, featuring interactive thematic visualization (Choropleth map for Population, Population Density, and Area), island filters, search with auto-complete, pan & zoom controls, and dark mode support.
+This is an interactive web application that displays the map of Indonesia with **38 provinces**, featuring interactive thematic visualization (Choropleth map for Population, Population Density, and Area), real-time weather & Air Quality Index (AQI) monitoring via Open-Meteo, island filters, search with auto-complete, pan & zoom controls, multi-province comparison matrix, and dark mode support.
 
 # 🚀 Installation
 

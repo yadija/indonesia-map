@@ -63,7 +63,11 @@ export default function SVGElement({
         }}
         className='flex size-full items-center justify-center will-change-transform'
       >
-        <svg viewBox='0 0 800 350' className='size-full'>
+        <svg
+          viewBox='0 0 800 350'
+          preserveAspectRatio='xMidYMid meet'
+          className='size-full max-h-full max-w-full'
+        >
           {shapes.map((shape, index) => {
             const { id, name, d, island } = shape;
             const isMatchIsland = !selectedIsland || island === selectedIsland;

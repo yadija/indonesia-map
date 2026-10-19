@@ -3,6 +3,7 @@ import {
   Check,
   Clock,
   ExternalLink,
+  Layers,
   MapPin,
   Maximize2,
   Plus,
@@ -10,6 +11,7 @@ import {
   Users,
 } from 'lucide-react';
 
+import { hasRegenciesData } from '../data/regencies';
 import { Province } from '../interfaces/province';
 import {
   Sheet,
@@ -26,6 +28,7 @@ interface InfoSheetProps {
   province: Province | null;
   isAlreadyCompared?: boolean;
   onAddToCompare?: (province: Province) => void;
+  onDrillDown?: (province: Province) => void;
 }
 
 export default function InfoSheet({
@@ -34,6 +37,7 @@ export default function InfoSheet({
   province,
   isAlreadyCompared,
   onAddToCompare,
+  onDrillDown,
 }: InfoSheetProps) {
   const formatNumber = (val?: number) => {
     if (!val) return '-';
@@ -61,6 +65,20 @@ export default function InfoSheet({
 
         {province && (
           <div className='mt-4 space-y-3.5 sm:mt-6 sm:space-y-4'>
+            {/* Action: Lihat Peta Kabupaten & Kota (Drill Down) */}
+            {hasRegenciesData(province.id) && onDrillDown && (
+              <motion.button
+                type='button'
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98, y: 1 }}
+                onClick={() => onDrillDown(province)}
+                className='flex w-full items-center justify-center gap-2 rounded-lg border-2 border-black bg-amber-400 px-3 py-2.5 font-mono text-xs font-black uppercase tracking-wider text-black shadow-brutal transition-all hover:bg-amber-300 dark:border-white sm:px-4 sm:py-3'
+              >
+                <Layers className='-mt-0.5 size-4 shrink-0 stroke-[2.5]' />
+                <span className='leading-none'>LIHAT PETA KOTA &amp; KABUPATEN</span>
+              </motion.button>
+            )}
+
             {/* Action: Tambahkan ke Komparasi */}
             {onAddToCompare && (
               <motion.button

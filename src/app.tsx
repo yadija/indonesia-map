@@ -7,27 +7,52 @@ import ChoroplethLegend from './components/choropleth-legend';
 import CompareFloatingBar from './components/compare-floating-bar';
 import CompareModal from './components/compare-modal';
 import InfoSheet from './components/info-sheet';
+import RegencyListModal from './components/regency-list-modal';
+import RegencySheet from './components/regency-sheet';
+import RegencySVGElement from './components/regency-svg-element';
 import SearchBarFilter from './components/search-bar-filter';
 import SVGElement from './components/svg-element';
 // data
 import indonesiaMap from './data/indonesia-map.json';
+import {
+  getProvinceIdFromSlug,
+  getRegenciesByProvinceId,
+  getSlugFromProvinceId,
+  hasRegenciesData,
+} from './data/regencies';
+import { useRouter } from './hooks/use-router';
 import { useTheme } from './hooks/use-theme';
 // hooks
 import { useToast } from './hooks/use-toast';
 import { ChoroplethMetric } from './interfaces/choropleth';
 // interfaces
 import { Province } from './interfaces/province';
+import { Regency } from './interfaces/regency';
 import { computeChoropleth } from './utils/choropleth';
+import { computeRegencyChoropleth } from './utils/regency-choropleth';
 
 const provincesList: Province[] = indonesiaMap as Province[];
 
 export default function App() {
+  const { pathname, navigate } = useRouter();
+
   const [open, setOpen] = useState(false);
   const [province, setProvince] = useState<Province | null>(null);
   const [selectedIsland, setSelectedIsland] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
   const [activeMetric, setActiveMetric] = useState<ChoroplethMetric>('none');
   const [hoveredTier, setHoveredTier] = useState<number | null>(null);
+
+  // Drill-down Regencies State
+  const [drillDownProvince, setDrillDownProvince] = useState<Province | null>(null);
+  const [selectedRegency, setSelectedRegency] = useState<Regency | null>(null);
+  const [selectedRegencyType, setSelectedRegencyType] = useState<
+    'all' | 'kabupaten' | 'kota'
+  >('all');
+  const [isRegencySheetOpen, setIsRegencySheetOpen] = useState(false);
+  const [highlightedRegencyId, setHighlightedRegencyId] = useState<string | null>(null);
+  const [isRegencyListModalOpen, setIsRegencyListModalOpen] = useState(false);
+  const [hoveredRegencyId, setHoveredRegencyId] = useState<string | null>(null);
 
   // Modal States
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
@@ -40,11 +65,54 @@ export default function App() {
   const { toast } = useToast();
   const { isDark, toggleTheme } = useTheme();
 
+  // Synchronize URL pathname with drill-down state and browser navigation (Back/Forward)
+  useEffect(() => {
+    const match = pathname.match(/^\/(?:provinsi|kabupaten)\/([^/?#]+)/i);
+    if (match) {
+      const slug = match[1];
+      const provId = getProvinceIdFromSlug(slug);
+      if (provId) {
+        const targetProv = provincesList.find((p) => p.id === provId);
+        if (targetProv && targetProv.id !== drillDownProvince?.id) {
+          setDrillDownProvince(targetProv);
+          setSelectedRegencyType('all');
+          setOpen(false);
+          setHighlightedId(null);
+        }
+        return;
+      }
+    }
+    // If on root path
+    if (pathname === '/' || pathname === '') {
+      if (drillDownProvince !== null) {
+        setDrillDownProvince(null);
+        setSelectedRegency(null);
+        setHighlightedRegencyId(null);
+        setSelectedRegencyType('all');
+      }
+    }
+  }, [pathname, drillDownProvince?.id]);
+
+  // Selected province regencies data
+  const regencyData = useMemo(() => {
+    if (!drillDownProvince) return null;
+    return getRegenciesByProvinceId(drillDownProvince.id);
+  }, [drillDownProvince]);
+
   // Compute choropleth data when metric is active
-  const choroplethConfig = useMemo(
+  const nationalChoroplethConfig = useMemo(
     () => computeChoropleth(activeMetric, provincesList),
     [activeMetric],
   );
+
+  const regencyChoroplethConfig = useMemo(() => {
+    if (!regencyData) return null;
+    return computeRegencyChoropleth(activeMetric, regencyData.regencies);
+  }, [activeMetric, regencyData]);
+
+  const choroplethConfig = drillDownProvince
+    ? regencyChoroplethConfig
+    : nationalChoroplethConfig;
 
   // Compared provinces objects
   const comparedProvinces = useMemo(
@@ -149,15 +217,79 @@ export default function App() {
     }
   };
 
+  const handleDrillDown = (prov: Province) => {
+    if (!hasRegenciesData(prov.id)) {
+      toast({
+        title: 'DATA BELUM TERSEDIA',
+        description: `Batas kabupaten/kota untuk ${prov.name} sedang dalam proses integrasi.`,
+        duration: 3500,
+      });
+      return;
+    }
+    const slug = getSlugFromProvinceId(prov.id);
+    navigate(`/provinsi/${slug}`);
+    setDrillDownProvince(prov);
+    setSelectedRegencyType('all');
+    setOpen(false);
+    setHighlightedId(null);
+    setHighlightedRegencyId(null);
+    setIsRegencyListModalOpen(false);
+    setHoveredRegencyId(null);
+    toast({
+      title: 'MODE KABUPATEN / KOTA',
+      description: `Menampilkan peta batas kabupaten/kota di ${prov.name}`,
+      duration: 3500,
+    });
+  };
+
+  const handleBackToNational = () => {
+    navigate('/');
+    setDrillDownProvince(null);
+    setSelectedRegency(null);
+    setHighlightedRegencyId(null);
+    setSelectedRegencyType('all');
+    setIsRegencyListModalOpen(false);
+    setHoveredRegencyId(null);
+    toast({
+      title: 'PETA NASIONAL',
+      description: 'Kembali ke peta 38 provinsi Indonesia',
+      duration: 2500,
+    });
+  };
+
+  const handleSelectRegency = (reg: Regency) => {
+    const parentProv = provincesList.find((p) => p.id === reg.provinceId);
+    if (parentProv) {
+      const slug = getSlugFromProvinceId(parentProv.id);
+      navigate(`/provinsi/${slug}`);
+      setDrillDownProvince(parentProv);
+      setSelectedRegencyType('all');
+      setSelectedRegency(reg);
+      setHighlightedRegencyId(reg.id);
+      setIsRegencySheetOpen(true);
+      setOpen(false);
+    }
+  };
+
+  const handleRegencyClick = (reg: Regency) => {
+    setSelectedRegency(reg);
+    setHighlightedRegencyId(reg.id);
+    setIsRegencySheetOpen(true);
+  };
+
   return (
-    <section className='bg-brutalist-grid relative grid h-screen min-h-dvh select-none place-items-center overflow-hidden bg-background text-foreground transition-colors duration-200'>
+    <section className='bg-brutalist-grid relative h-screen min-h-dvh select-none overflow-hidden bg-background text-foreground transition-colors duration-200'>
       {/* Brutalist Architectural Coordinates & Corner Marks */}
       <div className='pointer-events-none absolute left-4 top-4 z-10 hidden select-none flex-col gap-0.5 font-mono text-[10px] font-bold text-muted-foreground/50 md:flex'>
         <span>[IDN-GRID // 0°47&apos;S 113°55&apos;E]</span>
         <span>[GEODETIC WGS84 // EPSG:4326]</span>
       </div>
       <div className='pointer-events-none absolute right-4 top-4 z-10 hidden select-none flex-col items-end gap-0.5 font-mono text-[10px] font-bold text-muted-foreground/50 md:flex'>
-        <span>[38 PROVINSI // 17.000+ PULAU]</span>
+        <span>
+          {drillDownProvince
+            ? `[KAB/KOTA // ${drillDownProvince.name.toUpperCase()}]`
+            : '[38 PROVINSI // 17.000+ PULAU]'}
+        </span>
         <span>[BPS RI &amp; KEMENDAGRI DATA]</span>
       </div>
       <div className='pointer-events-none absolute left-2 top-2 font-mono text-sm font-bold text-foreground/30'>
@@ -173,7 +305,7 @@ export default function App() {
         +
       </div>
 
-      {/* Floating Search Bar, Island Filter, Mode Switcher & Theme Switcher */}
+      {/* Floating Search Bar, Island Filter, Mode Switcher, Theme Switcher & Drill-down Nav */}
       <SearchBarFilter
         provinces={provincesList}
         selectedIsland={selectedIsland}
@@ -181,26 +313,56 @@ export default function App() {
         isDark={isDark}
         isCompareActive={isCompareMode}
         compareCount={comparedIds.length}
+        currentProvince={drillDownProvince}
+        regencies={regencyData?.regencies}
+        selectedRegencyType={selectedRegencyType}
+        onSelectRegencyType={setSelectedRegencyType}
+        onBackToNational={handleBackToNational}
+        onSelectOtherProvince={(otherId) => {
+          const nextProv = provincesList.find((p) => p.id === otherId);
+          if (nextProv) handleDrillDown(nextProv);
+        }}
         onToggleTheme={toggleTheme}
         onToggleCompareMode={handleToggleCompareMode}
         onSelectMetric={setActiveMetric}
         onSelectIsland={setSelectedIsland}
         onSelectProvince={handleSelectProvince}
+        onSelectRegency={handleSelectRegency}
         onOpenAbout={() => setIsAboutModalOpen(true)}
+        onOpenRegencyList={() => setIsRegencyListModalOpen(true)}
       />
 
-      {/* Map Canvas */}
-      <div className='flex size-full items-center justify-center pb-10 pt-16 sm:pb-8 sm:pt-20'>
-        <SVGElement
-          shapes={provincesList}
-          selectedIsland={selectedIsland}
-          highlightedId={highlightedId}
-          comparedIds={comparedIds}
-          isDark={isDark}
-          choroplethConfig={choroplethConfig}
-          hoveredTier={hoveredTier}
-          onPathClick={handlePathClick}
-        />
+      {/* Map Canvas: Perfectly bounded and centered within safe viewport */}
+      <div
+        className={`absolute inset-x-0 flex items-center justify-center px-3 transition-all duration-200 sm:px-8 md:px-12 ${
+          drillDownProvince
+            ? 'bottom-8 top-[116px] sm:bottom-9 sm:top-[122px]'
+            : 'bottom-8 top-[68px] sm:bottom-9 sm:top-[74px]'
+        }`}
+      >
+        {drillDownProvince && regencyData ? (
+          <RegencySVGElement
+            provinceData={regencyData}
+            highlightedRegencyId={highlightedRegencyId}
+            externalHoveredRegencyId={hoveredRegencyId}
+            selectedRegencyType={selectedRegencyType}
+            isDark={isDark}
+            choroplethConfig={choroplethConfig}
+            hoveredTier={hoveredTier}
+            onRegencyClick={handleRegencyClick}
+          />
+        ) : (
+          <SVGElement
+            shapes={provincesList}
+            selectedIsland={selectedIsland}
+            highlightedId={highlightedId}
+            comparedIds={comparedIds}
+            isDark={isDark}
+            choroplethConfig={choroplethConfig}
+            hoveredTier={hoveredTier}
+            onPathClick={handlePathClick}
+          />
+        )}
       </div>
 
       {/* Thematic Map Choropleth Legend */}
@@ -232,6 +394,20 @@ export default function App() {
         province={province}
         isAlreadyCompared={province ? comparedIds.includes(province.id) : false}
         onAddToCompare={handleToggleCompare}
+        onDrillDown={handleDrillDown}
+      />
+
+      {/* Detail Regency Sheet */}
+      <RegencySheet
+        open={isRegencySheetOpen}
+        onOpenChange={(isOpen) => {
+          setIsRegencySheetOpen(isOpen);
+          if (!isOpen) {
+            setHighlightedRegencyId(null);
+          }
+        }}
+        regency={selectedRegency}
+        provinceName={drillDownProvince?.name}
       />
 
       {/* Side-by-Side Province Comparison Dialog Modal */}
@@ -250,6 +426,20 @@ export default function App() {
 
       {/* About & Developer Profile Dialog Modal */}
       <AboutModal open={isAboutModalOpen} onOpenChange={setIsAboutModalOpen} />
+
+      {/* Regency List Dialog Modal with Live Map Hover Synchronization */}
+      <RegencyListModal
+        open={isRegencyListModalOpen}
+        onOpenChange={setIsRegencyListModalOpen}
+        province={drillDownProvince}
+        regencies={regencyData?.regencies || []}
+        hoveredRegencyId={hoveredRegencyId}
+        onHoverRegency={setHoveredRegencyId}
+        onSelectRegency={(reg) => {
+          setIsRegencyListModalOpen(false);
+          handleRegencyClick(reg);
+        }}
+      />
 
       {/* Continuous Motion-Driven Marquee Ticker Ribbon */}
       <div className='pointer-events-none absolute inset-x-0 bottom-0 z-20 flex h-7 items-center overflow-hidden border-t-2 border-black bg-red-600 font-mono text-[11px] font-black uppercase tracking-widest text-white shadow-brutal-sm dark:border-white'>

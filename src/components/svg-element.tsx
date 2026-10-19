@@ -59,7 +59,9 @@ export default function SVGElement({
         style={{
           transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${scale})`,
           transformOrigin: 'center center',
-          transition: isDragging ? 'none' : 'transform 0.25s ease-out',
+          transition: isDragging
+            ? 'none'
+            : 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
         className='flex size-full items-center justify-center will-change-transform'
       >

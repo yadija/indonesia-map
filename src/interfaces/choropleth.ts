@@ -2,7 +2,7 @@ export type ChoroplethMetric = 'none' | 'population' | 'density' | 'area';
 
 export interface ChoroplethTier {
   tier: number; // 1 to 5
-  label: string; // e.g. "< 1,4 Jt"
+  label: string; // e.g. "< 1,4 jt"
   min: number;
   max: number;
   colorLight: string;

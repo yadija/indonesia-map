@@ -20,7 +20,6 @@ export default function ZoomControls({
 
   return (
     <div className='fixed bottom-9 right-3 z-30 flex flex-col items-center rounded-xl border-2 border-black bg-background p-1.5 shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white sm:bottom-10 sm:right-6'>
-      {/* Zoom In Button */}
       <motion.button
         type='button'
         whileHover={{ scale: 1.1, y: -1 }}
@@ -34,12 +33,10 @@ export default function ZoomControls({
         <ZoomIn className='size-4 stroke-[2.5]' />
       </motion.button>
 
-      {/* Current Zoom Percentage Badge */}
       <span className='my-0.5 select-none font-mono text-[11px] font-black text-foreground'>
         {percentage}%
       </span>
 
-      {/* Zoom Out Button */}
       <motion.button
         type='button'
         whileHover={{ scale: 1.1, y: 1 }}
@@ -53,10 +50,8 @@ export default function ZoomControls({
         <ZoomOut className='size-4 stroke-[2.5]' />
       </motion.button>
 
-      {/* Separator */}
       <div className='my-1 h-0.5 w-5 bg-black dark:bg-white' />
 
-      {/* Reset View Button */}
       <motion.button
         type='button'
         whileHover={{ scale: 1.1, rotate: -45 }}

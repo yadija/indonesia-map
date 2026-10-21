@@ -54,7 +54,7 @@ export default function SVGElement({
         isDragging ? 'cursor-grabbing' : scale > 1 ? 'cursor-grab' : 'cursor-default'
       }`}
     >
-      {/* Zoomable & Pannable Transform Container with Bounded Clamping */}
+      {/* zoomable and pannable container */}
       <div
         style={{
           transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${scale})`,
@@ -142,7 +142,7 @@ export default function SVGElement({
         </svg>
       </div>
 
-      {/* Floating Zoom Controls Dock */}
+      {/* zoom controls */}
       <ZoomControls
         scale={scale}
         onZoomIn={handleZoomIn}
@@ -150,7 +150,7 @@ export default function SVGElement({
         onReset={handleReset}
       />
 
-      {/* Floating Hover Tooltip (Neobrutalist Data Card) */}
+      {/* hover tooltip */}
       <MapTooltip
         hovered={hovered}
         isDragging={isDragging}

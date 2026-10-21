@@ -58,7 +58,6 @@ export default function MapTooltip({
         style={{ left: tooltipX, top: tooltipY }}
         className='pointer-events-none fixed z-50 min-w-48 max-w-[calc(100vw-24px)] rounded-xl border-2 border-black bg-background p-3 shadow-brutal-lg dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg'
       >
-        {/* Header: Name and Island badge */}
         <div className='flex items-center justify-between gap-2 border-b-2 border-black pb-2 dark:border-white'>
           <span className='font-mono text-sm font-black uppercase text-foreground'>
             {hovered.province.name}
@@ -70,7 +69,6 @@ export default function MapTooltip({
           )}
         </div>
 
-        {/* Thematic Choropleth Metrics Highlight */}
         {choroplethConfig && hoveredChoroData ? (
           <div className='mt-2 space-y-1.5 rounded-lg border-2 border-black bg-card p-2 text-xs shadow-brutal-sm dark:border-white dark:bg-zinc-900'>
             <div className='flex items-center justify-between font-mono'>
@@ -114,7 +112,6 @@ export default function MapTooltip({
           </div>
         ) : null}
 
-        {/* Standard Details */}
         <div className='mt-2 space-y-1 font-mono text-xs text-muted-foreground'>
           {hovered.province.capital && (
             <div className='flex items-center gap-1.5'>
@@ -141,7 +138,6 @@ export default function MapTooltip({
             )}
         </div>
 
-        {/* Compare Status in Tooltip */}
         {isCompared && (
           <div className='mt-2 flex items-center justify-between rounded border-2 border-black bg-cyan-400 p-1.5 font-mono text-xs font-black text-black shadow-brutal-sm dark:border-white'>
             <span className='flex items-center gap-1.5'>

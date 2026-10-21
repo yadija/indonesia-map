@@ -7,54 +7,40 @@ import papuaData from './IDPA.json';
 import sumateraBaratData from './IDSB.json';
 import sulawesiSelatanData from './IDSN.json';
 
-// Exactly 1 representative province for each of the 7 island regions in Indonesia
+// representative provinces for the 7 island regions
 export const PROVINCE_REGENCIES_MAP: Record<string, ProvinceRegenciesData> = {
-  // Sumatera
   IDSB: sumateraBaratData as ProvinceRegenciesData,
-  // Jawa
   IDJB: jawaBaratData as ProvinceRegenciesData,
-  // Bali & Nusa Tenggara
   IDBA: baliData as ProvinceRegenciesData,
-  // Kalimantan
   IDKI: kalimantanTimurData as ProvinceRegenciesData,
-  // Sulawesi
   IDSN: sulawesiSelatanData as ProvinceRegenciesData,
-  // Maluku
   IDMA: malukuData as ProvinceRegenciesData,
-  // Papua
   IDPA: papuaData as ProvinceRegenciesData,
 };
 
 export const PROVINCE_SLUG_MAP: Record<string, string> = {
-  // Sumatera (Sumatera Barat)
   'sumatera-barat': 'IDSB',
   sumbar: 'IDSB',
   idsb: 'IDSB',
 
-  // Jawa (Jawa Barat)
   'jawa-barat': 'IDJB',
   jabar: 'IDJB',
   idjb: 'IDJB',
 
-  // Bali & Nusa Tenggara (Bali)
   bali: 'IDBA',
   idba: 'IDBA',
 
-  // Kalimantan (Kalimantan Timur)
   'kalimantan-timur': 'IDKI',
   kaltim: 'IDKI',
   idki: 'IDKI',
 
-  // Sulawesi (Sulawesi Selatan)
   'sulawesi-selatan': 'IDSN',
   sulsel: 'IDSN',
   idsn: 'IDSN',
 
-  // Maluku (Maluku)
   maluku: 'IDMA',
   idma: 'IDMA',
 
-  // Papua (Papua)
   papua: 'IDPA',
   idpa: 'IDPA',
 };

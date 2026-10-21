@@ -36,7 +36,7 @@ export default function CompareFloatingBar({
         className='pointer-events-none fixed inset-x-0 bottom-9 z-40 mx-auto flex w-full max-w-2xl justify-center px-2 sm:bottom-10 sm:px-4'
       >
         <div className='pointer-events-auto flex w-full flex-wrap items-center justify-between gap-2 rounded-xl border-2 border-black bg-background p-2 shadow-brutal-lg dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg sm:gap-3 sm:p-3'>
-          {/* Left: Mode Title & Selection Chips */}
+          {/* selected province chips */}
           <div className='flex flex-1 flex-wrap items-center gap-1.5 sm:gap-2'>
             <div className='flex items-center gap-1 rounded-lg border-2 border-black bg-amber-300 px-2 py-0.5 font-mono text-xs font-black text-black shadow-brutal-sm dark:border-white sm:gap-1.5 sm:py-1'>
               <Scale className='size-3 stroke-[2.5] sm:size-3.5' />
@@ -46,7 +46,6 @@ export default function CompareFloatingBar({
               </span>
             </div>
 
-            {/* Selected Province Pills */}
             <div className='flex flex-wrap items-center gap-1 sm:gap-1.5'>
               {comparedProvinces.map((prov, index) => (
                 <motion.span
@@ -90,7 +89,7 @@ export default function CompareFloatingBar({
             </div>
           </div>
 
-          {/* Right Action Buttons */}
+          {/* action buttons */}
           <div className='flex shrink-0 items-center gap-1.5 sm:gap-2'>
             <motion.button
               type='button'

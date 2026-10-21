@@ -93,7 +93,6 @@ export default function AboutModal({ open, onOpenChange }: AboutModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='max-h-[90dvh] w-[96vw] max-w-2xl overflow-y-auto rounded-xl border-2 border-black p-4 shadow-brutal-xl dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg sm:p-6'>
-        {/* Header Modal */}
         <DialogHeader className='text-left'>
           <div className='flex items-center gap-2.5 sm:gap-3'>
             <div className='flex size-9 shrink-0 items-center justify-center rounded-lg border-2 border-black bg-red-600 text-white shadow-brutal-sm dark:border-white sm:size-10'>
@@ -111,7 +110,7 @@ export default function AboutModal({ open, onOpenChange }: AboutModalProps) {
         </DialogHeader>
 
         <div className='mt-2 space-y-4'>
-          {/* Seksi Profil Pengembang */}
+          {/* developer profile */}
           <div className='rounded-lg border-2 border-black bg-card p-3.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-4'>
             <div className='mb-3 flex items-center justify-between border-b border-border/60 pb-2'>
               <div className='flex items-center gap-1.5'>
@@ -126,12 +125,10 @@ export default function AboutModal({ open, onOpenChange }: AboutModalProps) {
             </div>
 
             <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4'>
-              {/* Avatar Initials Badge */}
               <div className='flex size-12 shrink-0 items-center justify-center rounded-xl border-2 border-black bg-red-600 font-mono text-lg font-black text-white shadow-brutal-sm dark:border-white sm:size-14'>
                 AY
               </div>
 
-              {/* Bio & Identitas */}
               <div className='space-y-0.5'>
                 <h3 className='font-mono text-sm font-black text-foreground sm:text-base'>
                   Achmad Yuliadi
@@ -147,7 +144,6 @@ export default function AboutModal({ open, onOpenChange }: AboutModalProps) {
               </div>
             </div>
 
-            {/* Tautan Media Sosial & Portofolio */}
             <div className='mt-3.5 border-t border-border/60 pt-3'>
               <p className='mb-2 font-mono text-[11px] font-bold text-muted-foreground'>
                 TAUTAN AKUN PENGEMBANG:
@@ -186,7 +182,7 @@ export default function AboutModal({ open, onOpenChange }: AboutModalProps) {
             </div>
           </div>
 
-          {/* Seksi Ringkasan Fitur Aplikasi */}
+          {/* application features */}
           <div className='rounded-lg border-2 border-black bg-card p-3.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-4'>
             <div className='mb-2.5 flex items-center gap-1.5 border-b border-border/60 pb-2'>
               <span className='font-mono text-xs font-black uppercase tracking-wider text-foreground'>
@@ -214,7 +210,7 @@ export default function AboutModal({ open, onOpenChange }: AboutModalProps) {
             </div>
           </div>
 
-          {/* Rujukan Data & Penafian (Disclaimer) */}
+          {/* data sources & attribution */}
           <div className='rounded-lg border-2 border-black bg-muted/60 p-3.5 text-xs text-muted-foreground dark:border-white dark:bg-zinc-900'>
             <div className='flex items-center gap-1.5 font-mono font-bold text-foreground'>
               <ShieldCheck className='size-4 shrink-0 stroke-[2.5] text-emerald-600' />
@@ -258,7 +254,6 @@ export default function AboutModal({ open, onOpenChange }: AboutModalProps) {
           </div>
         </div>
 
-        {/* Footer Modal */}
         <div className='mt-3 flex flex-wrap items-center justify-between gap-2 border-t-2 border-black pt-3 font-mono text-xs dark:border-white'>
           <span className='text-[11px] font-bold text-muted-foreground'>
             INDONESIA-MAP // V1.0.0

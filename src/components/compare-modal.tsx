@@ -173,7 +173,7 @@ export default function CompareModal({
     return new Intl.NumberFormat('id-ID').format(num);
   };
 
-  // Find maximum values for comparative visual bars
+  // find maximum values for comparative visual bars
   const stats = useMemo(() => {
     const list = comparedProvinces.map((p) => {
       const density =
@@ -191,7 +191,7 @@ export default function CompareModal({
     return { list, maxPop, maxArea, maxDensity };
   }, [comparedProvinces]);
 
-  // Unselected provinces for dropdown
+  // unselected provinces for dropdown
   const availableProvinces = useMemo(() => {
     const selectedIds = new Set(comparedProvinces.map((p) => p.id));
     return allProvinces
@@ -199,7 +199,7 @@ export default function CompareModal({
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [allProvinces, comparedProvinces]);
 
-  // Group available unselected provinces by island for organized browsing
+  // group available unselected provinces by island
   const groupedProvinces = useMemo(() => {
     const groups: Record<string, Province[]> = {};
     availableProvinces.forEach((p) => {
@@ -236,7 +236,7 @@ export default function CompareModal({
           </div>
         </DialogHeader>
 
-        {/* Add 3rd Province Selector (if less than 3 provinces) */}
+        {/* add 3rd province selector */}
         {comparedProvinces.length < 3 && availableProvinces.length > 0 && (
           <form
             onSubmit={handleAdd}
@@ -280,7 +280,7 @@ export default function CompareModal({
           </form>
         )}
 
-        {/* Comparative Columns Grid */}
+        {/* comparative columns */}
         <div
           className={`mt-2 grid gap-4 ${
             stats.list.length === 3
@@ -303,9 +303,7 @@ export default function CompareModal({
                 className={`relative flex flex-col justify-between rounded-xl border-2 ${colors.border} bg-card p-4 shadow-brutal transition-all dark:bg-zinc-900`}
               >
                 <div>
-                  {/* Column Header */}
                   <div className='border-b-2 border-black pb-3 dark:border-white'>
-                    {/* Top Row: Slot Badge, Full Province Title, Island Badge & Remove Button */}
                     <div className='flex items-start justify-between gap-2'>
                       <div className='flex min-w-0 flex-1 items-start gap-2'>
                         <span
@@ -340,7 +338,6 @@ export default function CompareModal({
                       )}
                     </div>
 
-                    {/* Sub Row: Switch Province Control */}
                     <div className='mt-3'>
                       <div className='group relative flex items-center'>
                         <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5 text-foreground'>
@@ -372,9 +369,8 @@ export default function CompareModal({
                     </div>
                   </div>
 
-                  {/* Quantitative Metrics with Relative Progress Bars */}
+                  {/* quantitative metrics */}
                   <div className='mt-4 space-y-4 font-mono text-xs'>
-                    {/* Populasi */}
                     <div>
                       <div className='flex items-center justify-between'>
                         <span className='flex items-center gap-1.5 font-bold uppercase leading-none text-muted-foreground'>
@@ -402,7 +398,6 @@ export default function CompareModal({
                       </div>
                     </div>
 
-                    {/* Luas Wilayah */}
                     <div>
                       <div className='flex items-center justify-between'>
                         <span className='flex items-center gap-1.5 font-bold uppercase leading-none text-muted-foreground'>
@@ -430,7 +425,6 @@ export default function CompareModal({
                       </div>
                     </div>
 
-                    {/* Kepadatan Penduduk */}
                     <div>
                       <div className='flex items-center justify-between'>
                         <span className='flex items-center gap-1.5 font-bold uppercase leading-none text-muted-foreground'>
@@ -458,7 +452,7 @@ export default function CompareModal({
                       </div>
                     </div>
 
-                    {/* Quick Facts */}
+                    {/* quick facts */}
                     <div className='space-y-1.5 border-t-2 border-black pt-3 dark:border-white'>
                       <div className='flex items-center justify-between'>
                         <span className='flex items-center gap-1.5 leading-none text-muted-foreground'>
@@ -497,7 +491,6 @@ export default function CompareModal({
                       </div>
                     </div>
 
-                    {/* Deskripsi */}
                     {prov.description && (
                       <div className='border-t border-dashed border-black/30 pt-3 dark:border-white/30'>
                         <p className='line-clamp-3 text-[11px] leading-relaxed text-muted-foreground'>
@@ -508,7 +501,6 @@ export default function CompareModal({
                   </div>
                 </div>
 
-                {/* Wikipedia Link */}
                 {prov.wikipediaUrl && (
                   <div className='mt-4 border-t-2 border-black pt-3 dark:border-white'>
                     <motion.a
@@ -529,7 +521,6 @@ export default function CompareModal({
           })}
         </div>
 
-        {/* Footer & Source Citation */}
         <div className='mt-4 flex flex-wrap items-center justify-between gap-2 border-t-2 border-black pt-3 font-mono text-[11px] text-muted-foreground dark:border-white'>
           <div className='flex items-center gap-1.5 leading-none'>
             <ShieldCheck className='size-3.5 shrink-0 stroke-[2.5] text-emerald-600' />

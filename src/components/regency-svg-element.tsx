@@ -56,7 +56,7 @@ export default function RegencySVGElement({
         isDragging ? 'cursor-grabbing' : scale > 1 ? 'cursor-grab' : 'cursor-default'
       }`}
     >
-      {/* Zoomable & Pannable Transform Container */}
+      {/* zoomable and pannable container */}
       <div
         style={{
           transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${scale})`,
@@ -136,7 +136,7 @@ export default function RegencySVGElement({
         </svg>
       </div>
 
-      {/* Floating Zoom Controls Dock */}
+      {/* zoom controls */}
       <ZoomControls
         scale={scale}
         onZoomIn={handleZoomIn}
@@ -144,7 +144,7 @@ export default function RegencySVGElement({
         onReset={handleReset}
       />
 
-      {/* Floating Regency Hover Tooltip */}
+      {/* hover tooltip */}
       <RegencyTooltip
         hovered={hovered}
         isDragging={isDragging}

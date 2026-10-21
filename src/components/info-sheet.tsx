@@ -65,7 +65,7 @@ export default function InfoSheet({
 
         {province && (
           <div className='mt-4 space-y-3.5 sm:mt-6 sm:space-y-4'>
-            {/* Action: Lihat Peta Kabupaten & Kota (Drill Down) */}
+            {/* drill down to regencies */}
             {hasRegenciesData(province.id) && onDrillDown && (
               <motion.button
                 type='button'
@@ -79,7 +79,7 @@ export default function InfoSheet({
               </motion.button>
             )}
 
-            {/* Action: Tambahkan ke Komparasi */}
+            {/* add to comparison */}
             {onAddToCompare && (
               <motion.button
                 type='button'
@@ -103,9 +103,8 @@ export default function InfoSheet({
               </motion.button>
             )}
 
-            {/* Quick Stat Cards */}
+            {/* statistics grid */}
             <div className='grid grid-cols-2 gap-2 sm:gap-3'>
-              {/* Ibu Kota */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
@@ -121,7 +120,6 @@ export default function InfoSheet({
                 </p>
               </motion.div>
 
-              {/* Zona Waktu */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
@@ -137,7 +135,6 @@ export default function InfoSheet({
                 </p>
               </motion.div>
 
-              {/* Penduduk */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
@@ -153,7 +150,6 @@ export default function InfoSheet({
                 </p>
               </motion.div>
 
-              {/* Luas Wilayah */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-3 shadow-brutal-sm dark:border-white dark:bg-zinc-900'
@@ -170,14 +166,13 @@ export default function InfoSheet({
               </motion.div>
             </div>
 
-            {/* Widget Cuaca Terkini Real-time */}
+            {/* weather and air quality */}
             <WeatherCard
               provinceId={province.id}
               provinceName={province.name}
               capital={province.capital}
             />
 
-            {/* Ringkasan & Deskripsi */}
             {province.description && (
               <div className='rounded-lg border-2 border-black bg-card p-4 shadow-brutal-sm dark:border-white dark:bg-zinc-900'>
                 <h4 className='mb-2 font-mono text-[10px] font-black uppercase tracking-wider text-muted-foreground'>
@@ -189,7 +184,7 @@ export default function InfoSheet({
               </div>
             )}
 
-            {/* Catatan Validitas & Sumber Data Resmi */}
+            {/* data sources & references */}
             <div className='rounded-lg border-2 border-black bg-muted/60 p-3.5 text-xs text-muted-foreground dark:border-white dark:bg-zinc-900'>
               <div className='flex items-center gap-1.5 font-mono font-bold text-foreground'>
                 <ShieldCheck className='size-4 shrink-0 stroke-[2.5] text-emerald-600' />
@@ -220,7 +215,7 @@ export default function InfoSheet({
               </ul>
             </div>
 
-            {/* Tautan Wikipedia */}
+            {/* wikipedia link */}
             {province.wikipediaUrl && (
               <motion.div
                 whileHover={{ scale: 1.02, y: -1 }}

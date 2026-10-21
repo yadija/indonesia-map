@@ -51,7 +51,7 @@ export default function RegencyListModal({
   const [selectedType, setSelectedType] = useState<'all' | 'kabupaten' | 'kota'>('all');
   const [dockPosition, setDockPosition] = useState<DockPosition>('right');
 
-  // Breakdown counts
+  // breakdown counts
   const kabCount = useMemo(
     () => regencies.filter((r) => r.type.toLowerCase() === 'kabupaten').length,
     [regencies],
@@ -61,7 +61,7 @@ export default function RegencyListModal({
     [regencies],
   );
 
-  // Filtered regencies list
+  // filtered regencies list
   const filteredRegencies = useMemo(() => {
     return regencies.filter((r) => {
       const matchType =
@@ -113,11 +113,8 @@ export default function RegencyListModal({
             'left 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), width 0.45s cubic-bezier(0.16, 1, 0.3, 1), max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        {/* Modal Top Header Bar */}
         <div className='shrink-0 border-b-2 border-black bg-muted/70 p-3.5 dark:border-white dark:bg-zinc-900 sm:p-4'>
-          {/* Top Bar: Badges + Dock Selector + Aligned Close Button */}
           <div className='flex items-center justify-between gap-2'>
-            {/* Left: Badges */}
             <div className='flex flex-wrap items-center gap-1.5 sm:gap-2'>
               <div className='flex items-center gap-1.5 rounded-md border-2 border-black bg-red-600 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wider text-white shadow-brutal-sm dark:border-white sm:text-xs'>
                 <ListFilter className='size-3 sm:size-3.5' />
@@ -132,9 +129,7 @@ export default function RegencyListModal({
               </span>
             </div>
 
-            {/* Right: Dock Positioning Controls & Integrated Close Button */}
             <div className='flex items-center gap-1.5 sm:gap-2'>
-              {/* Dock Position Selector (Kiri | Tengah | Kanan) for Tablet & Desktop */}
               <div className='hidden items-center rounded-lg border-2 border-black bg-background p-0.5 font-mono text-[10px] font-black uppercase text-foreground shadow-brutal-sm dark:border-white dark:bg-zinc-800 md:flex'>
                 <button
                   type='button'
@@ -201,7 +196,6 @@ export default function RegencyListModal({
                 </button>
               </div>
 
-              {/* Close Button X: Perfectly aligned inside the same flex row */}
               <DialogClose
                 className='flex size-7 items-center justify-center rounded-lg border-2 border-black bg-background text-foreground shadow-brutal-sm transition hover:bg-red-600 hover:text-white dark:border-white dark:hover:bg-red-600 sm:size-8'
                 title='Tutup modal daftar wilayah'
@@ -212,7 +206,6 @@ export default function RegencyListModal({
             </div>
           </div>
 
-          {/* Title & Description Row */}
           <DialogHeader className='mt-2 space-y-0.5 text-left'>
             <DialogTitle className='font-mono text-base font-black uppercase tracking-wide text-foreground sm:text-xl'>
               {province.name}
@@ -223,9 +216,7 @@ export default function RegencyListModal({
             </DialogDescription>
           </DialogHeader>
 
-          {/* Search Input & Type Filter Chips Inside Modal */}
           <div className='mt-3.5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between'>
-            {/* Quick Search Box */}
             <div className='relative flex-1'>
               <Search className='pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground' />
               <input
@@ -247,7 +238,6 @@ export default function RegencyListModal({
               )}
             </div>
 
-            {/* Type Filters: Semua | Kabupaten | Kota */}
             <div className='flex flex-wrap items-center gap-1.5'>
               <button
                 type='button'
@@ -290,7 +280,7 @@ export default function RegencyListModal({
           </div>
         </div>
 
-        {/* Scrollable Grid of Regency Cards */}
+        {/* regency cards grid */}
         <div
           onMouseLeave={() => onHoverRegency(null)}
           className='no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5'
@@ -330,7 +320,6 @@ export default function RegencyListModal({
                         : 'border-black bg-card shadow-brutal-sm hover:border-red-600 hover:shadow-brutal dark:border-white dark:bg-zinc-950'
                     }`}
                   >
-                    {/* Top Row: Name and Type Badge */}
                     <div>
                       <div className='flex items-start justify-between gap-1.5'>
                         <h4 className='text-xs font-black text-foreground group-hover:text-red-600 dark:group-hover:text-red-400 sm:text-sm'>
@@ -347,7 +336,6 @@ export default function RegencyListModal({
                         </span>
                       </div>
 
-                      {/* Capital */}
                       {reg.capital && reg.capital !== '-' && (
                         <div className='mt-1 flex items-center gap-1 text-[11px] text-muted-foreground'>
                           <MapPin className='size-3 shrink-0 text-red-500' />
@@ -356,7 +344,6 @@ export default function RegencyListModal({
                       )}
                     </div>
 
-                    {/* Stats Metric Grid */}
                     <div className='mt-3 grid grid-cols-2 gap-1.5 border-t border-dashed border-black/20 pt-2 text-[10px] dark:border-white/20'>
                       <div className='flex items-center gap-1 text-muted-foreground'>
                         <Users className='size-3 text-blue-500' />
@@ -406,7 +393,6 @@ export default function RegencyListModal({
           )}
         </div>
 
-        {/* Modal Bottom Footer Info */}
         <div className='flex shrink-0 items-center justify-between border-t-2 border-black bg-muted/40 px-4 py-2.5 font-mono text-[11px] text-muted-foreground dark:border-white dark:bg-zinc-900 sm:px-5'>
           <span className='flex items-center gap-1'>
             <Sparkles className='size-3 text-amber-500' />

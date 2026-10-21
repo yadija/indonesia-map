@@ -25,7 +25,7 @@ export function useTheme() {
     try {
       localStorage.setItem('theme', theme);
     } catch {
-      // Ignore localStorage errors in private browsing/sandboxes
+      // ignore localstorage errors in private browsing
     }
   }, [theme]);
 

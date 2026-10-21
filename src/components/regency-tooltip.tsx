@@ -54,7 +54,6 @@ export default function RegencyTooltip({
         style={{ left: tooltipX, top: tooltipY }}
         className='pointer-events-none fixed z-50 min-w-48 max-w-[calc(100vw-24px)] rounded-xl border-2 border-black bg-background p-3 shadow-brutal-lg dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white-lg'
       >
-        {/* Regency Type Badge & Title */}
         <div className='flex items-center gap-1.5'>
           <span
             className={`rounded border border-black px-1.5 py-0.5 font-mono text-[9px] font-black uppercase shadow-brutal-sm dark:border-white ${
@@ -74,7 +73,6 @@ export default function RegencyTooltip({
           {hovered.regency.name}
         </div>
 
-        {/* Capital */}
         {hovered.regency.capital && (
           <div className='mt-1 flex items-center gap-1 text-[11px] text-muted-foreground'>
             <MapPin className='size-3 shrink-0 stroke-[2.5] text-red-500' />
@@ -82,7 +80,6 @@ export default function RegencyTooltip({
           </div>
         )}
 
-        {/* Choropleth Active Banner */}
         {hoveredChoroData && (
           <div className='mt-2 flex items-center justify-between gap-2 rounded-lg border border-black bg-muted/60 px-2 py-1 dark:border-white/50'>
             <span className='font-mono text-[10px] font-bold text-muted-foreground'>
@@ -99,7 +96,6 @@ export default function RegencyTooltip({
           </div>
         )}
 
-        {/* Demographics Summary */}
         <div className='mt-2 grid grid-cols-2 gap-1.5 border-t border-black/10 pt-2 font-mono text-[10px] dark:border-white/10'>
           {hovered.regency.population && (
             <div className='flex items-center gap-1 text-muted-foreground'>

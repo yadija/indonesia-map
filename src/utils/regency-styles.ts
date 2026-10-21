@@ -88,7 +88,7 @@ export function getRegencyPathStyle({
     };
   }
 
-  // Standard Neobrutalist Mode: alternating vibrant or red
+  // standard red mode
   if (isHighlighted) {
     return {
       fill: '#dc2626',

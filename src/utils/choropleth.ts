@@ -45,17 +45,14 @@ interface PaletteConfig {
 
 const PALETTES: Record<Exclude<ChoroplethMetric, 'none'>, PaletteConfig> = {
   population: {
-    // Sequential Indigo/Blue
     light: ['#dbeafe', '#93c5fd', '#60a5fa', '#2563eb', '#1e3a8a'],
     dark: ['#1e3a8a', '#2563eb', '#3b82f6', '#60a5fa', '#bfdbfe'],
   },
   density: {
-    // Sequential Warm Amber/Orange/Red
     light: ['#ffedd5', '#fdba74', '#f97316', '#ea580c', '#9a3412'],
     dark: ['#7c2d12', '#c2410c', '#ea580c', '#fb923c', '#fed7aa'],
   },
   area: {
-    // Sequential Emerald/Teal
     light: ['#d1fae5', '#6ee7b7', '#10b981', '#059669', '#064e3b'],
     dark: ['#064e3b', '#047857', '#059669', '#10b981', '#6ee7b7'],
   },
@@ -137,7 +134,7 @@ export function computeChoropleth(
     },
   }[metric];
 
-  // Extract and sort values ascending for quantiles
+  // extract and sort values ascending for quantiles
   const rawList = provinces.map((p) => ({
     id: p.id,
     name: p.name,
@@ -147,10 +144,10 @@ export function computeChoropleth(
   const sortedAsc = [...rawList].sort((a, b) => a.value - b.value);
   const sortedDesc = [...rawList].sort((a, b) => b.value - a.value);
 
-  // Compute National Sum (for population and area)
+  // compute national sum
   const totalNational = sortedAsc.reduce((sum, item) => sum + item.value, 0);
 
-  // 5 Quantile split points (20%, 40%, 60%, 80%)
+  // 5 quantile split points (20%, 40%, 60%, 80%)
   const n = sortedAsc.length;
   const q1 = sortedAsc[Math.floor(n * 0.2)].value;
   const q2 = sortedAsc[Math.floor(n * 0.4)].value;
@@ -162,7 +159,7 @@ export function computeChoropleth(
 
   const palette = PALETTES[metric];
 
-  // Build 5 tiers
+  // build 5 tiers
   const tiers: ChoroplethTier[] = [
     {
       tier: 1,
@@ -211,7 +208,7 @@ export function computeChoropleth(
     },
   ];
 
-  // Helper to determine tier (1 to 5)
+  // determine tier (1 to 5)
   const getTier = (val: number): number => {
     if (val <= q1) return 1;
     if (val <= q2) return 2;
@@ -226,7 +223,7 @@ export function computeChoropleth(
     const tier = getTier(item.value);
     tiers[tier - 1].count += 1;
 
-    // Rank 1 is highest value
+    // rank 1 is highest value
     const rank = sortedDesc.findIndex((p) => p.id === item.id) + 1;
     const percentOfTotal =
       totalNational > 0 && metric !== 'density'

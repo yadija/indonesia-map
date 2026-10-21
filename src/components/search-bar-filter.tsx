@@ -99,7 +99,7 @@ export default function SearchBarFilter({
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
+  // close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -111,7 +111,6 @@ export default function SearchBarFilter({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Strict search item: provinces on national map, regencies on drill-down map
   type SearchItem =
     | { kind: 'province'; province: Province }
     | { kind: 'regency'; regency: Regency; province: Province };
@@ -119,7 +118,7 @@ export default function SearchBarFilter({
   const availableProvinces = useMemo(() => Object.values(PROVINCE_REGENCIES_MAP), []);
   const currentSlug = currentProvince ? getSlugFromProvinceId(currentProvince.id) : '';
 
-  // Compute regency type breakdown when in drill-down mode
+  // compute regency type breakdown in drill-down mode
   const regencyTypeTabs = useMemo(() => {
     if (!regencies || regencies.length === 0) return [];
     const kabCount = regencies.filter((r) => r.type.toLowerCase() === 'kabupaten').length;
@@ -145,7 +144,7 @@ export default function SearchBarFilter({
     if (!query.trim()) return [];
     const q = query.toLowerCase().trim();
 
-    // In drill-down mode: search ONLY regencies of current active province
+    // search regencies of current province in drill-down mode
     if (currentProvince && regencies && regencies.length > 0) {
       return regencies
         .filter((r) => {
@@ -161,7 +160,7 @@ export default function SearchBarFilter({
         .slice(0, 15);
     }
 
-    // In National mode: search ONLY 38 provinces (separated completely from kab/kota)
+    // search provinces in national mode
     return provinces
       .filter((p) => {
         const matchName = p.name.toLowerCase().includes(q);
@@ -173,7 +172,7 @@ export default function SearchBarFilter({
       .slice(0, 15);
   }, [provinces, regencies, query, currentProvince]);
 
-  // Compute island counts
+  // compute island counts
   const islandCounts = useMemo(() => {
     const counts: Record<string, number> = { Semua: provinces.length };
     provinces.forEach((p) => {
@@ -236,10 +235,9 @@ export default function SearchBarFilter({
       className='fixed inset-x-0 top-3 z-40 mx-auto w-full max-w-4xl px-3 sm:px-4'
     >
       <div className='rounded-xl border-2 border-black bg-background p-2.5 shadow-brutal transition-all dark:border-white dark:bg-zinc-950 dark:shadow-brutal-white sm:p-3'>
-        {/* Tier 1: In Drill-Down Mode, Top Navigation Bar (Back + Breadcrumb + Regency List Trigger) */}
+        {/* drill-down navigation bar */}
         {currentProvince && (
           <div className='relative z-20 mb-2 flex items-center justify-between gap-1.5 border-b-2 border-dashed border-black/20 pb-2 dark:border-white/20 sm:mb-2.5 sm:gap-2 sm:pb-2.5'>
-            {/* Left: Back to National & Breadcrumb */}
             <div className='flex min-w-0 items-center gap-1.5 sm:gap-2'>
               {onBackToNational && (
                 <motion.button
@@ -265,7 +263,6 @@ export default function SearchBarFilter({
               </div>
             </div>
 
-            {/* Right: Counter badge & Regency List Modal Trigger */}
             <div className='flex shrink-0 items-center gap-1.5 sm:gap-2'>
               <div className='hidden items-center gap-1 rounded-lg border-2 border-black bg-amber-300 px-2 py-1 font-mono text-xs font-black text-black shadow-brutal-sm dark:border-white sm:flex sm:py-1.5'>
                 <Filter className='size-3.5 stroke-[2.5]' />
@@ -295,9 +292,8 @@ export default function SearchBarFilter({
           </div>
         )}
 
-        {/* Tier 2 (or Main Row in National Mode): Search & Controls */}
+        {/* search & controls */}
         <div className='relative z-20 flex items-center justify-between gap-1.5 sm:gap-2.5'>
-          {/* If in National Mode: Classic Brutalist Brand Tag on Desktop */}
           {!currentProvince && (
             <div className='hidden items-center gap-1.5 rounded-lg border-2 border-black bg-red-600 px-2.5 py-1.5 font-mono text-xs font-black tracking-wider text-white shadow-brutal-sm dark:border-white sm:flex'>
               <span className='size-2 animate-pulse rounded-full bg-white' />
@@ -305,7 +301,6 @@ export default function SearchBarFilter({
             </div>
           )}
 
-          {/* Search Input Box */}
           <div className='relative min-w-0 flex-1'>
             <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-black dark:text-white'>
               <Search className='size-4 stroke-[2.5]' />
@@ -352,7 +347,7 @@ export default function SearchBarFilter({
               </motion.button>
             )}
 
-            {/* Auto-complete Search Suggestions Dropdown */}
+            {/* search suggestions dropdown */}
             <AnimatePresence>
               {isOpen && query.trim() && (
                 <motion.div
@@ -458,9 +453,7 @@ export default function SearchBarFilter({
             </AnimatePresence>
           </div>
 
-          {/* Right Controls */}
           <div className='flex shrink-0 items-center gap-1.5 sm:gap-2'>
-            {/* Collapsible Filter Toggle */}
             <motion.button
               type='button'
               whileHover={{ scale: 1.04, y: -1 }}
@@ -488,7 +481,6 @@ export default function SearchBarFilter({
               )}
             </motion.button>
 
-            {/* In National Mode: 38 Provinces Counter Tag */}
             {!currentProvince && (
               <div className='hidden items-center gap-1.5 rounded-lg border-2 border-black bg-background px-2.5 py-1.5 font-mono text-xs font-black text-foreground shadow-brutal-sm dark:border-white dark:bg-zinc-900 md:flex'>
                 <Filter className='size-3.5 stroke-[2.5] text-red-600' />
@@ -496,10 +488,8 @@ export default function SearchBarFilter({
               </div>
             )}
 
-            {/* Theme Toggle Button */}
             <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
 
-            {/* About & Developer Profile Modal Button */}
             {onOpenAbout && (
               <motion.button
                 type='button'
@@ -516,7 +506,7 @@ export default function SearchBarFilter({
           </div>
         </div>
 
-        {/* Collapsible Drawer for Thematic Mode & Island / Regency Type Filters */}
+        {/* collapsible options drawer */}
         <AnimatePresence>
           {isOptionsOpen && (
             <motion.div
@@ -527,7 +517,7 @@ export default function SearchBarFilter({
               className='no-scrollbar relative z-10 max-h-[60vh] overflow-y-auto overflow-x-hidden overscroll-contain'
             >
               <div className='mt-3 space-y-3 border-t-2 border-black pt-3 dark:border-white'>
-                {/* Thematic Mode Tabs */}
+                {/* thematic mode tabs */}
                 <div className='flex flex-wrap items-center gap-1.5 sm:gap-2'>
                   <span className='mr-1 shrink-0 font-mono text-[11px] font-bold uppercase tracking-wider text-muted-foreground'>
                     [MODE]:
@@ -555,7 +545,7 @@ export default function SearchBarFilter({
                     );
                   })}
 
-                  {/* Mode Komparasi: only displayed in national mode */}
+                  {/* compare mode button */}
                   {!currentProvince && onToggleCompareMode && (
                     <motion.button
                       type='button'
@@ -579,7 +569,7 @@ export default function SearchBarFilter({
                   )}
                 </div>
 
-                {/* In National Mode: Island Filter Tabs */}
+                {/* island filter tabs */}
                 {!currentProvince && (
                   <div className='flex flex-wrap items-center gap-1.5 sm:gap-2'>
                     <span className='mr-1 shrink-0 font-mono text-[11px] font-bold uppercase tracking-wider text-muted-foreground'>
@@ -612,7 +602,7 @@ export default function SearchBarFilter({
                   </div>
                 )}
 
-                {/* In Drill-Down Mode: Regency Type Filter Tabs */}
+                {/* regency type filter tabs */}
                 {currentProvince && regencyTypeTabs.length > 0 && (
                   <div className='flex flex-wrap items-center gap-1.5 sm:gap-2'>
                     <span className='mr-1 shrink-0 font-mono text-[11px] font-bold uppercase tracking-wider text-muted-foreground'>
@@ -641,7 +631,7 @@ export default function SearchBarFilter({
                   </div>
                 )}
 
-                {/* In Drill-Down Mode: Quick Switcher for Other Available Provinces */}
+                {/* province switcher */}
                 {currentProvince && onSelectOtherProvince && (
                   <div className='flex flex-wrap items-center gap-1.5 border-t border-dashed border-black/30 pt-2.5 dark:border-white/30 sm:gap-2'>
                     <span className='mr-1 flex shrink-0 items-center gap-1 font-mono text-[11px] font-bold uppercase tracking-wider text-muted-foreground'>

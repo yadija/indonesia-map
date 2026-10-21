@@ -103,10 +103,7 @@ interface CacheEntry {
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache
 const weatherCache = new Map<string, CacheEntry>();
 
-/**
- * Resolves geographic coordinates for a given region ID (Regency/City or Province),
- * with an optional fallback to the parent province ID.
- */
+// resolve coordinates by region id, with fallback to parent province id
 export function getLocationCoordinates(
   locationId: string,
   fallbackProvinceId?: string,
@@ -189,10 +186,7 @@ export async function fetchProvinceWeather(
 
 export const fetchLocationWeather = fetchProvinceWeather;
 
-/**
- * Retrieves the official Indonesian timezone abbreviation (WIB, WITA, WIT)
- * based on the UTC offset in seconds or Open-Meteo timezone identifier.
- */
+// resolve official indonesian timezone abbreviation (wib, wita, wit) from utc offset or timezone string
 export function getIndonesianTimezoneLabel(
   utcOffsetSeconds?: number,
   timezone?: string,
@@ -212,10 +206,7 @@ export function getIndonesianTimezoneLabel(
   return fallbackAbbr || '';
 }
 
-/**
- * Formats Open-Meteo data time string (e.g. "2026-10-16T21:00")
- * into a user-friendly Indonesian localized date string (e.g. "16 Okt 2026, 21.00 WIB").
- */
+// format open-meteo time into indonesian localized date string
 export function formatDataTime(timeString?: string, tzLabel?: string): string {
   if (!timeString) return '-';
 
@@ -256,9 +247,7 @@ export function formatDataTime(timeString?: string, tzLabel?: string): string {
   return timeString;
 }
 
-/**
- * Formats the Open-Meteo data fetch timestamp into a localized date-time string.
- */
+// format fetch timestamp into localized date-time string
 export function formatFetchTime(timestamp?: number | string): string {
   if (!timestamp) return '-';
   const date = typeof timestamp === 'number' ? new Date(timestamp) : new Date(timestamp);

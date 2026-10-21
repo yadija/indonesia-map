@@ -116,7 +116,7 @@ export function getProvincePathStyle({
     };
   }
 
-  // Standard Iconic Indonesian Red Mode
+  // standard national red mode
   if (isCompared) {
     return {
       fill: '#ef4444',

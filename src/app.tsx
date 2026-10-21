@@ -1,7 +1,6 @@
 import { Star } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
-// components
 import AboutModal from './components/about-modal';
 import ChoroplethLegend from './components/choropleth-legend';
 import CompareFloatingBar from './components/compare-floating-bar';
@@ -12,7 +11,6 @@ import RegencySheet from './components/regency-sheet';
 import RegencySVGElement from './components/regency-svg-element';
 import SearchBarFilter from './components/search-bar-filter';
 import SVGElement from './components/svg-element';
-// data
 import indonesiaMap from './data/indonesia-map.json';
 import {
   getProvinceIdFromSlug,
@@ -22,10 +20,8 @@ import {
 } from './data/regencies';
 import { useRouter } from './hooks/use-router';
 import { useTheme } from './hooks/use-theme';
-// hooks
 import { useToast } from './hooks/use-toast';
 import { ChoroplethMetric } from './interfaces/choropleth';
-// interfaces
 import { Province } from './interfaces/province';
 import { Regency } from './interfaces/regency';
 import { computeChoropleth } from './utils/choropleth';
@@ -43,7 +39,7 @@ export default function App() {
   const [activeMetric, setActiveMetric] = useState<ChoroplethMetric>('none');
   const [hoveredTier, setHoveredTier] = useState<number | null>(null);
 
-  // Drill-down Regencies State
+  // drill-down regencies state
   const [drillDownProvince, setDrillDownProvince] = useState<Province | null>(null);
   const [selectedRegency, setSelectedRegency] = useState<Regency | null>(null);
   const [selectedRegencyType, setSelectedRegencyType] = useState<
@@ -54,10 +50,10 @@ export default function App() {
   const [isRegencyListModalOpen, setIsRegencyListModalOpen] = useState(false);
   const [hoveredRegencyId, setHoveredRegencyId] = useState<string | null>(null);
 
-  // Modal States
+  // modal states
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
-  // Compare Mode States
+  // compare mode states
   const [comparedIds, setComparedIds] = useState<string[]>([]);
   const [isCompareMode, setIsCompareMode] = useState(false);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
@@ -65,7 +61,7 @@ export default function App() {
   const { toast } = useToast();
   const { isDark, toggleTheme } = useTheme();
 
-  // Synchronize URL pathname with drill-down state and browser navigation (Back/Forward)
+  // sync pathname with drill-down state
   useEffect(() => {
     const match = pathname.match(/^\/(?:provinsi|kabupaten)\/([^/?#]+)/i);
     if (match) {
@@ -82,7 +78,7 @@ export default function App() {
         return;
       }
     }
-    // If on root path
+    // reset when navigating to root
     if (pathname === '/' || pathname === '') {
       if (drillDownProvince !== null) {
         setDrillDownProvince(null);
@@ -93,13 +89,13 @@ export default function App() {
     }
   }, [pathname, drillDownProvince?.id]);
 
-  // Selected province regencies data
+  // selected province regencies data
   const regencyData = useMemo(() => {
     if (!drillDownProvince) return null;
     return getRegenciesByProvinceId(drillDownProvince.id);
   }, [drillDownProvince]);
 
-  // Compute choropleth data when metric is active
+  // compute choropleth data
   const nationalChoroplethConfig = useMemo(
     () => computeChoropleth(activeMetric, provincesList),
     [activeMetric],
@@ -114,7 +110,7 @@ export default function App() {
     ? regencyChoroplethConfig
     : nationalChoroplethConfig;
 
-  // Compared provinces objects
+  // compared provinces objects
   const comparedProvinces = useMemo(
     () =>
       comparedIds
@@ -135,7 +131,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  // Handle adding or removing province from comparison list
+  // handle adding or removing province from comparison
   const handleToggleCompare = (prov: Province) => {
     if (comparedIds.includes(prov.id)) {
       setComparedIds((prev) => prev.filter((id) => id !== prov.id));
@@ -279,7 +275,6 @@ export default function App() {
 
   return (
     <section className='bg-brutalist-grid relative h-screen min-h-dvh select-none overflow-hidden bg-background text-foreground transition-colors duration-200'>
-      {/* Brutalist Architectural Coordinates & Corner Marks */}
       <div className='pointer-events-none absolute left-4 top-4 z-10 hidden select-none flex-col gap-0.5 font-mono text-[10px] font-bold text-muted-foreground/50 md:flex'>
         <span>[IDN-GRID // 0°47&apos;S 113°55&apos;E]</span>
         <span>[GEODETIC WGS84 // EPSG:4326]</span>
@@ -305,7 +300,7 @@ export default function App() {
         +
       </div>
 
-      {/* Floating Search Bar, Island Filter, Mode Switcher, Theme Switcher & Drill-down Nav */}
+      {/* search bar and controls */}
       <SearchBarFilter
         provinces={provincesList}
         selectedIsland={selectedIsland}
@@ -332,7 +327,7 @@ export default function App() {
         onOpenRegencyList={() => setIsRegencyListModalOpen(true)}
       />
 
-      {/* Map Canvas: Perfectly bounded and centered within safe viewport */}
+      {/* map canvas */}
       <div
         className={`absolute inset-x-0 flex items-center justify-center px-3 transition-all duration-200 sm:px-8 md:px-12 ${
           drillDownProvince
@@ -365,7 +360,7 @@ export default function App() {
         )}
       </div>
 
-      {/* Thematic Map Choropleth Legend */}
+      {/* choropleth legend */}
       <ChoroplethLegend
         config={choroplethConfig}
         isDark={isDark}
@@ -374,7 +369,7 @@ export default function App() {
         onHoverTier={setHoveredTier}
       />
 
-      {/* Floating Comparison Dock (Active when compared provinces exist) */}
+      {/* floating comparison bar */}
       <CompareFloatingBar
         comparedProvinces={comparedProvinces}
         onRemove={handleRemoveCompared}
@@ -382,7 +377,7 @@ export default function App() {
         onOpenModal={() => setIsCompareModalOpen(true)}
       />
 
-      {/* Detail Province Sheet */}
+      {/* province detail sheet */}
       <InfoSheet
         open={open}
         onOpenChange={(isOpen) => {
@@ -397,7 +392,7 @@ export default function App() {
         onDrillDown={handleDrillDown}
       />
 
-      {/* Detail Regency Sheet */}
+      {/* regency detail sheet */}
       <RegencySheet
         open={isRegencySheetOpen}
         onOpenChange={(isOpen) => {
@@ -410,7 +405,7 @@ export default function App() {
         provinceName={drillDownProvince?.name}
       />
 
-      {/* Side-by-Side Province Comparison Dialog Modal */}
+      {/* comparison modal */}
       <CompareModal
         open={isCompareModalOpen}
         onOpenChange={setIsCompareModalOpen}
@@ -424,10 +419,10 @@ export default function App() {
         onReplaceProvince={handleReplaceCompared}
       />
 
-      {/* About & Developer Profile Dialog Modal */}
+      {/* about modal */}
       <AboutModal open={isAboutModalOpen} onOpenChange={setIsAboutModalOpen} />
 
-      {/* Regency List Dialog Modal with Live Map Hover Synchronization */}
+      {/* regency list modal */}
       <RegencyListModal
         open={isRegencyListModalOpen}
         onOpenChange={setIsRegencyListModalOpen}
@@ -441,7 +436,7 @@ export default function App() {
         }}
       />
 
-      {/* Continuous Motion-Driven Marquee Ticker Ribbon */}
+      {/* marquee ticker */}
       <div className='pointer-events-none absolute inset-x-0 bottom-0 z-20 flex h-7 items-center overflow-hidden border-t-2 border-black bg-red-600 font-mono text-[11px] font-black uppercase tracking-widest text-white shadow-brutal-sm dark:border-white'>
         <div className='flex animate-marquee items-center whitespace-nowrap'>
           <span className='mx-4 inline-flex items-center gap-1.5 leading-none'>

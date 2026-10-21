@@ -8,7 +8,7 @@ export interface UseMapPanZoomOptions {
 }
 
 export function useMapPanZoom(options?: UseMapPanZoomOptions) {
-  // Zoom and Pan States: default 1 (100%), min 0.75 (75%), max 6 (600%)
+  // zoom and pan states
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -21,11 +21,11 @@ export function useMapPanZoom(options?: UseMapPanZoomOptions) {
   const pinchStartDistRef = useRef<number | null>(null);
   const pinchStartScaleRef = useRef(1);
 
-  // Sync refs with state on render
+  // sync refs with state on render
   positionRef.current = position;
   scaleRef.current = scale;
 
-  // Calculate pan boundaries based on current scale and container size
+  // calculate pan boundaries based on scale and container size
   const getPanBounds = useCallback((currentScale: number) => {
     const container = containerRef.current;
     const w = container ? container.clientWidth : 800;
@@ -51,12 +51,7 @@ export function useMapPanZoom(options?: UseMapPanZoomOptions) {
     };
   }, []);
 
-  /**
-   * Unified zoom function.
-   * If clientPoint is provided (e.g. mouse cursor or touch pinch midpoint),
-   * the map zooms directly into/out of that point (like Google Maps).
-   * If omitted, it zooms towards the container center.
-   */
+  // zoom toward cursor focal point or container center
   const zoomTo = useCallback(
     (nextScaleVal: number, clientPoint?: { x: number; y: number }) => {
       const container = containerRef.current;
@@ -82,17 +77,15 @@ export function useMapPanZoom(options?: UseMapPanZoomOptions) {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      // Determine the focal point (cursor or viewport center)
       const cursorX = clientPoint ? clientPoint.x - rect.left : centerX;
       const cursorY = clientPoint ? clientPoint.y - rect.top : centerY;
 
       const deltaX = cursorX - centerX;
       const deltaY = cursorY - centerY;
 
-      // Scale ratio between new and current scale
       const r = nextScale / currentScale;
 
-      // Calculate target position to keep the content under the cursor static on screen
+      // maintain content position under cursor
       const targetX = deltaX - r * (deltaX - currentPos.x);
       const targetY = deltaY - r * (deltaY - currentPos.y);
 
@@ -102,7 +95,7 @@ export function useMapPanZoom(options?: UseMapPanZoomOptions) {
 
       const nextPos = { x: clampedX, y: clampedY };
 
-      // Update refs immediately for rapid consecutive events
+      // update refs immediately for rapid consecutive events
       scaleRef.current = nextScale;
       positionRef.current = nextPos;
       setScale(nextScale);
@@ -134,7 +127,7 @@ export function useMapPanZoom(options?: UseMapPanZoomOptions) {
     options?.onDragMove?.();
   }, [options]);
 
-  // Mouse wheel zoom centered on cursor
+  // mouse wheel zoom centered on cursor
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -145,10 +138,10 @@ export function useMapPanZoom(options?: UseMapPanZoomOptions) {
 
       let delta = 0;
       if (Math.abs(e.deltaY) < 30) {
-        // Continuous trackpad scrolling
+        // continuous trackpad scrolling
         delta = -e.deltaY * 0.01;
       } else {
-        // Discrete mouse wheel notches: smooth graduated steps
+        // discrete mouse wheel notches
         delta =
           e.deltaY < 0
             ? currentScale >= 2
@@ -167,7 +160,7 @@ export function useMapPanZoom(options?: UseMapPanZoomOptions) {
     return () => container.removeEventListener('wheel', onWheel);
   }, [zoomTo]);
 
-  // Keyboard navigation (+, -, 0, r)
+  // keyboard navigation (+, -, 0, r)
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (
@@ -190,7 +183,7 @@ export function useMapPanZoom(options?: UseMapPanZoomOptions) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [handleZoomIn, handleZoomOut, handleReset]);
 
-  // Mouse drag listeners with stable references
+  // mouse drag listeners
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -268,7 +261,7 @@ export function useMapPanZoom(options?: UseMapPanZoomOptions) {
     };
   }, [isDragging, getPanBounds, options]);
 
-  // Touch drag and pinch-to-zoom listeners
+  // touch drag and pinch-to-zoom listeners
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;

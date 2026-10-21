@@ -29,7 +29,7 @@ export default function ChoroplethLegend({
   hasCompareBar = false,
   onHoverTier,
 }: ChoroplethLegendProps) {
-  // Start collapsed on small mobile screens to keep the map visible
+  // start collapsed on small mobile screens
   const [isCollapsed, setIsCollapsed] = useState(
     () => typeof window !== 'undefined' && window.innerWidth < 640,
   );
@@ -62,7 +62,6 @@ export default function ChoroplethLegend({
         isCollapsed ? 'p-2' : 'p-3'
       }`}
     >
-      {/* Header Bar */}
       <div
         className={`flex items-center justify-between gap-2 transition-all ${
           isCollapsed ? 'pb-0' : 'border-b-2 border-black pb-2 dark:border-white'
@@ -98,7 +97,7 @@ export default function ChoroplethLegend({
         </motion.button>
       </div>
 
-      {/* Collapsible Content */}
+      {/* collapsible content */}
       <AnimatePresence>
         {!isCollapsed && (
           <motion.div
@@ -112,7 +111,6 @@ export default function ChoroplethLegend({
               {config.description}. Ketuk tingkatan untuk melihat provinsi terkait.
             </p>
 
-            {/* 5 Tiers List */}
             <div className='mt-2.5 space-y-1.5'>
               {config.tiers.map((t) => {
                 const color = isDark ? t.colorDark : t.colorLight;
@@ -150,7 +148,6 @@ export default function ChoroplethLegend({
               })}
             </div>
 
-            {/* Min and Max National Highlights */}
             <div className='mt-3 space-y-1.5 border-t-2 border-black pt-2.5 text-[11px] dark:border-white'>
               <div className='flex items-center justify-between font-mono text-muted-foreground'>
                 <span className='flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400'>
@@ -177,7 +174,6 @@ export default function ChoroplethLegend({
               </div>
             </div>
 
-            {/* Official Data Source Attribution */}
             <div className='mt-2.5 border-t border-dashed border-black/40 pt-2 font-mono text-[9px] text-muted-foreground dark:border-white/40'>
               <span className='font-bold text-foreground'>[SUMBER]:</span> {config.source}
             </div>

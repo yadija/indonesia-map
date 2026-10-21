@@ -70,9 +70,8 @@ export default function RegencySheet({
 
         {regency && (
           <div className='mt-4 space-y-3.5 sm:mt-6 sm:space-y-4'>
-            {/* Quick Stat Cards */}
+            {/* statistics grid */}
             <div className='grid grid-cols-2 gap-2 sm:gap-3'>
-              {/* Capital City / Administrative Center */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
@@ -88,7 +87,6 @@ export default function RegencySheet({
                 </div>
               </motion.div>
 
-              {/* Autonomy Status */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
@@ -104,7 +102,6 @@ export default function RegencySheet({
                 </div>
               </motion.div>
 
-              {/* Total Population */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
@@ -123,7 +120,6 @@ export default function RegencySheet({
                 </div>
               </motion.div>
 
-              {/* Land Area */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
@@ -145,7 +141,6 @@ export default function RegencySheet({
               </motion.div>
             </div>
 
-            {/* Population Density Card */}
             {density && (
               <div className='flex items-center justify-between rounded-lg border-2 border-black bg-muted/60 px-3 py-2 font-mono text-xs shadow-brutal-sm dark:border-white dark:bg-zinc-900'>
                 <span className='font-bold uppercase text-muted-foreground'>
@@ -157,7 +152,7 @@ export default function RegencySheet({
               </div>
             )}
 
-            {/* Real-time Weather & Air Quality Widget */}
+            {/* weather and air quality */}
             <WeatherCard
               provinceId={regency.provinceId}
               provinceName={provinceName || regency.provinceId}
@@ -166,7 +161,6 @@ export default function RegencySheet({
               capital={regency.capital}
             />
 
-            {/* Overview Description */}
             <div className='rounded-lg border-2 border-black bg-card p-3 font-mono shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-4'>
               <div className='flex items-center gap-1.5 text-muted-foreground'>
                 <ShieldCheck className='size-3.5 shrink-0 stroke-[2.5] text-indigo-500' />

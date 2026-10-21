@@ -17,7 +17,7 @@ export function useRouter() {
   const navigate = useCallback((to: string, replace = false) => {
     if (typeof window === 'undefined') return;
 
-    // Normalizing URL path
+    // normalize url path
     const targetPath = to.startsWith('/') ? to : `/${to}`;
     if (window.location.pathname === targetPath) return;
 

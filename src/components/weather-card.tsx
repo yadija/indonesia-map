@@ -42,12 +42,12 @@ export default function WeatherCard({
   const activeLocationId = regencyId || provinceId;
   const activeLocationTitle = regencyName || capital || provinceName;
 
-  // Weather States
+  // weather state
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loadingWeather, setLoadingWeather] = useState<boolean>(true);
   const [errorWeather, setErrorWeather] = useState<string | null>(null);
 
-  // Air Quality States
+  // air quality state
   const [airQuality, setAirQuality] = useState<AirQualityData | null>(null);
   const [loadingAQI, setLoadingAQI] = useState<boolean>(true);
   const [errorAQI, setErrorAQI] = useState<string | null>(null);
@@ -120,7 +120,6 @@ export default function WeatherCard({
 
   return (
     <div className='rounded-lg border-2 border-black bg-card p-3.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-4'>
-      {/* Header Widget */}
       <div className='flex items-center justify-between border-b border-border/60 pb-2.5'>
         <div className='flex items-center space-x-2'>
           <span className='relative flex size-2'>
@@ -147,7 +146,7 @@ export default function WeatherCard({
         </motion.button>
       </div>
 
-      {/* Tab Switcher: Weather vs Air Quality */}
+      {/* mode tabs */}
       <div className='mt-2.5 grid grid-cols-2 gap-1.5 rounded-lg border-2 border-black bg-muted/60 p-1 dark:border-white'>
         <button
           type='button'
@@ -175,9 +174,8 @@ export default function WeatherCard({
         </button>
       </div>
 
-      {/* Main Content Based on Active Tab */}
       {activeTab === 'weather' ? (
-        /* Weather Tab */
+        /* weather tab */
         loadingWeather ? (
           <div className='space-y-3 py-3'>
             <div className='flex animate-pulse items-center justify-between'>
@@ -207,7 +205,6 @@ export default function WeatherCard({
           </div>
         ) : weather ? (
           <div className='space-y-3 pt-2.5'>
-            {/* Temperature & Condition */}
             <div className='flex items-center justify-between'>
               <div>
                 <div className='flex items-baseline gap-1'>
@@ -227,7 +224,6 @@ export default function WeatherCard({
               </div>
             </div>
 
-            {/* Parameter Breakdown */}
             <div className='grid grid-cols-3 gap-1.5 sm:gap-2'>
               <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
                 <div className='flex items-center justify-center gap-1 text-muted-foreground'>
@@ -267,7 +263,7 @@ export default function WeatherCard({
             </div>
           </div>
         ) : null
-      ) : /* Air Quality Tab */
+      ) : /* air quality tab */
       loadingAQI ? (
         <div className='space-y-3 py-3'>
           <div className='flex animate-pulse items-center justify-between'>
@@ -298,7 +294,6 @@ export default function WeatherCard({
         </div>
       ) : airQuality ? (
         <div className='space-y-3 pt-2.5'>
-          {/* AQI Score & Status Category */}
           <div className='flex items-center justify-between'>
             <div>
               <div className='flex items-baseline gap-1.5'>
@@ -321,7 +316,7 @@ export default function WeatherCard({
             </div>
           </div>
 
-          {/* Visual Gauge Bar */}
+          {/* aqi gauge */}
           <div>
             <div className='relative h-2.5 w-full overflow-hidden rounded-full border border-black bg-muted shadow-[1px_1px_0px_#000] dark:border-white'>
               <div
@@ -331,7 +326,6 @@ export default function WeatherCard({
                 }}
                 className='size-full'
               />
-              {/* Pointer / Marker */}
               <div
                 style={{
                   left: `${Math.min(96, Math.max(4, (airQuality.aqi / 300) * 100))}%`,
@@ -347,7 +341,6 @@ export default function WeatherCard({
             </div>
           </div>
 
-          {/* Particulate Parameters */}
           <div className='grid grid-cols-3 gap-1.5 sm:gap-2'>
             <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
               <div className='flex items-center justify-center gap-1 text-muted-foreground'>
@@ -395,7 +388,6 @@ export default function WeatherCard({
             </div>
           </div>
 
-          {/* Health Recommendation */}
           <div className='rounded border border-border/70 bg-muted/40 p-2 font-mono text-[10px]'>
             <div className='mb-1 flex items-center gap-1.5 font-bold text-foreground'>
               <Info className='size-3.5 shrink-0 stroke-[2.5] text-amber-500' />
@@ -408,7 +400,7 @@ export default function WeatherCard({
         </div>
       ) : null}
 
-      {/* Data Timestamp & Legal Attribution Footer */}
+      {/* footer attribution and timestamp */}
       <div className='mt-3 space-y-1.5 border-t border-border/50 pt-2 font-mono text-[10px]'>
         <div className='flex items-center justify-between'>
           <span className='flex items-center gap-1.5 leading-none text-muted-foreground'>

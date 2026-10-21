@@ -9,6 +9,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from './ui/sheet';
+import WeatherCard from './weather-card';
 
 interface RegencySheetProps {
   open: boolean;
@@ -71,7 +72,7 @@ export default function RegencySheet({
           <div className='mt-4 space-y-3.5 sm:mt-6 sm:space-y-4'>
             {/* Quick Stat Cards */}
             <div className='grid grid-cols-2 gap-2 sm:gap-3'>
-              {/* Ibu Kota */}
+              {/* Capital City / Administrative Center */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
@@ -87,7 +88,7 @@ export default function RegencySheet({
                 </div>
               </motion.div>
 
-              {/* Status Wilayah */}
+              {/* Autonomy Status */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
@@ -103,7 +104,7 @@ export default function RegencySheet({
                 </div>
               </motion.div>
 
-              {/* Total Populasi */}
+              {/* Total Population */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
@@ -122,7 +123,7 @@ export default function RegencySheet({
                 </div>
               </motion.div>
 
-              {/* Luas Wilayah */}
+              {/* Land Area */}
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 className='rounded-lg border-2 border-black bg-card p-2.5 shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-3'
@@ -144,7 +145,7 @@ export default function RegencySheet({
               </motion.div>
             </div>
 
-            {/* Kepadatan Card */}
+            {/* Population Density Card */}
             {density && (
               <div className='flex items-center justify-between rounded-lg border-2 border-black bg-muted/60 px-3 py-2 font-mono text-xs shadow-brutal-sm dark:border-white dark:bg-zinc-900'>
                 <span className='font-bold uppercase text-muted-foreground'>
@@ -156,7 +157,16 @@ export default function RegencySheet({
               </div>
             )}
 
-            {/* Overview Deskripsi */}
+            {/* Real-time Weather & Air Quality Widget */}
+            <WeatherCard
+              provinceId={regency.provinceId}
+              provinceName={provinceName || regency.provinceId}
+              regencyId={regency.id}
+              regencyName={regency.name}
+              capital={regency.capital}
+            />
+
+            {/* Overview Description */}
             <div className='rounded-lg border-2 border-black bg-card p-3 font-mono shadow-brutal-sm dark:border-white dark:bg-zinc-900 sm:p-4'>
               <div className='flex items-center gap-1.5 text-muted-foreground'>
                 <ShieldCheck className='size-3.5 shrink-0 stroke-[2.5] text-indigo-500' />

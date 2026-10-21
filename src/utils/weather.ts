@@ -1,3 +1,4 @@
+import { REGENCY_COORDINATES } from '../data/regency-coordinates';
 import { WeatherCoordinates, WeatherData, WeatherIconType } from '../interfaces/weather';
 
 export const PROVINCE_COORDINATES: Record<string, WeatherCoordinates> = {
@@ -102,13 +103,34 @@ interface CacheEntry {
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache
 const weatherCache = new Map<string, CacheEntry>();
 
+/**
+ * Resolves geographic coordinates for a given region ID (Regency/City or Province),
+ * with an optional fallback to the parent province ID.
+ */
+export function getLocationCoordinates(
+  locationId: string,
+  fallbackProvinceId?: string,
+): WeatherCoordinates | null {
+  if (REGENCY_COORDINATES[locationId]) {
+    return REGENCY_COORDINATES[locationId];
+  }
+  if (PROVINCE_COORDINATES[locationId]) {
+    return PROVINCE_COORDINATES[locationId];
+  }
+  if (fallbackProvinceId && PROVINCE_COORDINATES[fallbackProvinceId]) {
+    return PROVINCE_COORDINATES[fallbackProvinceId];
+  }
+  return null;
+}
+
 export async function fetchProvinceWeather(
-  provinceId: string,
+  locationId: string,
+  fallbackProvinceId?: string,
 ): Promise<WeatherData | null> {
-  const coord = PROVINCE_COORDINATES[provinceId];
+  const coord = getLocationCoordinates(locationId, fallbackProvinceId);
   if (!coord) return null;
 
-  const cached = weatherCache.get(provinceId);
+  const cached = weatherCache.get(locationId);
   if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
     return cached.data;
   }
@@ -152,7 +174,7 @@ export async function fetchProvinceWeather(
       capital: coord.capital,
     };
 
-    weatherCache.set(provinceId, {
+    weatherCache.set(locationId, {
       data: weatherData,
       timestamp: Date.now(),
     });
@@ -160,14 +182,16 @@ export async function fetchProvinceWeather(
     return weatherData;
   } catch (error) {
     clearTimeout(timeoutId);
-    console.error(`Error fetching weather for ${provinceId}:`, error);
+    console.error(`Error fetching weather for ${locationId}:`, error);
     throw error;
   }
 }
 
+export const fetchLocationWeather = fetchProvinceWeather;
+
 /**
- * Mendapatkan singkatan zona waktu resmi Indonesia (WIB, WITA, WIT)
- * berdasarkan offset UTC atau string zona waktu Open-Meteo.
+ * Retrieves the official Indonesian timezone abbreviation (WIB, WITA, WIT)
+ * based on the UTC offset in seconds or Open-Meteo timezone identifier.
  */
 export function getIndonesianTimezoneLabel(
   utcOffsetSeconds?: number,
@@ -189,8 +213,8 @@ export function getIndonesianTimezoneLabel(
 }
 
 /**
- * Format waktu pada data Open-Meteo (e.g. "2026-10-16T21:00")
- * menjadi format lokal ramah baca Indonesia (e.g. "16 Okt 2026, 21.00 WIB").
+ * Formats Open-Meteo data time string (e.g. "2026-10-16T21:00")
+ * into a user-friendly Indonesian localized date string (e.g. "16 Okt 2026, 21.00 WIB").
  */
 export function formatDataTime(timeString?: string, tzLabel?: string): string {
   if (!timeString) return '-';
@@ -233,7 +257,7 @@ export function formatDataTime(timeString?: string, tzLabel?: string): string {
 }
 
 /**
- * Format timestamp pengambilan data Open-Meteo dalam format waktu lokal Indonesia.
+ * Formats the Open-Meteo data fetch timestamp into a localized date-time string.
  */
 export function formatFetchTime(timestamp?: number | string): string {
   if (!timestamp) return '-';

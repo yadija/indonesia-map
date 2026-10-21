@@ -27,14 +27,20 @@ interface WeatherCardProps {
   provinceId: string;
   provinceName: string;
   capital?: string;
+  regencyId?: string;
+  regencyName?: string;
 }
 
 export default function WeatherCard({
   provinceId,
   provinceName,
   capital,
+  regencyId,
+  regencyName,
 }: WeatherCardProps) {
   const [activeTab, setActiveTab] = useState<'weather' | 'airQuality'>('weather');
+  const activeLocationId = regencyId || provinceId;
+  const activeLocationTitle = regencyName || capital || provinceName;
 
   // Weather States
   const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -47,32 +53,32 @@ export default function WeatherCard({
   const [errorAQI, setErrorAQI] = useState<string | null>(null);
 
   const loadWeather = useCallback(async () => {
-    if (!provinceId) return;
+    if (!activeLocationId) return;
     setLoadingWeather(true);
     setErrorWeather(null);
     try {
-      const data = await fetchProvinceWeather(provinceId);
+      const data = await fetchProvinceWeather(activeLocationId, provinceId);
       setWeather(data);
     } catch {
       setErrorWeather('Gagal memuat data cuaca real-time');
     } finally {
       setLoadingWeather(false);
     }
-  }, [provinceId]);
+  }, [activeLocationId, provinceId]);
 
   const loadAirQuality = useCallback(async () => {
-    if (!provinceId) return;
+    if (!activeLocationId) return;
     setLoadingAQI(true);
     setErrorAQI(null);
     try {
-      const data = await fetchProvinceAirQuality(provinceId);
+      const data = await fetchProvinceAirQuality(activeLocationId, provinceId);
       setAirQuality(data);
     } catch {
       setErrorAQI('Gagal memuat data kualitas udara');
     } finally {
       setLoadingAQI(false);
     }
-  }, [provinceId]);
+  }, [activeLocationId, provinceId]);
 
   const refreshAll = useCallback(() => {
     loadWeather();
@@ -122,7 +128,7 @@ export default function WeatherCard({
             <span className='relative inline-flex size-2 rounded-full bg-emerald-500' />
           </span>
           <span className='font-mono text-[10px] font-black uppercase tracking-wider text-muted-foreground'>
-            [LINGKUNGAN & IKLIM // {capital || provinceName}]
+            [LINGKUNGAN & IKLIM // {activeLocationTitle}]
           </span>
         </div>
 
@@ -141,7 +147,7 @@ export default function WeatherCard({
         </motion.button>
       </div>
 
-      {/* Tab Switcher: Cuaca vs Kualitas Udara */}
+      {/* Tab Switcher: Weather vs Air Quality */}
       <div className='mt-2.5 grid grid-cols-2 gap-1.5 rounded-lg border-2 border-black bg-muted/60 p-1 dark:border-white'>
         <button
           type='button'
@@ -169,9 +175,9 @@ export default function WeatherCard({
         </button>
       </div>
 
-      {/* Konten Utama Berdasarkan Tab Aktif */}
+      {/* Main Content Based on Active Tab */}
       {activeTab === 'weather' ? (
-        /* Tab Cuaca */
+        /* Weather Tab */
         loadingWeather ? (
           <div className='space-y-3 py-3'>
             <div className='flex animate-pulse items-center justify-between'>
@@ -201,7 +207,7 @@ export default function WeatherCard({
           </div>
         ) : weather ? (
           <div className='space-y-3 pt-2.5'>
-            {/* Suhu & Kondisi */}
+            {/* Temperature & Condition */}
             <div className='flex items-center justify-between'>
               <div>
                 <div className='flex items-baseline gap-1'>
@@ -221,7 +227,7 @@ export default function WeatherCard({
               </div>
             </div>
 
-            {/* Rincian Parameter */}
+            {/* Parameter Breakdown */}
             <div className='grid grid-cols-3 gap-1.5 sm:gap-2'>
               <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
                 <div className='flex items-center justify-center gap-1 text-muted-foreground'>
@@ -261,7 +267,7 @@ export default function WeatherCard({
             </div>
           </div>
         ) : null
-      ) : /* Tab Kualitas Udara */
+      ) : /* Air Quality Tab */
       loadingAQI ? (
         <div className='space-y-3 py-3'>
           <div className='flex animate-pulse items-center justify-between'>
@@ -292,7 +298,7 @@ export default function WeatherCard({
         </div>
       ) : airQuality ? (
         <div className='space-y-3 pt-2.5'>
-          {/* Skor AQI & Kategori Status */}
+          {/* AQI Score & Status Category */}
           <div className='flex items-center justify-between'>
             <div>
               <div className='flex items-baseline gap-1.5'>
@@ -341,7 +347,7 @@ export default function WeatherCard({
             </div>
           </div>
 
-          {/* Parameter Partikulat */}
+          {/* Particulate Parameters */}
           <div className='grid grid-cols-3 gap-1.5 sm:gap-2'>
             <div className='rounded border border-border/80 bg-muted/30 p-2 text-center'>
               <div className='flex items-center justify-center gap-1 text-muted-foreground'>
@@ -389,7 +395,7 @@ export default function WeatherCard({
             </div>
           </div>
 
-          {/* Rekomendasi Kesehatan */}
+          {/* Health Recommendation */}
           <div className='rounded border border-border/70 bg-muted/40 p-2 font-mono text-[10px]'>
             <div className='mb-1 flex items-center gap-1.5 font-bold text-foreground'>
               <Info className='size-3.5 shrink-0 stroke-[2.5] text-amber-500' />
@@ -402,7 +408,7 @@ export default function WeatherCard({
         </div>
       ) : null}
 
-      {/* Waktu Pada Data & Legal Attribution Footer */}
+      {/* Data Timestamp & Legal Attribution Footer */}
       <div className='mt-3 space-y-1.5 border-t border-border/50 pt-2 font-mono text-[10px]'>
         <div className='flex items-center justify-between'>
           <span className='flex items-center gap-1.5 leading-none text-muted-foreground'>

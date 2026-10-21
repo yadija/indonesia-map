@@ -1,5 +1,5 @@
 import { AirQualityData, AQICategory } from '../interfaces/air-quality';
-import { getIndonesianTimezoneLabel, PROVINCE_COORDINATES } from './weather';
+import { getIndonesianTimezoneLabel, getLocationCoordinates } from './weather';
 
 export function evaluateAQI(aqi: number): AQICategory {
   if (aqi <= 50) {
@@ -76,12 +76,13 @@ const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache
 const aqiCache = new Map<string, CacheEntry>();
 
 export async function fetchProvinceAirQuality(
-  provinceId: string,
+  locationId: string,
+  fallbackProvinceId?: string,
 ): Promise<AirQualityData | null> {
-  const coord = PROVINCE_COORDINATES[provinceId];
+  const coord = getLocationCoordinates(locationId, fallbackProvinceId);
   if (!coord) return null;
 
-  const cached = aqiCache.get(provinceId);
+  const cached = aqiCache.get(locationId);
   if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
     return cached.data;
   }
@@ -128,7 +129,7 @@ export async function fetchProvinceAirQuality(
       capital: coord.capital,
     };
 
-    aqiCache.set(provinceId, {
+    aqiCache.set(locationId, {
       data: aqiData,
       timestamp: Date.now(),
     });
@@ -136,7 +137,9 @@ export async function fetchProvinceAirQuality(
     return aqiData;
   } catch (error) {
     clearTimeout(timeoutId);
-    console.error(`Error fetching air quality for ${provinceId}:`, error);
+    console.error(`Error fetching air quality for ${locationId}:`, error);
     throw error;
   }
 }
+
+export const fetchLocationAirQuality = fetchProvinceAirQuality;
